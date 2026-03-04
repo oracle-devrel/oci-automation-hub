@@ -7,10 +7,10 @@
 This repository contains a collection of **independent automation sample solutions** intended to demonstrate how Oracle Cloud Infrastructure (OCI) can be used together with open-source and third-party technologies.
 
 The projects in this repository are designed to support:
-- Presales and technical discussions
-- Proof of Concept (POC) activities
-- Architecture and automation demonstrations
-- Exploration of OCI capabilities in real-world scenarios
+- Presales and technical discussions.
+- Proof of Concept (POC) activities.
+- Architecture and automation demonstrations.
+- Exploration of OCI capabilities in real-world scenarios.
 
 Each automation sample is self-contained and documented separately.
 
