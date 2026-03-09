@@ -160,6 +160,6 @@ kubectl delete crd k8ssandraclusters.k8ssandra.io --ignore-not-found
 
 ```
 
-Once cleanup completes, you can safely destroy the stack. Use OCI Resource Manager to destroy the stack from the console.
+Once cleanup completes, you can safely destroy the stack. Use the ORM to destroy the stack from the console.
 
 
