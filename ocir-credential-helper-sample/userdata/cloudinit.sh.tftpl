@@ -4,6 +4,11 @@ set -euo pipefail
 registry="${registry}"
 echo "Using OCIR registry: ${registry}"
 
+until curl -s https://yum.eu-frankfurt-1.oci.oraclecloud.com >/dev/null; do
+  echo "Waiting for network..."
+  sleep 5
+done
+
 # --- OL9 prep ---
 dnf -y install git dnf-plugins-core
 dnf -y remove podman-docker || true
