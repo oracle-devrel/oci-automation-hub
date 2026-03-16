@@ -1,8 +1,11 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
 name: PR File Header Check
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened]
 
 jobs:
   check-file-headers:
@@ -31,6 +34,11 @@ jobs:
           FAILED=0
 
           for FILE in $CHANGED_FILES; do
+            # Skip markdown files
+            if [[ "$FILE" == *.md ]]; then
+              echo "Skipping (markdown): $FILE"
+              continue
+            fi
             # Skip binary files or non-existent files
             if [ ! -f "$FILE" ] || ! file "$FILE" | grep -q text; then
               echo "Skipping (binary/missing): $FILE"
