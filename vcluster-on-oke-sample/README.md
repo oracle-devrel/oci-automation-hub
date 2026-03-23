@@ -108,7 +108,7 @@ Using virtual clusters greatly improves the efficiency of resource usage, simpli
 1. Create a deployment
 
    ```
-   [opc@vcluster-vm ~]$ kubectl create deployment nginx-deployment --image nginx:latest --replicas 3
+   [opc@vcluster-vm ~]$ kubectl create deployment nginx-deployment --image docker.io/nginx:latest --replicas 3
    deployment.apps/nginx-deployment created
    ```
 
@@ -186,12 +186,12 @@ Using virtual clusters greatly improves the efficiency of resource usage, simpli
    ```
       [opc@vcluster-vm ~]$ vcluster connect my-vcluster --print
    ```
-   Notice the "server" value - it contain the Load Baalancer IP used when vCluster was created (via "expose" flag)
+   Notice the "server" value - it contain the Load Balancer IP used when vCluster was created (via "expose" flag)
    ```
    [opc@vcluster-vm ~]$ kubectl get svc my-vcluster -n team-x
    ```
 
-2. save the kube config in a file to be distributed and used separately by users
+2. Save the kube config in a file to be distributed and used separately by users
    ```
    [opc@vcluster-vm ~]$ vcluster connect my-vcluster --print > vcluster.config
    ```
@@ -208,7 +208,7 @@ Using virtual clusters greatly improves the efficiency of resource usage, simpli
 
 ## Task 6: Clean-up
 
-1. (optional) Delete the vCluster created in previous steps
+1. Delete the vCluster created in previous steps - this will also delete the LoadBalancer (optional)
    ```
    [opc@vcluster-vm ~]$ vcluster delete my-vcluster
    09:50:04 info Delete vcluster my-vcluster...
