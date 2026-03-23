@@ -19,7 +19,6 @@ jobs:
       - name: Check UPL license headers
         run: |
           CURRENT_YEAR=$(date +%Y)
-
           LINE1="# Copyright (c) 2024, ${CURRENT_YEAR}, Oracle and/or its affiliates. All rights reserved."
           LINE2="# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/"
 
@@ -39,26 +38,42 @@ jobs:
               echo "Skipping (markdown): $FILE"
               continue
             fi
+
             # Skip binary files or non-existent files
             if [ ! -f "$FILE" ] || ! file "$FILE" | grep -q text; then
               echo "Skipping (binary/missing): $FILE"
               continue
             fi
 
-            ACTUAL_LINE1=$(sed -n '1p' "$FILE")
-            ACTUAL_LINE2=$(sed -n '2p' "$FILE")
+            if [[ "$FILE" == *.sh ]]; then
+              SHEBANG=$(sed -n '1p' "$FILE")
+              if [[ "$SHEBANG" != \#!* ]]; then
+                echo "BAD - $FILE — missing shebang on line 1"
+                FAILED=1
+                continue
+              fi
+              ACTUAL_LINE1=$(sed -n '3p' "$FILE")
+              ACTUAL_LINE2=$(sed -n '4p' "$FILE")
+            else
+              ACTUAL_LINE1=$(sed -n '1p' "$FILE")
+              ACTUAL_LINE2=$(sed -n '2p' "$FILE")
+            fi
 
             if [ "$ACTUAL_LINE1" = "$LINE1" ] && [ "$ACTUAL_LINE2" = "$LINE2" ]; then
               echo "GOOD - $FILE"
             else
-              echo "BAD - $FILE — missing or incorrect UPL license header"
+              if [[ "$FILE" == *.sh ]]; then
+                echo "BAD - $FILE — missing or incorrect UPL license header (expected on lines 3-4)"
+              else
+                echo "BAD - $FILE — missing or incorrect UPL license header"
+              fi
               if [ "$ACTUAL_LINE1" != "$LINE1" ]; then
-                echo "   Expected line 1: $LINE1"
-                echo "   Got line 1:      $ACTUAL_LINE1"
+                echo "   Expected: $LINE1"
+                echo "   Got:      $ACTUAL_LINE1"
               fi
               if [ "$ACTUAL_LINE2" != "$LINE2" ]; then
-                echo "   Expected line 2: $LINE2"
-                echo "   Got line 2:      $ACTUAL_LINE2"
+                echo "   Expected: $LINE2"
+                echo "   Got:      $ACTUAL_LINE2"
               fi
               FAILED=1
             fi
