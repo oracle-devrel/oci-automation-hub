@@ -1,0 +1,350 @@
+title: OKE AI Stack deployment
+description: Terraform Stack for OKE and Kyverno 
+informationalText: Terraform Stack for OKE and Kyverno
+schemaVersion: 1.1.0
+version: "20190304"
+
+# URL of Logo Icon used on Application Information tab. Logo must be 130x130 pixels.
+# (Optional)
+logoUrl: https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/laivzo5VNcM9uZf9O6ftZb4-QTPOcszBFwtfu7AGOtbINpfSDKqbJAnSNIRDjtX6/n/orasenatdpltintegration03/b/default-bucket/o/oracle_icon.jpg
+
+
+locale: "en"
+variableGroups:
+  - title: "Hidden RMS variables"
+    visible: false
+    variables:
+      - tenancy_ocid
+      - compartment_ocid
+      - region
+      - user_ocid
+      - current_user_ocid
+
+  - title: "Hidden stack variables"
+    visible: false
+    variables:
+      - create_iam_resources
+      - create_iam_tag_namespace
+      - create_iam_defined_tags
+      - use_defined_tags
+      - tag_namespace
+      - bastion_allowed_cidrs
+      - bastion_image_os
+      - bastion_image_os_version
+      - bastion_image_type
+      - bastion_image_id
+      - bastion_user
+      - operator_image_os
+      - operator_image_os_version
+      - operator_image_type
+      - operator_image_id
+      - operator_user
+      - control_plane_allowed_cidrs
+      - control_plane_is_public
+      - create_cluster
+      - operator_allowed_cidrs
+      - state_id
+      - cidr_vcn
+      - cidr_bastion_subnet
+      - cidr_operator_subnet
+      - cidr_cp_subnet
+      - cidr_int_lb_subnet
+      - cidr_pub_lb_subnet
+      - cidr_workers_subnet
+      - cidr_pods_subnet
+      - cni_type
+      - simple_np_size
+      - create_bastion
+      - create_vcn
+      - create_operator
+      - gpu_np_shape
+      - gpu_np_size
+      - simple_np_flex_shape
+
+  - title: "General configuration"
+    visible: true
+    variables:
+      - compartment_id
+      - cluster_name
+      - kubernetes_version
+      #- create_vcn
+
+#- title: "Advanced Networking configuration for existing VCN"
+#  visible:
+#  - not:
+#    - ${create_vcn}
+#  variables:
+#    - vcn_id
+#
+#- title: "Advanced Networking configuration for new VCN"
+#  visible:
+#  - and:
+#    - ${create_vcn}
+#    - true
+#  variables:
+#    - vcn_name
+#    - cidr_vcn
+#    - cidr_bastion_subnet
+#    - cidr_operator_subnet
+#    - cidr_cp_subnet
+#    - cidr_int_lb_subnet
+#    - cidr_pub_lb_subnet
+#    - cidr_workers_subnet
+#    - cidr_pods_subnet
+
+  #- title: "Advanced Cluster configuration"
+  #  visible: true
+  #  variables:
+  #    #- cni_type
+  #    #- simple_np_size
+  #    #- simple_np_flex_shape
+  #    #- gpu_np_size
+  #    #- gpu_np_shape
+
+  - title: "Access to the Kubernetes cluster"
+    visible: true
+    variables:
+      #- control_plane_is_public
+      #- create_bastion
+      #- create_operator
+      - ssh_public_key
+
+variables:
+  
+  create_iam_resources:
+    type: bool
+    default: false
+    visible: false
+
+  create_iam_tag_namespace:
+    type: bool
+    default: false
+    visible: false
+
+  create_iam_defined_tags:
+    type: bool
+    default: false
+    visible: false
+
+  use_defined_tags:
+    type: bool
+    default: false
+    visible: false
+
+  compartment_id:
+    type: oci:identity:compartment:id
+    title: Deployment compartment target
+    description: Please select the compartment where the resources will be created
+    required: true
+
+  cluster_name:
+    type: string
+    minLength: 3
+    maxLength: 40
+    pattern: "^[a-zA-Z0-9][a-zA-Z0-9-]*?[a-zA-Z0-9]$"
+    title: Cluster Name
+    description: The name of the OKE cluster.
+    default: oke
+    required: true
+
+  kubernetes_version:
+    type: enum
+    title: Kubernetes version
+    description: The version of the Kubernetes cluster.
+    default: v1.32.1
+    enum:
+      - v1.32.1
+    allowMultiple: false
+    required: true
+
+  cni_type:
+    type: enum
+    title: Kubernetes cluster networking type
+    description: The networking to be used with the OKE cluster.
+    default: flannel
+    enum:
+      - flannel
+      - npn
+    allowMultiple: false
+    required: true
+
+  create_vcn:
+    title: Create new VCN
+    description: Create new VCN for the OKE cluster.
+    type: boolean
+    default: true
+
+  vcn_name:
+    type: string
+    minLength: 3
+    maxLength: 40
+    pattern: "^[a-zA-Z0-9][a-zA-Z0-9-]*?[a-zA-Z0-9]$"
+    title: VCN Name
+    description: The name of VCN.
+    default: oke-vcn
+    required: true  
+
+  vcn_id:
+    title: Select VCN for the OKE cluster
+    description: Select the existing VCN for the OKE cluster.
+    type: oci:core:vcn:id
+    dependsOn:
+      compartmentId: ${compartment_id}
+    visible:
+      not:
+        - ${create_vcn}
+
+  cidr_vcn:
+    type: string
+    pattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\/(?:[1][6-9])|(?:2[0-8])$"
+    title: VCN CIDR Block
+    description: The CIDR block to use with the new VCN.
+    default: 10.0.0.0/16
+    required: true
+
+  cidr_bastion_subnet:
+    type: string
+    pattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\/(?:[1][6-9])|(?:2[0-9])$"
+    title: Bastion subnet CIDR
+    description: The CIDR block used for the bastion subnet.
+    default: 10.0.0.0/29
+    required: true
+
+  cidr_operator_subnet:
+    type: string
+    pattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\/(?:[1][6-9])|(?:2[0-9])$"
+    title: Operator subnet CIDR
+    description: The CIDR block used for the operator subnet.
+    default: 10.0.0.64/29
+    required: true
+
+  cidr_cp_subnet:
+    type: string
+    pattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\/(?:[1][6-9])|(?:2[0-9])$"
+    title: OKE Control Plane subnet CIDR
+    description: The CIDR block used for the OKE Control Plane subnet.
+    default: 10.0.0.8/29
+    required: true
+
+  cidr_int_lb_subnet:
+    type: string
+    pattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\/(?:[1][6-9])|(?:2[0-8])$"
+    title: OKE Internal LBs subnet CIDR
+    description: The CIDR block used for the OKE Internal Load Balancers subnet.
+    default: 10.0.0.32/27
+    required: true
+
+  cidr_pub_lb_subnet:
+    type: string
+    pattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\/(?:[1][6-9])|(?:2[0-8])$"
+    title: OKE Public LBs subnet CIDR
+    description: The CIDR block used for the OKE Public Load Balancers subnet.
+    default: 10.0.128.0/27
+    required: true
+
+  cidr_workers_subnet:
+    type: string
+    pattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\/(?:[1][6-9])|(?:2[0-8])$"
+    title: OKE Worker nodes subnet CIDR
+    description: The CIDR block used for the OKE Workers subnet.
+    default: 10.0.144.0/20
+    required: true
+
+  cidr_pods_subnet:
+    type: string
+    pattern: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\/(?:[1][6-9])|(?:2[0-8])$"
+    title: OKE Pods subnet CIDR
+    description: The CIDR block used for the OKE Pods subnet (will be used only if networking type is NPN).
+    default: 10.0.64.0/18
+    required: true
+
+  control_plane_is_public:
+    title: Create public OKE API?
+    description: Associate a public IP address with the OKE control plane endpoint?
+    type: boolean
+    default: false
+
+  ssh_public_key:
+    title: SSH public key
+    description: Public SSH key to be included in the ~/.ssh/authorized_keys file for the bastion, operator and worker nodes.
+    # renders variable as an SSH key control
+    type: oci:core:ssh:publickey
+    required: false
+
+  #simple_np_flex_shape:
+  #  title: Generic Nodepool shape
+  #  type: oci:core:instanceshapewithflex:name
+  #  dependsOn:
+  #    compartmentId: ${compartment_id}
+  #  required: true
+
+  simple_np_size:
+    title: Generic Nodepool size
+    type: integer
+    minimum: 1
+    required: true
+    default: 1
+
+  gpu_np_shape:
+    title: GPU Nodepool shape
+    type: enum
+    enum:
+    - VM.GPU.A10.1
+    - VM.GPU.A10.2
+    - VM.GPU2.1
+    - VM.GPU3.1
+    - VM.GPU3.2
+    - VM.GPU3.4
+    - BM.GPU2.2
+    - BM.GPU3.8
+    - BM.GPU4.8
+    - BM.GPU.A10.4
+    - BM.GPU.A100-v2.8
+    - BM.GPU.H100.8
+    default: VM.GPU.A10.1
+
+  #gpu_np_size:
+  #  title: GPU Nodepool size
+  #  type: integer
+  #  minimum: 0
+  #  required: true
+  #  default: 0
+
+  create_bastion:
+    title: Create bastion host
+    description: Create bastion host for the OKE cluster
+    type: boolean
+    default: true
+
+  create_operator:
+    title: Create operator host
+    description: Create operator host for the OKE cluster
+    type: boolean
+    default: true
+
+  
+outputs:
+  bastion:
+    title: Bastion public IP
+    description: The bastion host public IP address.
+    type: copyableString
+  
+  operator:
+    title: Operator public IP
+    description: The operator host public IP address.
+    sensitive: true
+    type: copyableString
+    visible: false
+
+  ssh_to_operator:
+    title: Command to connect to operator host.
+    description: The ssh command to connect to the operator host via the bastion.
+    sensitive: true
+    type: copyableString
+  
+outputGroups:
+- title: "Access details"
+  outputs:
+    - ${bastion}
+    - ${operator}
+    - ${ssh_to_operator}

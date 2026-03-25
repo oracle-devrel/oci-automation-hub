@@ -1,0 +1,17 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy 
+metadata:
+  name: add-labels 
+spec:
+  rules:
+  - name: add-team 
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+    mutate:
+      patchStrategicMerge:
+        metadata: 
+          labels:
+            +(team) : bravo
