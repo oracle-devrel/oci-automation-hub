@@ -1,5 +1,5 @@
-# Copyright (c) 2022, 2026 Oracle Corporation and/or its affiliates.
-# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
 
 # This is a template for the rook-ceph-cluster Helm chart values.
 # It is rendered by Terraform and passed to the helm_release resource.
