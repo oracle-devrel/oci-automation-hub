@@ -1,0 +1,72 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+title: karmada on oke
+schemaVersion: 1.1.0
+version: "20190304"
+locale: "en"
+
+variableGroups:
+  - title: "SSH Key"
+    variables:
+      - ssh_public_key
+  - title: "Pre-Defined"
+    variables:
+      - compartment_ocid
+     
+  - title: "network hidden vars"
+    visible: false
+    variables:
+      - cidr_blocks
+      - vcn_display_name
+      - api_endpoint_subnet_cidr
+      - lb_subnet_cidr
+      - nodepool_subnet_cidr
+      - pods_subnet_cidr
+      - region
+      - tenancy_ocid
+
+
+
+variables:
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    visible: true
+    title: "Compartment"
+    description: "Choose compartment where you want to deploy the resources"
+
+  ssh_public_key:
+    type: oci:core:ssh:publickey
+    title: "SSH Public Key"
+    description: "SSH Public Key that will be used to access karmada Host"
+    required: true
+    default: ""
+    visible: true
+
+  user_ocid:
+    type: string
+    title: "User OCID"
+    description: "Only required when running via Terraform CLI"
+    required: false
+    visible: false
+    default: ""
+
+  fingerprint:
+    type: string
+    title: "API Key Fingerprint"
+    description: "Only required when running via Terraform CLI"
+    required: false
+    visible: false
+    default: ""
+
+  private_key_path:
+    type: string
+    title: "Private Key Path"
+    description: "Only required when running via Terraform CLI"
+    required: false
+    visible: false
+    default: ""
+
+
