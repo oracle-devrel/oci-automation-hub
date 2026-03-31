@@ -23,7 +23,7 @@ variable "bastion_image_os" {
 
 variable "bastion_image_os_version" {
   type    = string
-  default = "9"
+  default = "8"
 }
 
 variable "bastion_image_type" {
@@ -178,7 +178,7 @@ variable "operator_image_os" {
 
 variable "operator_image_os_version" {
   type    = string
-  default = "9"
+  default = "8"
 }
 
 variable "operator_image_type" {
