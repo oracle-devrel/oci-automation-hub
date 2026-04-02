@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+set -euo pipefail
+
+registry="${registry}"
+echo "Using OCIR registry: ${registry}"
+
+until curl -s https://yum.eu-frankfurt-1.oci.oraclecloud.com >/dev/null; do
+  echo "Waiting for network..."
+  sleep 5
+done
+
+# --- OL9 prep ---
+dnf -y install git dnf-plugins-core
+dnf -y remove podman-docker || true
+
+# --- Install docker ---
+
+# add Docker repository
+dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+# install Docker Engine
+dnf -y install docker-ce docker-ce-cli containerd.io
+# start Docker service
+systemctl enable --now docker   
+# verify installation
+docker version
+# add user to docker group
+usermod -aG docker opc
+
+# --- Install OCI CLI ---
+# install OCI CLI using pip 
+dnf -y install python3 python3-pip
+pip3 install oci-cli
+# verify installation
+oci --version
+
+# verify instance principal works
+oci iam region list --auth instance_principal || echo "Instance principal not working"
+
+# --- Install Go ---
+# install Go using dnf
+export HOME=/root
+dnf -y install golang
+# verify installation
+go version
+
+# --- Download the OCIR Credential Helper ---
+mkdir credential-helper
+cd credential-helper
+# download the latest release of the OCIR Credential Helper
+git clone https://github.com/jan-g/ip-credential.git
+cd ip-credential
+# build the OCIR Credential Helper
+export GOPATH=/root/go
+mkdir -p $GOPATH
+go mod vendor
+go build docker-credential-ocir.go
+# verify build
+ls -l docker-credential-ocir
+# install helper
+install -m 0755 docker-credential-ocir /usr/local/bin/docker-credential-ocir
+# verify installation
+which docker-credential-ocir
+
+# --- Configure Docker credential helper for opc user ---
+
+mkdir -p /home/opc/.docker
+
+cat <<EOF > /home/opc/.docker/config.json
+{
+  "credHelpers": {
+    "${registry}": "ocir"
+  }
+}
+EOF
+
+chown -R opc:opc /home/opc/.docker
