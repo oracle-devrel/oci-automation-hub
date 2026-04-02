@@ -1,0 +1,101 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+- name: Upgrade installed packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_only: true
+    nobest: true
+  register: kvm_bootstrap_upgrade_result
+  retries: "{{ kvm_bootstrap_upgrade_retries }}"
+  delay: "{{ kvm_bootstrap_upgrade_retry_delay }}"
+  until: kvm_bootstrap_upgrade_result is succeeded
+  become: true
+  tags:
+    - kvm_bootstrap
+    - packages
+    - upgrade
+
+- name: Gather enabled DNF repositories
+  ansible.builtin.command: dnf repolist --enabled
+  register: kvm_bootstrap_enabled_repos
+  changed_when: false
+  check_mode: false
+  tags:
+    - kvm_bootstrap
+    - repos
+
+- name: Report kvm utils repository enablement in check mode
+  ansible.builtin.debug:
+    msg: "Repository {{ kvm_bootstrap_kvm_utils_repo }} would be enabled."
+  changed_when: true
+  when:
+    - ansible_check_mode
+    - not (kvm_bootstrap_enabled_repos.stdout | regex_search('(^|\\n)' ~ kvm_bootstrap_kvm_utils_repo ~ '\\s'))
+  tags:
+    - kvm_bootstrap
+    - repos
+
+- name: Enable kvm utils repository
+  ansible.builtin.command:
+    cmd: "dnf config-manager --set-enabled {{ kvm_bootstrap_kvm_utils_repo }}"
+  when:
+    - not ansible_check_mode
+    - not (kvm_bootstrap_enabled_repos.stdout | regex_search('(^|\\n)' ~ kvm_bootstrap_kvm_utils_repo ~ '\\s'))
+  changed_when: true
+  tags:
+    - kvm_bootstrap
+    - repos
+
+- name: Install virtualization host package group
+  ansible.builtin.dnf:
+    name: "{{ kvm_bootstrap_virtualization_host_group }}"
+    state: present
+    nobest: "{{ kvm_bootstrap_package_nobest }}"
+  tags:
+    - kvm_bootstrap
+    - packages
+
+- name: Install KVM prerequisite packages
+  ansible.builtin.dnf:
+    name: "{{ kvm_bootstrap_prereq_packages }}"
+    state: present
+    nobest: "{{ kvm_bootstrap_package_nobest }}"
+  tags:
+    - kvm_bootstrap
+    - packages
+
+- name: Install virt-customize provider package
+  ansible.builtin.dnf:
+    name: "{{ kvm_bootstrap_virt_customize_spec }}"
+    state: present
+    nobest: "{{ kvm_bootstrap_package_nobest }}"
+  tags:
+    - kvm_bootstrap
+    - packages
+
+- name: Enable libvirt virt* daemons and sockets
+  block:
+    - name: Enable libvirt daemon service for driver {{ kvm_bootstrap_drv }}
+      ansible.builtin.systemd_service:
+        name: "virt{{ kvm_bootstrap_drv }}d.service"
+        enabled: true
+      loop: "{{ kvm_bootstrap_libvirt_drivers }}"
+      loop_control:
+        loop_var: kvm_bootstrap_drv
+      tags:
+        - kvm_bootstrap
+        - services
+
+    - name: Enable and start libvirt socket
+      ansible.builtin.systemd_service:
+        name: "virt{{ item.0 }}d{{ item.1 }}.socket"
+        enabled: true
+        state: started
+      loop: "{{ kvm_bootstrap_libvirt_drivers | product(kvm_bootstrap_libvirt_socket_suffixes) | list }}"
+      loop_control:
+        label: "virt{{ item.0 }}d{{ item.1 }}.socket"
+      tags:
+        - kvm_bootstrap
+        - services

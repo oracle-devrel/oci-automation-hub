@@ -1,0 +1,18 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+- name: Reload drbd config
+  ansible.builtin.command: "drbdadm adjust {{ drbd_resource_name }}"
+  listen: reload drbd config
+  changed_when: false
+
+- name: Apply drbd sysctl settings
+  ansible.builtin.command: "sysctl -p {{ drbd_sysctl_config_path }}"
+  listen: Apply drbd sysctl settings
+  changed_when: false
+
+- name: Reload systemd daemons
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  listen: reload systemd daemons
+  changed_when: false

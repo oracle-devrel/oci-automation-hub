@@ -1,0 +1,489 @@
+#!/bin/sh
+#
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+# OCF resource agent for updating an OCI DNS A record using OCI CLI
+# Authentication is done via OCI Instance Principals.
+#
+# Resource name: ocf:heartbeat:dnsupdate (or ocf:heartbeat:oci-dnsupdate)
+#
+
+: "${OCF_ROOT:=/usr/lib/ocf}"
+. "${OCF_ROOT}/lib/heartbeat/ocf-shellfuncs"
+
+#######################################################################
+# Defaults for OCF parameters
+#######################################################################
+
+: "${OCF_RESKEY_record:=}"                   # Left-hand part of the A record (e.g. "www")
+: "${OCF_RESKEY_domain:=}"                   # Zone name / domain (e.g. "example.com")
+: "${OCF_RESKEY_ip:=}"                       # Optional: if empty, auto-detect from metadata
+: "${OCF_RESKEY_zone_name_or_id:=}"          # Optional: zone-name-or-id (OCID or name); default: $domain
+: "${OCF_RESKEY_ttl:=1}"                     # TTL seconds
+: "${OCF_RESKEY_unregister_on_stop:=false}"  # Whether to delete the RRSet on stop
+: "${OCF_RESKEY_region:=}"                   # Optional: explicit region for the DNS zone
+: "${OCF_RESKEY_scope:=PRIVATE}"             # PUBLIC or PRIVATE
+
+
+OCI_CLI_BIN=${OCI_CLI_BIN:-oci}
+OCI_AUTH_ARG="--auth instance_principal"
+RR_TYPE="A"
+
+# Global cache for detected IP during one action
+DNS_IP=""
+
+#######################################################################
+# Usage & meta-data
+#######################################################################
+
+usage() {
+    cat <<EOF
+OCF resource agent for updating OCI DNS A records via OCI CLI and instance principals.
+
+Supported actions: start, stop, status, monitor, meta-data, validate-all
+
+Environment / OCF parameters:
+
+  OCF_RESKEY_record            Host/record name (e.g. "app")
+  OCF_RESKEY_domain            DNS zone name (e.g. "example.com")
+  OCF_RESKEY_ip                OPTIONAL: explicit IPv4 address to use.
+                               If empty, the agent auto-detects the IP
+                               from OCI instance metadata (primary VNIC).
+  OCF_RESKEY_zone_name_or_id   Zone name or OCID (optional; defaults to \$OCF_RESKEY_domain)
+  OCF_RESKEY_ttl               TTL in seconds (default: 15)
+  OCF_RESKEY_unregister_on_stop  Whether to delete the RRset on stop (true/false, default: false)
+
+Example Pacemaker configuration (pcs), with auto-detected IP:
+
+  pcs resource create oci-dns ocf:heartbeat:dnsupdate \\
+      record="app" domain="example.com" \\
+      ttl="60" op monitor interval="30s" timeout="30s"
+
+EOF
+}
+
+meta_data() {
+    cat <<'EOF'
+<?xml version="1.0"?>
+<!DOCTYPE resource-agent SYSTEM "ra-api-1.dtd">
+<resource-agent name="dnsupdate" version="1.1">
+  <version>1.1</version>
+  <longdesc lang="en">
+    This resource agent manages an A record in Oracle Cloud Infrastructure (OCI) DNS
+    using the OCI CLI and instance principal authentication. It typically updates
+    a DNS name to point to the active cluster node by setting the A record to the
+    node's own IP, detected from the OCI instance metadata.
+  </longdesc>
+  <shortdesc lang="en">Update an OCI DNS A record via OCI CLI</shortdesc>
+
+  <parameters>
+    <parameter name="record" unique="1" required="1">
+      <longdesc lang="en">
+        Record name to update, without the zone. For example, "www" together with
+        domain "example.com" will manage "www.example.com".
+      </longdesc>
+      <shortdesc lang="en">Record name</shortdesc>
+      <content type="string"/>
+    </parameter>
+
+    <parameter name="domain" unique="1" required="1">
+      <longdesc lang="en">
+        DNS zone name (for example, "example.com"). This is used both as the zone
+        identifier and to build the fully qualified domain name (FQDN) from the
+        record parameter.
+      </longdesc>
+      <shortdesc lang="en">DNS zone name</shortdesc>
+      <content type="string"/>
+    </parameter>
+
+    <parameter name="ip" unique="0" required="0">
+      <longdesc lang="en">
+        OPTIONAL: IPv4 address for the A record. If omitted, the agent will
+        automatically detect the IP address from the OCI instance metadata
+        service (primary VNIC private IP). If you explicitly specify this
+        parameter, the agent will use it instead of detection.
+      </longdesc>
+      <shortdesc lang="en">IPv4 address (override)</shortdesc>
+      <content type="string"/>
+    </parameter>
+
+    <parameter name="zone_name_or_id" unique="0" required="0">
+      <longdesc lang="en">
+        Optional value for the --zone-name-or-id parameter in the OCI CLI.
+        If omitted, the agent will use the value from the "domain" parameter.
+        This can be either the zone name or the zone OCID.
+      </longdesc>
+      <shortdesc lang="en">Zone name or OCID</shortdesc>
+      <content type="string"/>
+    </parameter>
+
+    <parameter name="ttl" unique="0" required="0">
+      <longdesc lang="en">
+        Time-to-live (TTL) for the DNS record in seconds.
+      </longdesc>
+      <shortdesc lang="en">TTL (seconds)</shortdesc>
+      <content type="integer" default="1"/>
+    </parameter>
+
+    <parameter name="unregister_on_stop" unique="0" required="0">
+      <longdesc lang="en">
+        If set to "true", the agent will delete the A RRset on stop, using
+        "oci dns record rrset delete". Normally this is not strictly necessary
+        because the new active site will overwrite the RRset, but in some designs
+        it may be desirable to explicitly remove it.
+      </longdesc>
+      <shortdesc lang="en">Delete RRset on stop</shortdesc>
+      <content type="boolean" default="false"/>
+    </parameter>
+
+    <parameter name="region" unique="0" required="0">
+      <longdesc lang="en">
+        OCI region where the DNS zone resides (for example, "us-ashburn-1").
+        For private DNS zones this should be set explicitly if the zone is in
+        a different region than the instance running this agent.
+      </longdesc>
+      <shortdesc lang="en">DNS zone region</shortdesc>
+      <content type="string"/>
+    </parameter>
+
+    <parameter name="scope" unique="0" required="0">
+      <longdesc lang="en">
+        DNS scope: PUBLIC or PRIVATE. Defaults to PUBLIC for backward
+        compatibility. Set to PRIVATE when managing OCI Private DNS zones.
+      </longdesc>
+      <shortdesc lang="en">DNS scope</shortdesc>
+      <content type="string" default="PRIVATE"/>
+    </parameter>
+  </parameters>
+
+  <actions>
+    <action name="start"        timeout="60" />
+    <action name="stop"         timeout="60" />
+    <action name="status"       timeout="30" interval="0" />
+    <action name="monitor"      timeout="30" interval="30" />
+    <action name="validate-all" timeout="30" />
+    <action name="meta-data"    timeout="5" />
+  </actions>
+</resource-agent>
+EOF
+}
+
+#######################################################################
+# Helpers
+#######################################################################
+
+check_binary() {
+    cmd="$1"
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        ocf_exit_reason "Required binary '$cmd' not found in PATH"
+        return $OCF_ERR_INSTALLED
+    fi
+    return 0
+}
+
+get_oci_common_args() {
+    args="$OCI_AUTH_ARG"
+
+    # Region for DNS API (important for PRIVATE zones)
+    if [ -n "$OCF_RESKEY_region" ]; then
+        args="$args --region $OCF_RESKEY_region"
+    fi
+
+    # Scope: PUBLIC (default) or private
+    if [ -n "$OCF_RESKEY_scope" ]; then
+        args="$args --scope $OCF_RESKEY_scope"
+    fi
+    
+    echo "$args"
+}
+
+get_fqdn() {
+    # Build FQDN from record + domain
+    if [ -z "$OCF_RESKEY_record" ] || [ -z "$OCF_RESKEY_domain" ]; then
+        echo ""
+        return
+    fi
+    echo "${OCF_RESKEY_record}.${OCF_RESKEY_domain}"
+}
+
+get_zone() {
+    if [ -n "$OCF_RESKEY_zone_name_or_id" ]; then
+        echo "$OCF_RESKEY_zone_name_or_id"
+    else
+        echo "$OCF_RESKEY_domain"
+    fi
+}
+
+detect_ip_from_metadata() {
+    # If someone did specify ip, honor it
+    if [ -n "$OCF_RESKEY_ip" ]; then
+        echo "$OCF_RESKEY_ip"
+        return 0
+    fi
+
+    # Try IMDSv2 first (requires Authorization header), then IMDSv1
+    md=""
+    md_v2=$(curl -sL -H "Authorization: Bearer Oracle" \
+        http://169.254.169.254/opc/v2/vnics/ 2>/dev/null)
+    if [ -n "$md_v2" ]; then
+        md="$md_v2"
+    else
+        md_v1=$(curl -sL \
+            http://169.254.169.254/opc/v1/vnics/ 2>/dev/null)
+        md="$md_v1"
+    fi
+
+    if [ -z "$md" ]; then
+        return 1
+    fi
+
+    # Extract first "privateIp" value from the JSON (primary VNIC)
+    ip=$(printf '%s\n' "$md" \
+        | sed -n 's/.*"privateIp"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' \
+        | head -n1)
+
+    if [ -z "$ip" ]; then
+        return 1
+    fi
+
+    echo "$ip"
+    return 0
+}
+
+ensure_dns_ip() {
+    if [ -n "$DNS_IP" ]; then
+        return 0
+    fi
+
+    DNS_IP=$(detect_ip_from_metadata)
+    if [ -z "$DNS_IP" ]; then
+        ocf_exit_reason "Unable to detect IP address from OCI instance metadata (and no ip parameter set)"
+        return $OCF_ERR_GENERIC
+    fi
+
+    ocf_log info "Detected IP from metadata: $DNS_IP"
+    return 0
+}
+
+oci_dns_update() {
+    fqdn="$(get_fqdn)"
+    zone="$(get_zone)"
+
+    if [ -z "$fqdn" ] || [ -z "$zone" ]; then
+        ocf_exit_reason "record and domain must be set"
+        return $OCF_ERR_CONFIGURED
+    fi
+
+    ensure_dns_ip || return $?
+
+    items_json=$(printf '[{"domain":"%s","rdata":"%s","rtype":"%s","ttl":%s}]' \
+        "$fqdn" "$DNS_IP" "$RR_TYPE" "$OCF_RESKEY_ttl")
+
+    ocf_log info "Updating OCI DNS A record: ${fqdn} -> ${DNS_IP} (zone=${zone}, ttl=${OCF_RESKEY_ttl}, scope=${OCF_RESKEY_scope}, region=${OCF_RESKEY_region})"
+
+    common_args=$(get_oci_common_args)
+
+    out="$($OCI_CLI_BIN dns record rrset update \
+        $common_args \
+        --force \
+        --domain "$fqdn" \
+        --rtype "$RR_TYPE" \
+        --zone-name-or-id "$zone" \
+        --items "$items_json" 2>&1)"
+    rc=$?
+
+    if [ $rc -ne 0 ]; then
+        ocf_log err "OCI DNS rrset update failed (rc=$rc): $out"
+        ocf_exit_reason "OCI DNS rrset update failed (see logs)"
+        return $OCF_ERR_GENERIC
+    fi
+
+    ocf_log info "OCI DNS rrset update succeeded"
+    return $OCF_SUCCESS
+}
+
+oci_dns_delete() {
+    fqdn="$(get_fqdn)"
+    zone="$(get_zone)"
+
+    if ! ocf_is_true "$OCF_RESKEY_unregister_on_stop"; then
+        ocf_log info "unregister_on_stop=false, skipping RRset delete"
+        return $OCF_SUCCESS
+    fi
+
+    if [ -z "$fqdn" ] || [ -z "$zone" ]; then
+        ocf_exit_reason "record and domain must be set to delete RRset"
+        return $OCF_ERR_CONFIGURED
+    fi
+
+    ocf_log info "Deleting OCI DNS RRset for ${fqdn} (zone=${zone}, scope=${OCF_RESKEY_scope}, region=${OCF_RESKEY_region})"
+
+    common_args=$(get_oci_common_args)
+
+    out="$($OCI_CLI_BIN dns record rrset delete \
+        $common_args \
+        --force \
+        --domain "$fqdn" \
+        --rtype "$RR_TYPE" \
+        --zone-name-or-id "$zone" 2>&1)"
+    rc=$?
+
+    if [ $rc -ne 0 ]; then
+        ocf_log err "OCI DNS rrset delete failed (rc=$rc): $out"
+        ocf_exit_reason "OCI DNS rrset delete failed (see logs)"
+        return $OCF_ERR_GENERIC
+    fi
+
+    ocf_log info "OCI DNS rrset delete succeeded"
+    return $OCF_SUCCESS
+}
+
+oci_dns_monitor() {
+    fqdn="$(get_fqdn)"
+    zone="$(get_zone)"
+
+    if [ -z "$fqdn" ] || [ -z "$zone" ]; then
+        ocf_exit_reason "record and domain must be set"
+        return $OCF_ERR_CONFIGURED
+    fi
+
+    ensure_dns_ip || return $?
+
+    common_args=$(get_oci_common_args)
+
+    out="$($OCI_CLI_BIN dns record rrset get \
+        $common_args \
+        --domain "$fqdn" \
+        --rtype "$RR_TYPE" \
+        --zone-name-or-id "$zone" \
+        --output json 2>&1)"
+    rc=$?
+
+    if [ $rc -ne 0 ]; then
+        ocf_log err "OCI DNS rrset get failed (rc=$rc): $out"
+        ocf_exit_reason "Unable to query OCI DNS rrset (see logs)"
+        return $OCF_ERR_GENERIC
+    fi
+
+    echo "$out" | grep -q "\"rdata\" *: *\"$DNS_IP\""
+    if [ $? -ne 0 ]; then
+        ocf_log warn "A record for ${fqdn} in zone ${zone} does not point to ${DNS_IP}"
+        return $OCF_NOT_RUNNING
+    fi
+
+    ocf_log debug "Monitor: ${fqdn} A ${DNS_IP} present in zone ${zone}"
+    return $OCF_SUCCESS
+}
+
+#######################################################################
+# Actions
+#######################################################################
+
+dnsupdate_validate() {
+    check_binary "$OCI_CLI_BIN" || return $?
+
+    if [ -z "$OCF_RESKEY_record" ] || [ -z "$OCF_RESKEY_domain" ]; then
+        ocf_exit_reason "record and domain parameters are mandatory"
+        return $OCF_ERR_CONFIGURED
+    fi
+
+    case "$OCF_RESKEY_ttl" in
+        ''|*[!0-9]*)
+            ocf_exit_reason "ttl must be an integer (seconds), got '$OCF_RESKEY_ttl'"
+            return $OCF_ERR_CONFIGURED
+            ;;
+        *)
+            ;;
+    esac
+
+    return $OCF_SUCCESS
+}
+
+dnsupdate_start() {
+    ocf_log info "Starting OCI DNS A record resource"
+    dnsupdate_validate || return $?
+
+    # If it's already correct, we're done
+    oci_dns_monitor
+    case $? in
+        $OCF_SUCCESS)
+            ocf_log info "DNS already up-to-date, nothing to do"
+            return $OCF_SUCCESS
+            ;;
+        $OCF_NOT_RUNNING)
+            ocf_log info "DNS not up-to-date, applying update"
+            ;;
+        *)
+            # Some other error
+            return $OCF_ERR_GENERIC
+            ;;
+    esac
+
+    oci_dns_update || return $?
+    # Re-check
+    oci_dns_monitor || return $?
+    return $OCF_SUCCESS
+}
+
+dnsupdate_stop() {
+    ocf_log info "Stopping OCI DNS A record resource"
+    dnsupdate_validate || return $?
+
+    oci_dns_delete || return $?
+    return $OCF_SUCCESS
+}
+
+dnsupdate_status() {
+    oci_dns_monitor
+    return $?
+}
+
+#######################################################################
+# Main dispatch
+#######################################################################
+
+if [ $# -lt 1 ]; then
+    usage
+    exit $OCF_ERR_ARGS
+fi
+
+action="$1"
+
+case "$action" in
+    meta-data)
+        meta_data
+        exit 0
+        ;;
+    usage|help)
+        usage
+        exit 0
+        ;;
+esac
+
+ocf_log debug "Executing action '$action' for OCI DNS update RA"
+
+case "$action" in
+    start)
+        dnsupdate_start
+        ;;
+    stop)
+        dnsupdate_stop
+        ;;
+    status)
+        dnsupdate_status
+        ;;
+    monitor)
+        oci_dns_monitor
+        ;;
+    validate-all)
+        dnsupdate_validate
+        ;;
+    *)
+        ocf_log err "Unknown action: $action"
+        usage
+        exit $OCF_ERR_UNIMPLEMENTED
+        ;;
+esac
+
+exit $?

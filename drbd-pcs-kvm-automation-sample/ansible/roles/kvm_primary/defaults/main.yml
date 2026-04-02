@@ -1,0 +1,21 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+kvm_primary_storage_location: "{{ storage_location | default('/demobv') }}"
+kvm_primary_iso_tmp_location: "{{ iso_tmp_location | default('/tmp') }}"
+kvm_primary_iso_location: "{{ iso_location | default('/demobv/isos') }}"
+kvm_primary_default_iso_url: >-
+  https://download.fedoraproject.org/pub/fedora/linux/releases/43/Server/x86_64/images/Fedora-Server-Guest-Generic-43-1.6.x86_64.qcow2
+kvm_primary_iso_url: "{{ iso_url | default(kvm_primary_default_iso_url) }}"
+kvm_primary_iso_name: "{{ iso_name | default('Fedora-Server-43.qcow2') }}"
+kvm_primary_qemu_image_size: "{{ qemu_image_size | default('20G') }}"
+kvm_primary_vm_memory: "{{ kvm_vm_memory | default(4096) }}"
+kvm_primary_vm_vcpus: "{{ kvm_vm_vcpus | default(4) }}"
+kvm_primary_vm_name: "{{ kvm_vm_name | default('demovm') }}"
+kvm_primary_vm_os_variant: "{{ kvm_vm_os_variant | default('fedora42') }}"
+kvm_primary_vm_name_file_location: "{{ kvm_vm_name_file_location | default('/demobv/demovm.xml') }}"
+kvm_primary_virt_install_check_override: path_in_use=off
+kvm_primary_image_resize_marker_prefix: .resized
+kvm_primary_qemu_image_size_sanitized: "{{ kvm_primary_qemu_image_size | regex_replace('[^A-Za-z0-9_.-]', '_') }}"
+kvm_primary_resize_marker_suffix: "{{ kvm_primary_image_resize_marker_prefix }}_{{ kvm_primary_qemu_image_size_sanitized }}"
+kvm_primary_resize_marker_path: "{{ kvm_primary_iso_location }}/{{ kvm_primary_iso_name }}{{ kvm_primary_resize_marker_suffix }}"

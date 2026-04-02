@@ -1,0 +1,14 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+# group_vars/all.yml
+
+drbd_resource: r0
+drbd_device: /dev/drbd0
+drbd_disk: /dev/mapper/mpatha
+drbd_meta: internal
+drbd_port: 7788
+drbd_mount_point: demobv
+fs_type: ext4
+stonith_enabled: false
+use_qdevice: true
+cluster_name: hacluster

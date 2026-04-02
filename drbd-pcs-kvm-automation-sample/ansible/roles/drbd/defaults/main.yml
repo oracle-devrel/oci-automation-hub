@@ -1,0 +1,40 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+drbd_resource_name: r0
+drbd_resource: "{{ drbd_resource_name }}"
+drbd_device: /dev/drbd0
+drbd_disk: /dev/mapper/mpatha
+drbd_meta: internal
+drbd_port: 7788
+drbd_mount_point: demobv
+drbd_stonith_enabled: "{{ stonith_enabled | default(false) }}"
+drbd_use_qdevice: "{{ use_qdevice | default(true) }}"
+
+drbd_bootstrap: true
+
+drbd_linbit_manage_node_script_url: https://my.linbit.com/linbit-manage-node.py
+drbd_linbit_manage_node_script_path: /tmp/linbit-manage-node.py
+drbd_linbit_registration_marker_path: /tmp/.linbit_registered
+
+drbd_packages:
+  - drbd-utils
+  - drbd-udev
+  - kmod-drbd
+
+drbd_status_check_timeout_seconds: 20
+drbd_metadata_check_timeout_seconds: 20
+drbd_metadata_check_retries: 6
+drbd_metadata_check_delay: 5
+
+drbd_sysctl_config_path: "{{ sysctl_config_path | default('/etc/sysctl.d/99-drbd.conf') }}"
+drbd_net_core_rmem_max: "{{ net_core_rmem_max | default(2147483647) }}"
+drbd_net_core_wmem_max: "{{ net_core_wmem_max | default(2147483647) }}"
+drbd_net_ipv4_tcp_rmem: "{{ net_ipv4_tcp_rmem | default('4096 1048576 268435456') }}"
+drbd_net_ipv4_tcp_wmem: "{{ net_ipv4_tcp_wmem | default('4096 1048576 268435456') }}"
+drbd_net_core_rmem_default: "{{ net_core_rmem_default | default('134217728') }}"
+drbd_net_core_wmem_default: "{{ net_core_wmem_default | default('134217728') }}"
+drbd_net_core_netdev_max_backlog: "{{ net_core_netdev_max_backlog | default(250000) }}"
+drbd_net_core_default_qdisc: "{{ net_core_default_qdisc | default('fq') }}"
+drbd_net_ipv4_tcp_adv_win_scale: "{{ net_ipv4_tcp_adv_win_scale | default(0) }}"
+drbd_net_ipv4_tcp_congestion_control: "{{ net_ipv4_tcp_congestion_control | default('cubic') }}"
