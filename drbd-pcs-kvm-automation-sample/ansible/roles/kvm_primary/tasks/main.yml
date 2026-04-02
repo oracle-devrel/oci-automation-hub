@@ -1,0 +1,259 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+- name: Ensure DRBD storage and ISO directories are traversable
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - "{{ kvm_primary_storage_location }}"
+    - "{{ kvm_primary_iso_location }}"
+  tags:
+    - kvm_primary
+    - storage
+
+- name: Check whether VM image already exists on DRBD storage
+  ansible.builtin.stat:
+    path: "{{ kvm_primary_iso_location }}/{{ kvm_primary_iso_name }}"
+  register: kvm_primary_image_on_storage
+  tags:
+    - kvm_primary
+    - image
+
+- name: Download image to temporary location
+  ansible.builtin.get_url:
+    url: "{{ kvm_primary_iso_url }}"
+    dest: "{{ kvm_primary_iso_tmp_location }}/{{ kvm_primary_iso_name }}"
+    mode: "0644"
+    force: false
+  when: not kvm_primary_image_on_storage.stat.exists
+  tags:
+    - kvm_primary
+    - image
+
+- name: Move image to DRBD device
+  ansible.builtin.command: >
+    mv -f "{{ kvm_primary_iso_tmp_location }}/{{ kvm_primary_iso_name }}"
+          "{{ kvm_primary_iso_location }}/{{ kvm_primary_iso_name }}"
+  args:
+    creates: "{{ kvm_primary_iso_location }}/{{ kvm_primary_iso_name }}"
+  when:
+    - not ansible_check_mode
+    - not kvm_primary_image_on_storage.stat.exists
+  changed_when: true
+  tags:
+    - kvm_primary
+    - image
+
+- name: Check whether image resize marker exists
+  ansible.builtin.stat:
+    path: "{{ kvm_primary_resize_marker_path }}"
+  register: kvm_primary_resize_marker
+  tags:
+    - kvm_primary
+    - image
+
+- name: Resize qcow2 image
+  ansible.builtin.command: "qemu-img resize {{ kvm_primary_iso_location }}/{{ kvm_primary_iso_name }} {{ kvm_primary_qemu_image_size }}"
+  register: kvm_primary_qemu_resize
+  when: not kvm_primary_resize_marker.stat.exists
+  changed_when: true
+  tags:
+    - kvm_primary
+    - image
+
+- name: Mark image resize as completed
+  ansible.builtin.file:
+    path: "{{ kvm_primary_resize_marker_path }}"
+    state: touch
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - not ansible_check_mode
+    - kvm_primary_qemu_resize is defined
+    - kvm_primary_qemu_resize is changed
+  tags:
+    - kvm_primary
+    - image
+
+- name: Ensure image is readable by qemu user
+  ansible.builtin.file:
+    path: "{{ kvm_primary_iso_location }}/{{ kvm_primary_iso_name }}"
+    state: file
+    mode: "0644"
+  tags:
+    - kvm_primary
+    - image
+
+- name: Check if VM already exists on primary KVM
+  ansible.builtin.command: "virsh dominfo {{ kvm_primary_vm_name }}"
+  register: kvm_primary_primary_dominfo
+  changed_when: false
+  failed_when: false
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Check whether VM XML file already exists on primary KVM
+  ansible.builtin.stat:
+    path: "{{ kvm_primary_vm_name_file_location }}"
+  register: kvm_primary_primary_xml_file_stat
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Generate libvirt domain XML with virt-install
+  ansible.builtin.command: >
+    virt-install
+    --memory {{ kvm_primary_vm_memory }}
+    --vcpus {{ kvm_primary_vm_vcpus }}
+    --name {{ kvm_primary_vm_name }}
+    --disk path={{ kvm_primary_iso_location }}/{{ kvm_primary_iso_name }},device=disk,bus=virtio,format=qcow2
+    --network network=default,model=virtio
+    --os-variant {{ kvm_primary_vm_os_variant }}
+    --virt-type kvm
+    --graphics none
+    --import
+    --console pty,target_type=serial
+    --noautoconsole
+    --check {{ kvm_primary_virt_install_check_override }}
+    --print-xml
+  when: kvm_primary_primary_dominfo.rc != 0
+  register: kvm_primary_virt_install_xml
+  changed_when: false
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Read existing libvirt domain XML from primary KVM
+  ansible.builtin.command: "virsh dumpxml --inactive {{ kvm_primary_vm_name }}"
+  when:
+    - kvm_primary_primary_dominfo.rc == 0
+    - not kvm_primary_primary_xml_file_stat.stat.exists
+  register: kvm_primary_existing_vm_xml
+  changed_when: false
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Build final libvirt domain XML content
+  ansible.builtin.set_fact:
+    kvm_primary_domain_xml_content: >-
+      {{
+        (
+          kvm_primary_virt_install_xml.stdout
+          if (kvm_primary_primary_dominfo.rc != 0)
+          else kvm_primary_existing_vm_xml.stdout
+        )
+      }}
+  when:
+    - kvm_primary_primary_dominfo.rc != 0 or not kvm_primary_primary_xml_file_stat.stat.exists
+  changed_when: false
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Save domain XML to file
+  ansible.builtin.copy:
+    dest: "{{ kvm_primary_vm_name_file_location }}"
+    content: "{{ kvm_primary_domain_xml_content }}"
+    mode: "0644"
+  when:
+    - kvm_primary_primary_dominfo.rc != 0 or not kvm_primary_primary_xml_file_stat.stat.exists
+  register: kvm_primary_xml_file
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Track whether VM XML changed on primary KVM
+  ansible.builtin.set_fact:
+    kvm_primary_xml_changed: "{{ (kvm_primary_xml_file is defined) and (kvm_primary_xml_file.changed | default(false)) }}"
+  changed_when: false
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Check if VM already exists (all nodes)
+  ansible.builtin.command: "virsh dominfo {{ kvm_primary_vm_name }}"
+  register: kvm_primary_dominfo
+  changed_when: false
+  failed_when: false
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['kvm_nodes'] }}"
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Determine whether any KVM node is missing VM definition
+  ansible.builtin.set_fact:
+    kvm_primary_any_missing_vm: "{{ (kvm_primary_dominfo.results | selectattr('rc', 'ne', 0) | list | length) > 0 }}"
+  changed_when: false
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Fetch file to ansible controller
+  ansible.builtin.fetch:
+    src: "{{ kvm_primary_vm_name_file_location }}"
+    dest: "/tmp/{{ kvm_primary_vm_name }}.xml"
+    flat: true
+  when:
+    - not ansible_check_mode
+    - kvm_primary_xml_changed or kvm_primary_any_missing_vm
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Distribute VM definition to all kvm nodes
+  ansible.builtin.copy:
+    src: "/tmp/{{ kvm_primary_vm_name }}.xml"
+    dest: "/tmp/{{ kvm_primary_vm_name }}.xml"
+    mode: "0644"
+  when:
+    - not ansible_check_mode
+    - kvm_primary_xml_changed or kvm_primary_any_missing_vm
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['kvm_nodes'] }}"
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Define VM from XML (all nodes)
+  ansible.builtin.command: "virsh define /tmp/{{ kvm_primary_vm_name }}.xml"
+  when: >
+    not ansible_check_mode and (
+    (kvm_primary_dominfo.results | selectattr('item', 'equalto', item)
+      | map(attribute='rc') | first) != 0
+    or kvm_primary_xml_changed
+    )
+  register: kvm_primary_virsh_defined
+  changed_when: kvm_primary_virsh_defined.rc == 0
+  failed_when: kvm_primary_virsh_defined.rc != 0
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['kvm_nodes'] }}"
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Check current VM state on primary KVM
+  ansible.builtin.command: "virsh domstate {{ kvm_primary_vm_name }}"
+  register: kvm_primary_domstate
+  changed_when: false
+  failed_when: false
+  tags:
+    - kvm_primary
+    - vm
+
+- name: Start VM on primary KVM
+  ansible.builtin.command: "virsh start {{ kvm_primary_vm_name }}"
+  when:
+    - kvm_primary_domstate.rc == 0
+    - not (kvm_primary_domstate.stdout | lower | regex_search('^(running|idle)$'))
+  changed_when: true
+  tags:
+    - kvm_primary
+    - vm

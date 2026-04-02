@@ -1,0 +1,33 @@
+resource {{ drbd_resource }} {
+  volume 0 {
+    device     {{ drbd_device }};
+    disk       {{ drbd_disk }};
+    meta-disk  internal;
+  }
+
+  net {
+    max-buffers    8192;
+    max-epoch-size 4096;
+    sndbuf-size    128M;
+    rcvbuf-size    128M;
+  }
+
+{% for host in groups['drbd_nodes'] %}
+{% set node_id = loop.index0 %}
+  on {{ hostvars[host]['inventory_hostname'] }} {
+    address {{ hostvars[host]['ansible_host'] }}:7788;
+    meta-disk internal;
+    node-id {{ node_id }};
+  }
+{% endfor %}
+
+
+
+  connection-mesh {
+    hosts{% for host in groups['drbd_nodes'] %} {{ hostvars[host]['inventory_hostname'] }}{% endfor %};
+    net {
+        protocol C;
+    }
+  }
+ 
+}

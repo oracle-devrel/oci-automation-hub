@@ -1,0 +1,12 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+drbd_primary_resource_name: "{{ drbd_resource_name | default('r0') }}"
+drbd_primary_volume_number: "{{ drbd_volume_number | default(0) }}"
+drbd_primary_device: "{{ drbd_device | default('/dev/drbd0') }}"
+drbd_primary_mount_point: "{{ drbd_mount_point | default('demobv') }}"
+drbd_primary_fs_type: "{{ fs_type | default('ext4') }}"
+
+drbd_primary_fs_label: drbd_data
+drbd_primary_fs_marker_path: /etc/.drbd_formatted
+drbd_primary_uuid_marker_path: /etc/.drbd_uuid_cleared

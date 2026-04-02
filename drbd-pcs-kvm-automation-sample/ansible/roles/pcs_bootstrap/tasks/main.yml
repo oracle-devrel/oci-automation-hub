@@ -1,0 +1,124 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+- name: Append rendered template block to /etc/hosts
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    block: "{{ lookup('template', 'hosts.j2') }}"
+    marker: "# {mark} ANSIBLE MANAGED HOSTS BLOCK"
+  tags:
+    - pcs_bootstrap
+    - hosts
+
+- name: Install PCS prereqs
+  ansible.builtin.dnf:
+    name: "{{ pcs_bootstrap_packages }}"
+    state: present
+  tags:
+    - pcs_bootstrap
+    - packages
+
+- name: Read current SELinux mode
+  ansible.builtin.command: getenforce
+  register: pcs_bootstrap_selinux_mode
+  changed_when: false
+  check_mode: false
+  failed_when: false
+  tags:
+    - pcs_bootstrap
+    - selinux
+
+- name: Set SELinux to permissive
+  ansible.builtin.command: setenforce 0
+  when:
+    - pcs_bootstrap_selinux_mode.stdout == "Enforcing"
+    - not ansible_check_mode
+  changed_when: true
+  tags:
+    - pcs_bootstrap
+    - selinux
+
+- name: Make SELinux permissive permanently
+  ansible.builtin.replace:
+    path: /etc/selinux/config
+    regexp: '^SELINUX=enforcing'
+    replace: 'SELINUX=permissive'
+  tags:
+    - pcs_bootstrap
+    - selinux
+
+- name: Query high-availability service in runtime firewalld
+  ansible.builtin.command: "firewall-cmd --query-service={{ pcs_bootstrap_firewalld_service }}"
+  register: pcs_bootstrap_firewall_runtime_query
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  tags:
+    - pcs_bootstrap
+    - firewall
+
+- name: Query high-availability service in permanent firewalld
+  ansible.builtin.command: "firewall-cmd --permanent --query-service={{ pcs_bootstrap_firewalld_service }}"
+  register: pcs_bootstrap_firewall_permanent_query
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  tags:
+    - pcs_bootstrap
+    - firewall
+
+- name: Enable high-availability service in permanent firewalld
+  ansible.builtin.command: "firewall-cmd --permanent --add-service={{ pcs_bootstrap_firewalld_service }}"
+  when:
+    - pcs_bootstrap_firewall_permanent_query.rc != 0
+    - not ansible_check_mode
+  changed_when: true
+  tags:
+    - pcs_bootstrap
+    - firewall
+
+- name: Enable high-availability service in runtime firewalld
+  ansible.builtin.command: "firewall-cmd --add-service={{ pcs_bootstrap_firewalld_service }}"
+  when:
+    - pcs_bootstrap_firewall_runtime_query.rc != 0
+    - not ansible_check_mode
+  changed_when: true
+  tags:
+    - pcs_bootstrap
+    - firewall
+
+- name: Set the cluster password
+  ansible.builtin.user:
+    name: "{{ cluster_name }}"
+    password: "{{ pcs_password | string | password_hash('sha512', (pcs_password | string | hash('sha256'))[0:16]) }}"
+  tags:
+    - pcs_bootstrap
+    - auth
+
+- name: Ensure pcsd service is enabled and running
+  ansible.builtin.systemd_service:
+    name: pcsd.service
+    enabled: true
+    state: started
+  tags:
+    - pcs_bootstrap
+    - service
+
+- name: Install PCS custom RA utilities
+  ansible.builtin.dnf:
+    name: "{{ pcs_bootstrap_custom_ra_packages }}"
+    state: present
+  tags:
+    - pcs_bootstrap
+    - packages
+
+- name: Install custom OCF resource agent
+  ansible.builtin.copy:
+    src: "{{ pcs_bootstrap_custom_ra_src }}"
+    dest: "{{ pcs_bootstrap_custom_ra_dest }}"
+    owner: root
+    group: root
+    mode: "0755"
+  tags:
+    - pcs_bootstrap
+    - resource_agent

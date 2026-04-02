@@ -1,0 +1,377 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+- name: Resolve PCS primary variables with backward compatibility
+  ansible.builtin.set_fact:
+    pcs_primary_drbd_resource_name: "{{ pcs_primary_drbd_resource_name | default(pcs_drbd_resource_name | default('drbd_r0')) }}"
+    pcs_primary_drbd_promoted_max: "{{ pcs_primary_drbd_promoted_max | default(drbd_promoted_max | default(1)) }}"
+    pcs_primary_drbd_promoted_node_max: "{{ pcs_primary_drbd_promoted_node_max | default(drbd_promoted_node_max | default(1)) }}"
+    pcs_primary_fs_drbd_resource_name: "{{ pcs_primary_fs_drbd_resource_name | default(fs_drbd_resource_name | default('fs_drbd')) }}"
+    pcs_primary_drbd_dns_resource_name: "{{ pcs_primary_drbd_dns_resource_name | default(drbd_dns_resource_name | default('dns')) }}"
+    pcs_primary_drbd_dns_record_name: >-
+      {{
+        pcs_primary_drbd_dns_record_name
+        | default(drbd_dns_record_name | default(dns_record_name | default('primary')))
+      }}
+    pcs_primary_drbd_dns_scope: "{{ pcs_primary_drbd_dns_scope | default(drbd_dns_scope | default('PRIVATE')) }}"
+    pcs_primary_drbd_dns_zone_id: >-
+      {{
+        pcs_primary_drbd_dns_zone_id
+        | default(drbd_dns_zone_id | default(dns_zone_id | default('${dns_zone_id}')))
+      }}
+    pcs_primary_drbd_dns_domain_name: >-
+      {{
+        pcs_primary_drbd_dns_domain_name
+        | default(drbd_dns_domain_name | default(dns_domain_name | default('${dns_domain_name}')))
+      }}
+    pcs_primary_drbd_dns_region: >-
+      {{
+        pcs_primary_drbd_dns_region
+        | default(drbd_dns_region | default(dns_region | default('${dns_region}')))
+      }}
+    pcs_primary_drbd_dns_unregister_on_stop: >-
+      {{
+        pcs_primary_drbd_dns_unregister_on_stop
+        | default(drbd_dns_unregister_on_stop | default(dns_unregister_on_stop | default('${dns_unregister_on_stop}')))
+      }}
+    pcs_primary_kvm_resource_name: "{{ pcs_primary_kvm_resource_name | default(pcs_kvm_resource_name | default('p_virtdom_fedora')) }}"
+    pcs_primary_kvm_config: "{{ pcs_primary_kvm_config | default(kvm_config | default('/etc/libvirt/qemu/demovm.xml')) }}"
+  changed_when: false
+  tags:
+    - pcs_primary
+    - always
+
+- name: Check current PCS cluster config
+  ansible.builtin.command: pcs cluster config
+  register: pcs_primary_cluster_config
+  changed_when: false
+  failed_when: false
+  run_once: true
+  tags:
+    - pcs_primary
+    - cluster
+
+- name: Auth the hosts to the Pacemaker cluster
+  ansible.builtin.command: "pcs host auth {{ groups['drbd_nodes'] | join(' ') }} -u {{ cluster_name }} -p {{ pcs_password }}"
+  when:
+    - pcs_primary_cluster_config.rc != 0 or cluster_name not in pcs_primary_cluster_config.stdout
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  no_log: true
+  tags:
+    - pcs_primary
+    - cluster
+    - auth
+
+- name: PCS cluster setup
+  ansible.builtin.command: "pcs cluster setup {{ cluster_name }} {{ groups['drbd_nodes'] | join(' ') }}"
+  when:
+    - pcs_primary_cluster_config.rc != 0 or cluster_name not in pcs_primary_cluster_config.stdout
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - cluster
+
+- name: Read current PCS cluster status
+  ansible.builtin.command: pcs status cluster
+  register: pcs_primary_cluster_status
+  changed_when: false
+  failed_when: false
+  run_once: true
+  tags:
+    - pcs_primary
+    - cluster
+
+- name: Start Pacemaker cluster on all nodes
+  ansible.builtin.command: pcs cluster start --all
+  when:
+    - pcs_primary_cluster_status.rc != 0 or (pcs_primary_cluster_status.stdout | lower | regex_search('stopped|not running'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - cluster
+
+- name: Enable Pacemaker cluster on all nodes
+  ansible.builtin.command: pcs cluster enable --all
+  run_once: true
+  changed_when: false
+  tags:
+    - pcs_primary
+    - cluster
+
+- name: Read current PCS properties
+  ansible.builtin.command: pcs property config
+  register: pcs_primary_property_config
+  changed_when: false
+  failed_when: false
+  run_once: true
+  tags:
+    - pcs_primary
+    - properties
+
+- name: Build normalized PCS properties text
+  ansible.builtin.set_fact:
+    pcs_primary_property_text: >-
+      {{
+        (
+          (pcs_primary_property_config.stdout | default(''))
+          ~ '\n'
+          ~ (pcs_primary_property_config.stderr | default(''))
+        ) | lower
+      }}
+  changed_when: false
+  run_once: true
+  tags:
+    - pcs_primary
+    - properties
+
+- name: Disable stonith (for now)
+  ansible.builtin.command: pcs property set stonith-enabled=false
+  when:
+    - not (pcs_primary_property_text | regex_search('(^|\\n)\\s*stonith-enabled\\s*[:=]\\s*\"?false\"?(\\s|$)'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - properties
+
+- name: Disable quorum (for now)
+  ansible.builtin.command: pcs property set no-quorum-policy=ignore
+  when:
+    - not (pcs_primary_property_text | regex_search('(^|\\n)\\s*no-quorum-policy\\s*[:=]\\s*\"?ignore\"?(\\s|$)'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - properties
+
+- name: Read current PCS resource config
+  ansible.builtin.command: pcs resource config
+  register: pcs_primary_resource_config
+  changed_when: false
+  failed_when: false
+  run_once: true
+  tags:
+    - pcs_primary
+    - resources
+
+- name: Create pacemaker DRBD resource
+  ansible.builtin.command: >-
+    pcs resource create {{ pcs_primary_drbd_resource_name }} ocf:linbit:drbd
+    drbd_resource={{ drbd_resource }}
+    op monitor interval=15s role=Promoted
+    op monitor interval=30s role=Unpromoted
+  when:
+    - not (pcs_primary_resource_config.stdout | regex_search('(^|\\n)\\s*Resource:\\s+' ~ pcs_primary_drbd_resource_name ~ '\\b'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - resources
+
+- name: Configure pacemaker DRBD resource as promotable
+  ansible.builtin.command: >-
+    pcs resource promotable {{ pcs_primary_drbd_resource_name }}
+    promoted-max={{ pcs_primary_drbd_promoted_max }}
+    promoted-node-max={{ pcs_primary_drbd_promoted_node_max }}
+    clone-max=4 clone-node-max=1 notify=true
+  when:
+    - not (pcs_primary_resource_config.stdout | regex_search('(^|\\n)\\s*(Clone|Promotable):\\s+' ~ pcs_primary_drbd_resource_name ~ '-clone\\b'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - resources
+
+- name: Configure pacemaker FS for DRBD resource
+  ansible.builtin.command: >-
+    pcs resource create {{ pcs_primary_fs_drbd_resource_name }} Filesystem
+    device="{{ drbd_device }}"
+    directory="/{{ drbd_mount_point }}"
+    fstype="{{ fs_type }}"
+    op monitor interval=20s
+  when:
+    - not (pcs_primary_resource_config.stdout | regex_search('(^|\\n)\\s*Resource:\\s+' ~ pcs_primary_fs_drbd_resource_name ~ '\\b'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - resources
+
+- name: Configure pacemaker custom DNS RA (resource agent) for DRBD resource
+  ansible.builtin.command: >-
+    pcs resource create {{ pcs_primary_drbd_dns_resource_name }} oci-dns-update
+    record="{{ pcs_primary_drbd_dns_record_name }}"
+    region="{{ pcs_primary_drbd_dns_region }}"
+    scope="{{ pcs_primary_drbd_dns_scope }}"
+    zone_name_or_id="{{ pcs_primary_drbd_dns_zone_id }}"
+    unregister_on_stop="{{ pcs_primary_drbd_dns_unregister_on_stop }}"
+    domain="{{ pcs_primary_drbd_dns_domain_name }}"
+    op monitor interval=30s
+  when:
+    - not (pcs_primary_resource_config.stdout | regex_search('(^|\\n)\\s*Resource:\\s+' ~ pcs_primary_drbd_dns_resource_name ~ '\\b'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - resources
+
+- name: Create pacemaker VirtualDomain resource
+  ansible.builtin.command: >-
+    pcs resource create {{ pcs_primary_kvm_resource_name }} ocf:heartbeat:VirtualDomain
+    config={{ pcs_primary_kvm_config }}
+    op monitor interval="30" timeout="30s"
+    op start interval="0" timeout="240s"
+    op stop interval="0" timeout="120s"
+  when:
+    - not (pcs_primary_resource_config.stdout | regex_search('(^|\\n)\\s*Resource:\\s+' ~ pcs_primary_kvm_resource_name ~ '\\b'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: true
+  tags:
+    - pcs_primary
+    - resources
+
+- name: Read current PCS constraints
+  ansible.builtin.command: pcs constraint config
+  register: pcs_primary_constraint_config
+  changed_when: false
+  failed_when: false
+  run_once: true
+  tags:
+    - pcs_primary
+    - constraints
+
+- name: Configure DRBD constraint orders - promote DRBD, then start FS
+  ansible.builtin.command: >-
+    pcs constraint order promote {{ pcs_primary_drbd_resource_name }}-clone
+    then start {{ pcs_primary_fs_drbd_resource_name }}
+  register: pcs_primary_constraint_promote_fs_result
+  vars:
+    pcs_primary_promote_fs_order_pattern: >-
+      promote\s+{{ pcs_primary_drbd_resource_name }}-clone\s+then\s+start\s+{{ pcs_primary_fs_drbd_resource_name }}
+  when:
+    - not (pcs_primary_constraint_config.stdout | regex_search(pcs_primary_promote_fs_order_pattern))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: pcs_primary_constraint_promote_fs_result.rc == 0
+  failed_when:
+    - pcs_primary_constraint_promote_fs_result.rc != 0
+    - "'duplicate constraint already exists' not in (pcs_primary_constraint_promote_fs_result.stderr | default(''))"
+  tags:
+    - pcs_primary
+    - constraints
+
+- name: Configure PCS colocation for DRBD and filesystem resources
+  ansible.builtin.command: >-
+    pcs constraint colocation add {{ pcs_primary_fs_drbd_resource_name }}
+    with {{ pcs_primary_drbd_resource_name }}-clone
+    INFINITY with-rsc-role=Promoted
+  register: pcs_primary_constraint_colocation_drbd_fs_result
+  when:
+    - not (pcs_primary_constraint_config.stdout | regex_search(pcs_primary_fs_drbd_resource_name ~ '.*' ~ pcs_primary_drbd_resource_name ~ '-clone.*Promoted'))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: pcs_primary_constraint_colocation_drbd_fs_result.rc == 0
+  failed_when:
+    - pcs_primary_constraint_colocation_drbd_fs_result.rc != 0
+    - "'duplicate constraint already exists' not in (pcs_primary_constraint_colocation_drbd_fs_result.stderr | default(''))"
+  tags:
+    - pcs_primary
+    - constraints
+
+- name: Configure DRBD constraint orders - start FS, then update DNS record
+  ansible.builtin.command: >-
+    pcs constraint order start {{ pcs_primary_fs_drbd_resource_name }}
+    then start {{ pcs_primary_drbd_dns_resource_name }}
+  register: pcs_primary_constraint_order_fs_dns_result
+  vars:
+    pcs_primary_fs_dns_order_pattern: >-
+      start\s+{{ pcs_primary_fs_drbd_resource_name }}\s+then\s+start\s+{{ pcs_primary_drbd_dns_resource_name }}
+  when:
+    - not (pcs_primary_constraint_config.stdout | regex_search(pcs_primary_fs_dns_order_pattern))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: pcs_primary_constraint_order_fs_dns_result.rc == 0
+  failed_when:
+    - pcs_primary_constraint_order_fs_dns_result.rc != 0
+    - "'duplicate constraint already exists' not in (pcs_primary_constraint_order_fs_dns_result.stderr | default(''))"
+  tags:
+    - pcs_primary
+    - constraints
+
+- name: Configure PCS colocation for DNS and filesystem resources
+  ansible.builtin.command: "pcs constraint colocation add {{ pcs_primary_drbd_dns_resource_name }} with {{ pcs_primary_fs_drbd_resource_name }} INFINITY"
+  register: pcs_primary_constraint_colocation_dns_fs_result
+  when:
+    - not (pcs_primary_constraint_config.stdout | regex_search(pcs_primary_drbd_dns_resource_name ~ '.*' ~ pcs_primary_fs_drbd_resource_name))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: pcs_primary_constraint_colocation_dns_fs_result.rc == 0
+  failed_when:
+    - pcs_primary_constraint_colocation_dns_fs_result.rc != 0
+    - "'duplicate constraint already exists' not in (pcs_primary_constraint_colocation_dns_fs_result.stderr | default(''))"
+  tags:
+    - pcs_primary
+    - constraints
+
+- name: Configure PCS constraint order for filesystem and VM resources
+  ansible.builtin.command: "pcs constraint order {{ pcs_primary_fs_drbd_resource_name }} then {{ pcs_primary_kvm_resource_name }}"
+  register: pcs_primary_constraint_order_fs_vm_result
+  when:
+    - not (pcs_primary_constraint_config.stdout | regex_search(pcs_primary_fs_drbd_resource_name ~ '.*then.*' ~ pcs_primary_kvm_resource_name))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: pcs_primary_constraint_order_fs_vm_result.rc == 0
+  failed_when:
+    - pcs_primary_constraint_order_fs_vm_result.rc != 0
+    - "'duplicate constraint already exists' not in (pcs_primary_constraint_order_fs_vm_result.stderr | default(''))"
+  tags:
+    - pcs_primary
+    - constraints
+
+- name: Configure PCS colocation for VM and filesystem resources
+  ansible.builtin.command: "pcs constraint colocation add {{ pcs_primary_kvm_resource_name }} with promoted {{ pcs_primary_fs_drbd_resource_name }}"
+  register: pcs_primary_constraint_colocation_vm_fs_result
+  when:
+    - not (pcs_primary_constraint_config.stdout | regex_search(pcs_primary_kvm_resource_name ~ '.*with\\s+promoted\\s+' ~ pcs_primary_fs_drbd_resource_name))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: pcs_primary_constraint_colocation_vm_fs_result.rc == 0
+  failed_when:
+    - pcs_primary_constraint_colocation_vm_fs_result.rc != 0
+    - "'duplicate constraint already exists' not in (pcs_primary_constraint_colocation_vm_fs_result.stderr | default(''))"
+  tags:
+    - pcs_primary
+    - constraints
+
+- name: Configure PCS colocation for VM and DRBD resources
+  ansible.builtin.command: >-
+    pcs constraint colocation add {{ pcs_primary_kvm_resource_name }}
+    with promoted {{ pcs_primary_drbd_resource_name }}-clone
+  register: pcs_primary_constraint_colocation_vm_drbd_result
+  vars:
+    pcs_primary_vm_drbd_colocation_pattern: >-
+      {{ pcs_primary_kvm_resource_name }}.*with\s+promoted\s+{{ pcs_primary_drbd_resource_name }}-clone
+  when:
+    - not (pcs_primary_constraint_config.stdout | regex_search(pcs_primary_vm_drbd_colocation_pattern))
+    - not ansible_check_mode
+  run_once: true
+  changed_when: pcs_primary_constraint_colocation_vm_drbd_result.rc == 0
+  failed_when:
+    - pcs_primary_constraint_colocation_vm_drbd_result.rc != 0
+    - "'duplicate constraint already exists' not in (pcs_primary_constraint_colocation_vm_drbd_result.stderr | default(''))"
+  tags:
+    - pcs_primary
+    - constraints

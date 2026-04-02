@@ -1,0 +1,137 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+- name: Check whether DRBD UUID reset marker exists
+  ansible.builtin.stat:
+    path: "{{ drbd_primary_uuid_marker_path }}"
+  register: drbd_primary_uuid_marker
+  run_once: true
+  tags:
+    - drbd_primary
+    - bootstrap
+
+- name: Skip initial DRBD resync (new UUID + clear bitmap) on primary node
+  ansible.builtin.command: "drbdadm new-current-uuid --clear-bitmap {{ drbd_primary_resource_name }}/{{ drbd_primary_volume_number }}"
+  when: not drbd_primary_uuid_marker.stat.exists
+  register: drbd_primary_uuid_reset
+  run_once: true
+  changed_when: true
+  tags:
+    - drbd_primary
+    - bootstrap
+
+- name: Mark DRBD UUID reset as completed
+  ansible.builtin.file:
+    path: "{{ drbd_primary_uuid_marker_path }}"
+    state: touch
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - not ansible_check_mode
+    - drbd_primary_uuid_reset is defined
+    - drbd_primary_uuid_reset is changed
+  run_once: true
+  tags:
+    - drbd_primary
+    - bootstrap
+
+- name: Check current DRBD role
+  ansible.builtin.command: "drbdadm role {{ drbd_primary_resource_name }}"
+  register: drbd_primary_role
+  changed_when: false
+  failed_when: false
+  run_once: true
+  tags:
+    - drbd_primary
+    - bootstrap
+
+- name: Ensure DRBD primary
+  ansible.builtin.command: "drbdadm primary {{ drbd_primary_resource_name }} --force"
+  when: not (drbd_primary_role.stdout | trim | regex_search('^Primary($|/)'))
+  run_once: true
+  changed_when: true
+  tags:
+    - drbd_primary
+    - bootstrap
+
+- name: Check whether DRBD filesystem marker exists
+  ansible.builtin.stat:
+    path: "{{ drbd_primary_fs_marker_path }}"
+  register: drbd_primary_fs_marker
+  run_once: true
+  tags:
+    - drbd_primary
+    - filesystem
+
+- name: Format DRBD device with ext4 (completely non-interactive)
+  ansible.builtin.command: >-
+    mkfs.ext4 -F
+              -L {{ drbd_primary_fs_label }}
+              -E lazy_itable_init=0,lazy_journal_init=0
+              {{ drbd_primary_device }}
+  when: not drbd_primary_fs_marker.stat.exists
+  register: drbd_primary_mkfs
+  run_once: true
+  changed_when: true
+  tags:
+    - drbd_primary
+    - filesystem
+
+- name: Mark filesystem as created
+  ansible.builtin.file:
+    path: "{{ drbd_primary_fs_marker_path }}"
+    state: touch
+    owner: root
+    group: root
+    mode: "0644"
+  when:
+    - not ansible_check_mode
+    - drbd_primary_mkfs is defined
+    - drbd_primary_mkfs is changed
+  run_once: true
+  tags:
+    - drbd_primary
+    - filesystem
+
+- name: Ensure DRBD mount point directory exists
+  ansible.builtin.file:
+    path: "/{{ drbd_primary_mount_point }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags:
+    - drbd_primary
+    - filesystem
+
+- name: Ensure exact fstab entry for DRBD device
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '^\\s*{{ drbd_primary_device | regex_escape }}\\s'
+    line: "{{ drbd_primary_device }}    /{{ drbd_primary_mount_point }}    {{ drbd_primary_fs_type }}    defaults    0 0"
+    state: present
+    backup: true
+  tags:
+    - drbd_primary
+    - filesystem
+
+- name: Check DRBD filesystem mount state
+  ansible.builtin.command: "findmnt -nr -S {{ drbd_primary_device }} -T /{{ drbd_primary_mount_point }}"
+  register: drbd_primary_mount_check
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  tags:
+    - drbd_primary
+    - filesystem
+
+- name: Mount DRBD filesystem # noqa command-instead-of-module
+  ansible.builtin.command: "mount {{ drbd_primary_device }} /{{ drbd_primary_mount_point }}"
+  when:
+    - drbd_primary_mount_check.rc != 0
+    - not ansible_check_mode
+  changed_when: true
+  tags:
+    - drbd_primary
+    - filesystem

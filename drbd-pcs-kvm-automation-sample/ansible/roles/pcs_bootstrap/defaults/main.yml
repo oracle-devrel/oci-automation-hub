@@ -1,0 +1,19 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+pcs_bootstrap_hosts_group: pcs_nodes
+pcs_bootstrap_firewalld_service: high-availability
+
+pcs_bootstrap_packages:
+  - pcs
+  - pacemaker
+  - resource-agents
+  - fence-agents-all
+  - drbd-pacemaker
+
+pcs_bootstrap_custom_ra_packages:
+  - oraclelinux-developer-release-el9
+  - python39-oci-cli
+
+pcs_bootstrap_custom_ra_src: oci-dns-update
+pcs_bootstrap_custom_ra_dest: /usr/lib/ocf/resource.d/heartbeat/oci-dns-update

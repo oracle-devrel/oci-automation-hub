@@ -1,0 +1,35 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+---
+# Retry policy for the system upgrade step.
+kvm_bootstrap_upgrade_retries: 15
+kvm_bootstrap_upgrade_retry_delay: 60
+
+# Keep package resolution compatible with non-UEK kernels by allowing non-best candidates.
+kvm_bootstrap_package_nobest: true
+
+# Oracle Linux repository used for KVM utilities.
+kvm_bootstrap_kvm_utils_repo: ol9_kvm_utils
+
+# Package sets required for host virtualization.
+kvm_bootstrap_virtualization_host_group: "@Virtualization Host"
+kvm_bootstrap_prereq_packages:
+  - qemu-kvm
+  - libvirt
+  - virt-install
+  - virt-viewer
+kvm_bootstrap_virt_customize_spec: /usr/bin/virt-customize
+
+# Libvirt daemons/sockets enabled for host operation.
+kvm_bootstrap_libvirt_drivers:
+  - qemu
+  - network
+  - nodedev
+  - nwfilter
+  - secret
+  - storage
+  - interface
+kvm_bootstrap_libvirt_socket_suffixes:
+  - ""
+  - -ro
+  - -admin

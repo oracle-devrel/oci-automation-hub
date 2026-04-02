@@ -1,0 +1,103 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+# OCI Resource Manager Stack Schema
+# This schema defines the variables for the ORM UI
+
+title: "DRBD Multi-Region Automation"
+description: "Deploy DRBD infrastructure across two OCI regions with automated configuration"
+schemaVersion: 1.1.0
+version: "1.0.0"
+
+locale: "en"
+
+# Define variable groups for organizational clarity
+variableGroups:
+  - title: IAM Configuration
+    visible: true  
+    variables:
+      - compartment_ocid
+  - title: "Authentication & Regions"
+    visible: true
+    variables:
+      - region1
+      - region2
+
+  - title: "Region 1 - VCN Configuration"
+    visible: true
+    variables:
+      - vcn_params_region1
+      - igw_params_region1
+      - ngw_params_region1
+      - sgw_params_region1
+      - rt_params_region1
+      - sl_params_region1
+      - subnet_params_region1
+      - drg_params_region1
+      - drg_attachment_params_region1
+
+  - title: "Region 2 - VCN Configuration"
+    visible: true
+    variables:
+      - vcn_params_region2
+      - igw_params_region2
+      - ngw_params_region2
+      - sgw_params_region2
+      - rt_params_region2
+      - sl_params_region2
+      - subnet_params_region2
+      - drg_params_region2
+      - drg_attachment_params_region2
+
+  - title: "Remote Peering & DNS"
+    visible: true
+    variables:
+      - requestor_params
+      - acceptor_params
+      - dns_params_region1
+
+  - title: "Compute Instances - Region 1"
+    visible: true
+    variables:
+      - instance_params_region1
+      - bv_params_region1
+
+  - title: "Compute Instances - Region 2"
+    visible: true
+    variables:
+      - instance_params_region2
+      - bv_params_region2
+
+  - title: "Configuration Management"
+    visible: true
+    variables:
+      - linux_images
+      - pcs_drbd_dns_details
+  - title: "Linbit Details"
+    visible: true
+    variables:
+      - linbit_username
+      - linbit_password
+      - linbit_cluster_id
+      - pcs_password
+
+# Variable definitions
+variables:
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    visibile: true
+    title: "Compartment"
+    description: "Choose compartment where you want to deploy VCNs and instances"
+  region1:
+    type: string
+    title: "Primary Region"
+    description: "OCI region for primary deployment (e.g., us-ashburn-1)"
+    required: true
+
+  region2:
+    type: string
+    title: "Secondary Region"
+    description: "OCI region for secondary deployment (e.g., us-phoenix-1)"
+    required: true
+  
