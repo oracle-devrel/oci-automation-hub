@@ -1,0 +1,33 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pause-50-replicas
+  labels:
+    app: pause-50-replicas
+spec:
+  replicas: 50
+  selector:
+    matchLabels:
+      app: pause-50-replicas
+  template:
+    metadata:
+      labels:
+        app: pause-50-replicas
+    spec:
+      nodeSelector:
+        oke-optimization.oracle.com/profile: fast-start
+      tolerations:
+        - key: oke-optimization.oracle.com/scaling-test
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+      containers:
+        - name: pause
+          image: registry.k8s.io/pause:3.9
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
