@@ -37,33 +37,23 @@ echo "https://objectstorage.<region>.oraclecloud.com/n/$NS/b/bootstrap-scripts/o
 
 ## Verify and use it (from the operator VM)
 
-Connect to the operator with **agent forwarding** so your key reaches the BDS
-nodes — `ssh-add ~/.ssh/id_rsa` on your laptop first, then connect with `-A`
-(full steps and the common "Permission denied (publickey)" gotcha are in
-[../README.md](../README.md) §2a–2c). Then:
+Connect to the operator through OCI Bastion. Terraform installs a dedicated
+operator-to-BDS key, so no SSH agent forwarding from your laptop is required.
+Then:
 
 ```bash
 cd use-cases/04-secure-ha-production
-./check.sh
+./run.sh
 ```
 
-`check.sh` confirms BDS is deployed and **warns if the cluster isn't secure/HA**
-(so the Kerberos steps make sense), lists the cluster nodes, and prints how to
-reach the Kerberized cluster:
-
-```bash
-ssh opc@<utility-ip>
-kinit <principal>          # obtain a Kerberos ticket (secure cluster)
-klist
-spark-submit --master yarn --deploy-mode cluster \
-  --num-executors 8 --executor-cores 4 --executor-memory 16g \
-  your_job.py args...
-```
+`run.sh` requires secure + HA, verifies every node is `ACTIVE`, checks Kerberos
+with the BDS smoke-test principal, confirms the bootstrap marker on a master,
+then submits and verifies the sample YARN/HDFS analytics job.
 
 Confirm the bootstrap tuning landed:
 
 ```bash
-ssh opc@<utility-ip> 'grep -A3 "stack bootstrap" /etc/spark3/conf/spark-defaults.conf'
+ssh opc@<master-ip> 'grep -A3 "stack bootstrap" /etc/spark/conf/spark-defaults.conf'
 ```
 
 ## What this demonstrates
@@ -83,6 +73,6 @@ Keep High availability + Secure on (they must stay paired), but shrink workers
 
 ## If it can't run
 
-If BDS isn't deployed, `check.sh` stops and names **Deploy Big Data Service**.
-If the cluster is deployed but not secure/HA, it runs with warnings naming the
-**Secure cluster** / **High availability** fields to enable.
+If BDS isn't deployed, `run.sh` stops and names **Deploy Big Data Service**. If
+the cluster is not both secure and highly available, validation fails before a
+job is submitted.

@@ -26,8 +26,12 @@ Then, on the operator:
 
 ```bash
 cd ~/use-cases
-NS=bigdata ./01-spark-only/run.sh        # NS = your cluster_name
+./01-spark-only/run.sh
 ```
+
+The operator writes the deployed namespace, region, and compartment to
+`deployment.env`, which every script loads automatically. You can still set
+`NS=...` explicitly to target another namespace.
 
 (To iterate locally instead, the same files live in this repo's `use-cases/`.)
 
@@ -40,7 +44,7 @@ log).
 
 | Var | Default | Meaning |
 |-----|---------|---------|
-| `NS` | `bigdata` | Namespace = your `cluster_name`. |
+| `NS` | deployed `cluster_name` | Namespace override. Normally loaded from `deployment.env`. |
 | `SPARK_IMAGE` | `docker.io/apache/spark:3.5.3` | Image for the Spark jobs (fully-qualified; must include PySpark). |
 | `SPARK_VERSION` | `3.5.3` | Spark version label. |
 | `TIMEOUT` | `900` | Seconds to wait for a job. |

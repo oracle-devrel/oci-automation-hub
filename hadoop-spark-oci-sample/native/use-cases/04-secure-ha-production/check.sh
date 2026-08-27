@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
-
+###############################################################################
 # Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
-###############################################################################
 # Use case 04 — Secure HA production. Run this ON the operator VM.
 #
-# Verifies the deployment is the secure, highly-available shape this use case is
-# about, resolves the cluster nodes, and prints how to reach the Kerberized
-# cluster and run a job. (Like use case 02, spark-submit runs on the cluster and
-# needs your SSH key — use 'ssh -A' agent forwarding into the operator.)
+# Verifies the secure, highly-available deployment end to end: every node is
+# active, the built-in smoke-test Kerberos principal works, and the Spark
+# bootstrap tuning is installed. SSH uses the operator's dedicated BDS key.
 ###############################################################################
 set -euo pipefail
 
@@ -17,6 +15,11 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "$HERE/../lib.sh"
 
 require_bds_secure_ha
+
+if [ "${BDS_SECURE:-false}" != "true" ] || [ "${BDS_HIGH_AVAILABILITY:-false}" != "true" ]; then
+  _red "Use case 04 requires a secure, highly available BDS cluster."
+  exit 1
+fi
 
 BDS_ID="$(bds_active_cluster_id)"
 
@@ -29,41 +32,43 @@ fi
 
 oci bds instance get --bds-instance-id "$BDS_ID" \
   --query 'data.nodes[].{type:"node-type",ip:"ip-address",state:"lifecycle-state"}' \
-  --output table 2>/dev/null || true
+  --output table
+
+NODES="$(oci bds instance get --bds-instance-id "$BDS_ID" --query 'data.nodes')"
+NON_ACTIVE="$(printf '%s' "$NODES" | jq '[(.data? // .)[] | select(."lifecycle-state" != "ACTIVE")] | length')"
+[ "$NON_ACTIVE" -eq 0 ] || { _red "$NON_ACTIVE BDS node(s) are not ACTIVE."; exit 1; }
 
 UTIL_IP="$(bds_node_ip "$BDS_ID" UTILITY)"
+MASTER_IP="$(bds_node_ip "$BDS_ID" MASTER)"
+[ -n "$UTIL_IP" ] && [ -n "$MASTER_IP" ] || { _red "Could not resolve BDS utility/master IPs."; exit 1; }
+
+configure_bds_ssh || exit 1
+SSH_OPTS=("${BDS_SSH_OPTS[@]}")
+
+echo
+echo "Verifying Kerberos on the utility node ..."
+ssh "${SSH_OPTS[@]}" "opc@$UTIL_IP" 'sudo bash -s' <<'REMOTE_KERBEROS'
+set -euo pipefail
+KEYTAB=/etc/security/keytabs/smokeuser.headless.keytab
+PRINCIPAL=$(klist -kt "$KEYTAB" | awk 'NR>3 {print $4; exit}')
+RUN_USER=$(stat -c '%U' "$KEYTAB")
+KRB_CACHE="FILE:/tmp/krb5cc_${RUN_USER}_check_$$"
+trap 'rm -f "${KRB_CACHE#FILE:}"' EXIT
+sudo -u "$RUN_USER" env KRB5CCNAME="$KRB_CACHE" kinit -kt "$KEYTAB" "$PRINCIPAL"
+sudo -u "$RUN_USER" env KRB5CCNAME="$KRB_CACHE" klist -s
+echo "Kerberos ticket verified for $PRINCIPAL (OS user: $RUN_USER)"
+REMOTE_KERBEROS
+
+echo "Verifying bootstrap tuning on a master node ..."
+ssh "${SSH_OPTS[@]}" "opc@$MASTER_IP" \
+  "sudo grep -q 'stack bootstrap' /etc/spark/conf/spark-defaults.conf 2>/dev/null || sudo grep -q 'stack bootstrap' /etc/spark3/conf/spark-defaults.conf 2>/dev/null" || {
+  _red "Bootstrap tuning marker is missing on master $MASTER_IP."
+  echo "The bootstrap script must be configured at BDS creation or applied to the live nodes."
+  exit 1
+}
 
 cat <<EOF
 
-Cluster is up (secure + HA). SSH to a node from the operator ('ssh -A'):
-
-  ssh opc@${UTIL_IP:-<utility-ip>}
-EOF
-
-# Quoted heredoc: the Kerberos commands print verbatim (no local expansion).
-cat <<'EOF'
-  # --- on the node: this is a Kerberos cluster, so get a ticket before any job ---
-  # quickest for a demo — become the hdfs superuser via its keytab:
-  KT=$(sudo bash -c 'ls /etc/security/keytabs/*hdfs*.keytab 2>/dev/null' | head -1)
-  PRINC=$(sudo klist -kt "$KT" | awk 'NR>3{print $4; exit}')
-  sudo -u hdfs kinit -kt "$KT" "$PRINC" && sudo -u hdfs klist   # confirm the ticket
-
-  # then submit as hdfs (bring your own job; example):
-  sudo -u hdfs spark-submit --master yarn --deploy-mode cluster \
-    --num-executors 8 --executor-cores 4 --executor-memory 16g \
-    your_job.py args...
-EOF
-
-cat <<EOF
-
-To run as your OWN user, create a principal on the master node
-('sudo kadmin.local' -> 'addprinc opc', needs the cluster/KDC admin creds), then
-'kinit opc'. See the OCI Big Data Service docs on secure clusters.
-
-The bootstrap.sh in this folder is a DEPLOY-TIME artifact — you upload it to
-Object Storage and point 'Bootstrap script URL' at it BEFORE the apply, and BDS
-runs it on every node at cluster creation (you never run it yourself). Verify it
-landed:
-
-  ssh opc@${UTIL_IP:-<utility-ip>} 'grep -A3 "stack bootstrap" /etc/spark3/conf/spark-defaults.conf'
+Cluster validation passed: secure + HA, all nodes ACTIVE, Kerberos works, and
+the Spark bootstrap tuning is installed.
 EOF

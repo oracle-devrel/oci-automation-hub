@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-
+###############################################################################
 # Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
-###############################################################################
 # Shared helpers for the use-case demos. Source this from each run.sh.
 #
 # Run the demos from the OPERATOR host (it has kubectl + a working kubeconfig).
@@ -10,12 +9,24 @@
 ###############################################################################
 set -euo pipefail
 
+# Load the deployment descriptor written by operator cloud-init. It supplies
+# the real namespace/region instead of assuming every cluster is named bigdata.
+COMMON_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+USE_CASE_ROOT="$(cd "$COMMON_DIR/.." && pwd)"
+if [ -f "$USE_CASE_ROOT/deployment.env" ]; then
+  # shellcheck source=/dev/null
+  source "$USE_CASE_ROOT/deployment.env"
+fi
+
 # ---- Config (override via environment) --------------------------------------
-NS="${NS:-bigdata}"                          # namespace == cluster_name
+NS="${NS:-${CLUSTER_NAME:-bigdata}}"          # namespace == cluster_name
 SPARK_IMAGE="${SPARK_IMAGE:-docker.io/apache/spark:3.5.3}" # fully-qualified: OKE CRI-O enforces short-name mode
 SPARK_VERSION="${SPARK_VERSION:-3.5.3}"
 SPARK_SA="${SPARK_SA:-spark}"
 TIMEOUT="${TIMEOUT:-900}"                     # seconds to wait for a SparkApplication
+export OCI_CLI_AUTH="${OCI_CLI_AUTH:-instance_principal}"
+[ -n "${REGION:-}" ] && export OCI_CLI_REGION="$REGION"
+[ -n "${KUBECONFIG:-}" ] || export KUBECONFIG=/home/opc/.kube/config
 
 # ---- Pretty output ----------------------------------------------------------
 log()  { printf '\n\033[1;34m== %s ==\033[0m\n' "$*"; }
@@ -27,7 +38,13 @@ need() { command -v "$1" >/dev/null 2>&1 || die "missing required command: $1"; 
 
 require_namespace() {
   need kubectl
-  kubectl get ns "$NS" >/dev/null 2>&1 || die "namespace '$NS' not found (set NS=<cluster_name>)"
+  local api_error bootstrap_state="unknown"
+  if ! api_error="$(kubectl get --raw=/readyz 2>&1)"; then
+    command -v cloud-init >/dev/null 2>&1 && bootstrap_state="$(cloud-init status 2>/dev/null || true)"
+    die "Kubernetes API unavailable via $KUBECONFIG ($bootstrap_state). ${api_error##*$'\n'}"
+  fi
+  kubectl get ns "$NS" >/dev/null 2>&1 || \
+    die "Kubernetes API is ready, but namespace '$NS' does not exist (deployed cluster_name=$NS)"
 }
 
 # Wait for a SparkApplication to reach a terminal state.

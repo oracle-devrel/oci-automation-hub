@@ -20,7 +20,7 @@ from a descriptor (`deployment.env`) that Terraform writes onto the operator.
 |---|----------|-----------|----------------------|
 | [01](01-serverless-etl/) | **Serverless ETL** | CSV → cleaned/partitioned Parquet via Data Flow, no cluster | Deploy Data Flow |
 | [02](02-hadoop-cluster-analytics/) | **Hadoop cluster analytics** | `spark-submit` on YARN + HDFS on managed BDS | Deploy BDS |
-| [03](03-warm-pool-low-latency/) | **Warm-pool low latency** | Repeated jobs that start in seconds | Deploy Data Flow + warm pool |
+| [03](03-warm-pool-low-latency/) | **Warm-pool low latency** | Repeated jobs with reserved pool capacity | Deploy Data Flow + warm pool |
 | [04](04-secure-ha-production/) | **Secure HA production** | Kerberos + Ranger, HA, elastic compute-only workers, bootstrap tuning | Deploy BDS (HA + secure) |
 
 ## 1. Deploy via Resource Manager
@@ -52,28 +52,7 @@ from the CLI.
 The operator has **no public IP**; you reach it only through the managed Bastion.
 The connection is a two-hop SSH: your laptop → bastion → operator.
 
-### 2a. Load your key into the ssh-agent (do this first — it matters)
-
-Use cases **02 and 04** need to SSH from the operator onward to the BDS nodes,
-and that only works via **agent forwarding**. Agent forwarding forwards your
-**ssh-agent**, *not* the `-i` key on the command line — so the key must be loaded
-into the agent on your laptop **before** you connect:
-
-```bash
-ssh-add ~/.ssh/id_rsa      # add your key to the agent
-ssh-add -l                 # verify it's listed (you should see its fingerprint)
-```
-
-- No agent running? Start one: `eval "$(ssh-agent -s)"`, then `ssh-add`.
-- macOS: `ssh-add --apple-use-keychain ~/.ssh/id_rsa`.
-- This must be the private key whose public half you set as `ssh_public_key` when
-  you deployed — the same key the operator **and** the BDS nodes trust.
-
-> Skipping this is the #1 gotcha. If you connect with `-A` but the agent is empty,
-> `-i` still logs you into the *operator* fine, but the operator has no key to
-> offer the BDS nodes → `Permission denied (publickey)` at the `scp`/`ssh` step.
-
-### 2b. Open a bastion session and connect
+### 2a. Open a bastion session and connect
 
 Read the ready-made session command from the stack outputs:
 
@@ -82,11 +61,11 @@ terraform output -raw operator_bastion_session_hint
 ```
 
 Run the printed `oci bastion session create-managed-ssh ...` (adjust
-`--ssh-public-key-file` to your key), wait for `SUCCEEDED`, then connect **with
-`-A`** (agent forwarding). Take the `<SESSION_OCID>` from the session you created:
+`--ssh-public-key-file` to your key), wait for `SUCCEEDED`, then connect. Take
+the `<SESSION_OCID>` from the session you created:
 
 ```bash
-ssh -A \
+ssh \
   -o ProxyCommand="ssh -i ~/.ssh/id_rsa -W %h:%p -p 22 <SESSION_OCID>@host.bastion.<region>.oci.oraclecloud.com" \
   -i ~/.ssh/id_rsa opc@<OPERATOR_PRIVATE_IP>
 ```
@@ -94,20 +73,20 @@ ssh -A \
 - `<OPERATOR_PRIVATE_IP>` = `terraform output -raw operator_private_ip`.
 - `<region>` e.g. `eu-frankfurt-1`.
 
-### 2c. Verify agent forwarding reached the operator
+### 2b. Verify operator-to-BDS access
 
-Once on the operator, confirm the forwarded agent carries your key — this is what
-makes the BDS use cases work:
+When BDS was deployed with the operator, Terraform created a purpose-specific
+key at `~/.ssh/bds_operator` and installed its public half on the BDS cluster.
+No workstation private key or forwarded agent is needed for this hop:
 
 ```bash
-ssh-add -l                              # should list the SAME key as on your laptop
-ssh -o BatchMode=yes opc@<BDS_UTILITY_IP> hostname   # should print the node hostname
+test -r ~/.ssh/bds_operator
+ssh -i ~/.ssh/bds_operator -o IdentitiesOnly=yes opc@<BDS_UTILITY_IP> hostname
 ```
 
-If `ssh-add -l` says *"no identities"* / *"Could not open a connection to your
-authentication agent"*, forwarding didn't carry a key — go back to **2a** on your
-laptop (`ssh-add`), then reconnect with `-A`. Only Data Flow use cases (01, 03)
-work without agent forwarding.
+For stacks created before this key existed, `BDS_SSH_KEY=/path/to/key` selects
+an authorized key already present on the operator. Agent forwarding remains a
+compatibility fallback, but is no longer part of the normal workflow.
 
 ## 3. Run the use cases
 
@@ -125,26 +104,24 @@ Resource Manager field to flip instead of failing obscurely.
 | # | Use case | Run on the operator | Needs |
 |---|----------|---------------------|-------|
 | 01 | Serverless ETL | `./01-serverless-etl/run.sh` | Data Flow |
-| 02 | Hadoop cluster analytics | `./02-hadoop-cluster-analytics/submit.sh` | BDS |
+| 02 | Hadoop cluster analytics | `./02-hadoop-cluster-analytics/run.sh` | BDS |
 | 03 | Warm-pool low latency | `./03-warm-pool-low-latency/run.sh` | Data Flow (+ warm pool) |
-| 04 | Secure HA production | `./04-secure-ha-production/check.sh` | BDS (HA + secure) |
+| 04 | Secure HA production | `./04-secure-ha-production/run.sh` | BDS (HA + secure) |
 
 ```bash
 # Data Flow use cases — submit a serverless Spark run end to end:
 ./01-serverless-etl/run.sh
 ./03-warm-pool-low-latency/run.sh
 
-# BDS use cases — resolve the cluster and print the on-node spark-submit steps
-# (connect to the operator with `ssh -A` so your key reaches the BDS nodes):
-./02-hadoop-cluster-analytics/submit.sh
-./04-secure-ha-production/check.sh
+# BDS use cases — copy and submit the job on a cluster node, then verify HDFS:
+./02-hadoop-cluster-analytics/run.sh
+./04-secure-ha-production/run.sh
 ```
 
-> **01 and 03** drive everything themselves (upload the job, create/reuse the
-> Data Flow application, submit the run). **02 and 04** can't run `spark-submit`
-> for you — it has to execute on a BDS node — so they verify the cluster, fetch
-> its node IPs, and print the exact `scp` / `ssh` / `spark-submit` commands to
-> run from the operator. See each use case's own README for details.
+All four entry points run end to end. **01 and 03** wait for the Data Flow run
+to reach `SUCCEEDED` and verify Object Storage output. **02 and 04** use the
+operator's dedicated BDS identity to execute `spark-submit` on a BDS node, wait
+for YARN, and read the resulting report from HDFS.
 
 If a use case isn't supported by your deployment, the script says so and names
 the form field to flip. For example, running a BDS use case on a Data-Flow-only
@@ -160,9 +137,11 @@ This use case can't run on the current deployment.
 ### 01 — Serverless ETL
 `run.sh` uploads `customers_etl.py` + `sample_customers.csv`, creates/reuses the
 `<prefix>-customers-etl` application, and submits a run (matched to the warm-pool
-shape when a pool exists). It prints the run OCID.
+shape when a pool exists). It repairs stale pool attachments, waits for the run,
+and verifies the output prefix before returning.
 
-- The run reaches **`SUCCEEDED`** in ~1–2 min (seconds on a warm pool). Poll with
+- The run reaches **`SUCCEEDED`**; timing depends on region capacity and whether
+  a pool is attached. Poll with
   `oci data-flow run get --run-id <id> --query 'data."lifecycle-state"'`.
 - The 10-row sample is cleaned to **8 customer rows** (one null-email row dropped,
   one duplicate email de-duped) and written as **Parquet partitioned by country**
@@ -175,15 +154,10 @@ shape when a pool exists). It prints the run OCID.
   logs bucket and in the Data Flow console under the run's **Logs**.
 
 ### 02 — Hadoop cluster analytics
-`submit.sh` does **not** run the job (Spark has to run on a BDS node). It:
-
-- prints the resolved **cluster OCID** and the **utility + master node private
-  IPs**, then the exact `scp` / `ssh` / `spark-submit` commands to run from the
-  operator (use `ssh -A`).
-- When you run those, `sales_report.py` writes a single **CSV report** to
-  `hdfs:///user/opc/sales_report` — revenue by region + product category, each
-  segment's **`revenue_share_pct`**, ordered by revenue. Read it with
-  `hdfs dfs -cat /user/opc/sales_report/part-*.csv`.
+`run.sh` resolves the active cluster, copies the sample to its utility node,
+submits `sales_report.py` to YARN, and prints the verified HDFS CSV report. On a
+secure cluster it uses BDS's built-in `ambari-qa` smoke-test principal/keytab;
+the `hdfs` service user is deliberately banned by YARN and must not submit jobs.
 
 If the cluster is still provisioning, it prints the cluster list with each
 cluster's state instead (wait for `ACTIVE`).
@@ -191,26 +165,23 @@ cluster's state instead (wait for `ACTIVE`).
 ### 03 — Warm-pool low latency
 `run.sh` behaves like 01 but the app runs on the **warm pool**.
 
-- Submits `<prefix>-hourly-aggregate`; the run reaches **`SUCCEEDED`**, and on a
-  warm pool the **start latency is seconds** rather than ~1 min.
+- Starts a stopped pool if necessary, repairs applications still attached to a
+  replaced/deleted pool, and submits `<prefix>-hourly-aggregate`.
+- The run reaches **`SUCCEEDED`**; compare repeated runs to measure the pool's
+  provisioning-latency reduction in your region.
 - Output is a **Parquet rollup** at `hourly_rollup/` — `event_count` +
   `unique_users` per hour per `event_type`.
-- Submit it **back-to-back** and compare the `time-created` → start gap across
-  runs to feel the warm-pool speedup:
+- Submit it **back-to-back** and compare wall time with Spark execution time:
   ```
   oci data-flow run list --compartment-id <compartment> \
-    --query 'data[].{name:"display-name",state:"lifecycle-state",created:"time-created"}'
+    --query 'data[].{name:"display-name",created:"time-created",updated:"time-updated",spark_ms:"run-duration-in-milliseconds"}'
   ```
 
 ### 04 — Secure HA production
-`check.sh` is a readiness/how-to check for the production shape — it does **not**
-submit a job.
-
-- It confirms the cluster is **secure + HA** (warns, naming the form field, if
-  not), prints a **table of every node** (type / IP / state), and the steps to
-  use the Kerberized cluster: `ssh` in, `kinit <principal>`, then `spark-submit`.
-- It also shows how to confirm the **bootstrap tuning** landed
-  (`grep "stack bootstrap" /etc/spark3/conf/spark-defaults.conf` on a node).
+`run.sh` first invokes `check.sh`, which requires **secure + HA**, verifies every
+node is `ACTIVE`, obtains a Kerberos ticket with the supported smoke-test
+principal, and confirms bootstrap tuning under the active Spark config path.
+It then runs the same real YARN/HDFS analytics job as use case 02.
 
 ### When a run fails
 For 01/03, if a run shows `FAILED`, the driver log in the **logs bucket** has the

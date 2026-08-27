@@ -46,6 +46,11 @@ locals {
     var.deploy_operator && var.deploy_dataflow && var.dataflow_create_scripts_bucket
   )
 
+  # When BDS and the operator are deployed together, the operator gets a
+  # dedicated key for the private operator -> BDS hop. The user's deployment
+  # key remains only for reaching the operator through OCI Bastion.
+  operator_bds_key_enabled = var.deploy_operator && var.deploy_bds
+
   operator_user_data = templatefile("${path.module}/templates/operator_init.sh.tftpl", {
     resource_prefix         = var.resource_prefix
     compartment_ocid        = var.compartment_ocid
@@ -64,7 +69,18 @@ locals {
     logs_bucket             = local.operator_logs_bucket
     warehouse_bucket        = local.operator_warehouse_bucket
     assets_available        = local.operator_assets_available
+    bds_ssh_private_key     = local.operator_bds_key_enabled ? tls_private_key.operator_bds[0].private_key_openssh : ""
   })
+}
+
+# Purpose-specific SSH identity used only between the private operator and BDS
+# nodes. The private key is installed mode 0600 on the operator by cloud-init.
+# It is also present in Terraform state, so local state must be protected;
+# Resource Manager protects its managed state at rest.
+resource "tls_private_key" "operator_bds" {
+  count = local.operator_bds_key_enabled ? 1 : 0
+
+  algorithm = "ED25519"
 }
 
 # Latest Oracle Linux 8 image for the chosen shape.
@@ -132,6 +148,12 @@ resource "oci_core_instance" "operator" {
     source_type             = "image"
     source_id               = data.oci_core_images.operator_ol8[0].images[0].id
     boot_volume_size_in_gbs = var.operator_boot_volume_gbs
+  }
+
+  # Require IMDSv2. Some tenancies enforce the imds/imds-disable-v1 limit and
+  # reject instance launches when legacy metadata endpoints are left enabled.
+  instance_options {
+    are_legacy_imds_endpoints_disabled = true
   }
 
   # Oracle Cloud Agent + Bastion plugin are required for Managed-SSH sessions.

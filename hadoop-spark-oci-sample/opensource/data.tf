@@ -24,3 +24,14 @@ data "oci_core_services" "all_services" {
     regex  = true
   }
 }
+
+# Kubernetes NetworkPolicy ipBlocks require numeric CIDRs; the value exposed by
+# oci_core_services is an OCI service CIDR label intended for route tables. OCI
+# publishes the numeric OSN ranges for each region in this canonical document.
+data "http" "oci_public_ip_ranges" {
+  url = "https://docs.oracle.com/en-us/iaas/tools/public_ip_ranges.json"
+
+  request_headers = {
+    Accept = "application/json"
+  }
+}
