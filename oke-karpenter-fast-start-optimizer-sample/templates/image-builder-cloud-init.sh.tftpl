@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+set -euo pipefail
+
+LOG_FILE="/var/log/oke-optimized-image-build.log"
+MARKER_DIR="/var/lib/oke-optimization"
+MARKER_FILE="$${MARKER_DIR}/image-build-complete"
+
+mkdir -p "$${MARKER_DIR}"
+exec > >(tee -a "$${LOG_FILE}") 2>&1
+
+echo "Starting optimized OKE image build at $(date -Is)"
+
+echo "Installing packages that must not be downloaded during Karpenter node boot..."
+dnf -y install oraclelinux-developer-release-el8
+dnf -y install jq curl python36-oci-cli
+
+if ! command -v crictl >/dev/null 2>&1; then
+  echo "crictl is required on the OKE worker image but was not found."
+  exit 1
+fi
+
+echo "Starting CRI-O for image pre-pulls..."
+systemctl start crio
+
+PULL_IMAGES=(
+%{ for image in prepull_images ~}
+  "${image}"
+%{ endfor ~}
+)
+
+echo "Pre-pulling OKE bootstrap images into CRI-O storage..."
+pull_pids=()
+for image in "$${PULL_IMAGES[@]}"; do
+  (
+    echo "Pulling $${image}"
+    crictl pull "$${image}"
+  ) &
+  pull_pids+=("$!")
+done
+
+for pid in "$${pull_pids[@]}"; do
+  wait "$${pid}"
+done
+
+echo "Verifying pre-pulled images..."
+for image in "$${PULL_IMAGES[@]}"; do
+  image_repo="$${image%@*}"
+  crictl images --digests | grep -F "$${image_repo}" >/dev/null
+done
+
+echo "Cleaning transient image-builder state while preserving OKE bootstrap assets and CRI-O image layers..."
+dnf clean all
+rm -rf /var/cache/dnf/* /var/tmp/* /tmp/*
+rm -rf /var/lib/cloud/instances/* /var/lib/cloud/instance
+rm -f /root/.bash_history /home/opc/.bash_history
+find /var/log -type f ! -name "oke-optimized-image-build.log" -exec truncate -s 0 {} \; || true
+truncate -s 0 /etc/machine-id || true
+
+sync
+touch "$${MARKER_FILE}"
+echo "Optimized OKE image build complete at $(date -Is)"
