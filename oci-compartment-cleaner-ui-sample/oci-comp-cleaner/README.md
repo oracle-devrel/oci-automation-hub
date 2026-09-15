@@ -678,8 +678,10 @@ route rules that reference the resource being deleted.
 
 ## Waits, Retries, and Verification
 
-Some OCI delete APIs are asynchronous. The cleaner waits after delete when the
-support manifest or built-in waiter logic says the resource should be waited.
+Some OCI delete APIs are asynchronous. `wait_for_delete` in the support
+manifest is the only generic post-delete wait policy: `true` waits and `false`
+or an omitted value does not. Service-specific preparation and dependency waits
+remain part of their dedicated handlers.
 
 Configure delete waits:
 

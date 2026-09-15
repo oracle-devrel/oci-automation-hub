@@ -7,6 +7,7 @@ from __future__ import annotations
 from .runtime_core import *
 from .runtime_discovery import sdk_summary_to_resource_record
 
+
 def delete_wait_spec(resource: ResourceRecord) -> tuple[type[Any], str, str] | None:
     resource_type = resource.resource_type_normalized
     if resource_type == "autonomous_database":
@@ -46,7 +47,11 @@ def delete_wait_spec(resource: ResourceRecord) -> tuple[type[Any], str, str] | N
     if resource_type == "postgresql_db_system":
         return oci.psql.PostgresqlClient, "get_db_system", "db_system_id"
     if resource_type == "dr_protection_group":
-        return oci.disaster_recovery.DisasterRecoveryClient, "get_dr_protection_group", "dr_protection_group_id"
+        return (
+            oci.disaster_recovery.DisasterRecoveryClient,
+            "get_dr_protection_group",
+            "dr_protection_group_id",
+        )
     if resource_type == "replication":
         return oci.file_storage.FileStorageClient, "get_replication", "replication_id"
     if resource_type == "replication_target":
@@ -177,8 +182,6 @@ def wait_for_delete_completion(
     interval_seconds: int,
     logger: logging.Logger,
 ) -> bool:
-    if resource.resource_type_normalized not in DELETE_WAIT_RESOURCE_TYPES:
-        return True
     if timeout_seconds <= 0:
         logger.info("Delete wait disabled for %s %s", resource.resource_type, resource.display_name)
         return True

@@ -73,6 +73,7 @@
       "service": "Functions",
       "client_class": "FunctionsManagementClient",
       "method": "delete_function",
+      "wait_for_delete": true,
       "preferred_client_prefixes": ["oci.functions."],
       "notes": "Uses the Functions management delete_function API."
     },
@@ -85,6 +86,7 @@
       "action": "dynamic_delete",
       "service": "Container Instances",
       "method": "delete_container_instance",
+      "wait_for_delete": false,
       "notes": "Deleted before network resources because it owns VNIC/IP artifacts."
     },
     {
@@ -97,6 +99,7 @@
       "service": "Functions",
       "client_class": "FunctionsManagementClient",
       "method": "delete_application",
+      "wait_for_delete": false,
       "preferred_client_prefixes": ["oci.functions."],
       "owns_child_types": ["FunctionsFunction"],
       "notes": "Applications are deleted after functions."
@@ -135,6 +138,7 @@
       "service": "Compute",
       "client_class": "ComputeManagementClient",
       "method": "terminate_instance_pool",
+      "wait_for_delete": true,
       "notes": "Deleted before individual compute/network resources."
     },
     {
@@ -147,6 +151,7 @@
       "service": "Compute",
       "client_class": "ComputeClient",
       "method": "terminate_instance",
+      "wait_for_delete": true,
       "notes": "Terminating the instance owns attached VNIC/private IP cleanup and boot volume cleanup according to the API call behavior."
     },
     {
@@ -197,7 +202,7 @@
       "client_class": "DatabaseClient",
       "method": "delete_backup",
       "preferred_client_prefixes": ["oci.database."],
-      "wait_for_delete": true,
+      "wait_for_delete": false,
       "notes": "Oracle Base Database backups are also discovered through Database API enrichment."
     },
     {
@@ -227,7 +232,7 @@
       "method": "delete_autonomous_database",
       "preferred_client_prefixes": ["oci.database."],
       "pre_delete": ["prepare_autonomous_database"],
-      "wait_for_delete": true,
+      "wait_for_delete": false,
       "notes": "Handles Data Guard by terminating standby peers before deleting the primary when needed."
     },
     {
@@ -241,7 +246,7 @@
       "client_class": "MysqlaasClient",
       "method": "delete_backup",
       "preferred_client_prefixes": ["oci.mysql."],
-      "wait_for_delete": true,
+      "wait_for_delete": false,
       "notes": "MySQL backups are also discovered through MySQL API enrichment."
     },
     {
@@ -256,7 +261,7 @@
       "method": "delete_db_system",
       "preferred_client_prefixes": ["oci.mysql."],
       "pre_delete": ["prepare_mysql_db_system"],
-      "wait_for_delete": true,
+      "wait_for_delete": false,
       "notes": "Clears delete protection, automatic backup retention, and final backup policy before delete."
     },
     {
@@ -284,7 +289,7 @@
       "client_class": "PostgresqlClient",
       "method": "delete_backup",
       "preferred_client_prefixes": ["oci.psql."],
-      "wait_for_delete": true,
+      "wait_for_delete": false,
       "notes": "Uses oci.psql.PostgresqlClient.delete_backup."
     },
     {
@@ -298,7 +303,7 @@
       "client_class": "PostgresqlClient",
       "method": "delete_db_system",
       "preferred_client_prefixes": ["oci.psql."],
-      "wait_for_delete": true,
+      "wait_for_delete": false,
       "notes": "Uses oci.psql.PostgresqlClient.delete_db_system."
     },
     {
@@ -310,6 +315,7 @@
       "action": "dynamic_delete",
       "service": "File Storage",
       "method": "delete_mount_target",
+      "wait_for_delete": true,
       "notes": "Deleted before file systems and subnets."
     },
     {
@@ -322,6 +328,7 @@
       "service": "Compute",
       "client_class": "ComputeClient",
       "method": "detach_volume",
+      "wait_for_delete": true,
       "notes": "Detaches block volumes before volume deletion."
     },
     {
@@ -333,6 +340,7 @@
       "action": "dynamic_delete",
       "service": "Generic",
       "method": "delete_private_endpoint",
+      "wait_for_delete": true,
       "notes": "Deleted before subnet and VCN cleanup."
     },
     {
@@ -345,6 +353,7 @@
       "service": "Object Storage",
       "client_class": "ObjectStorageClient",
       "method": "delete_bucket",
+      "wait_for_delete": false,
       "notes": "Deletes retention rules where possible, object versions, delete markers, current objects, multipart uploads, then the bucket."
     },
     {
@@ -356,6 +365,7 @@
       "action": "dynamic_delete",
       "service": "Container Registry",
       "method": "delete_container_image",
+      "wait_for_delete": false,
       "notes": "Deleted before container repositories."
     },
     {
@@ -408,6 +418,7 @@
       "action": "dynamic_delete",
       "service": "Container Registry",
       "method": "delete_container_repository",
+      "wait_for_delete": true,
       "notes": "Uses the repository delete API after images are removed."
     },
     {
@@ -500,7 +511,7 @@
       "client_class": "NotificationDataPlaneClient",
       "method": "delete_subscription",
       "preferred_client_prefixes": ["oci.ons.notification_data_plane_client"],
-      "wait_for_delete": true,
+      "wait_for_delete": false,
       "notes": "Subscriptions are deleted before topics."
     },
     {
@@ -514,7 +525,7 @@
       "client_class": "NotificationControlPlaneClient",
       "method": "delete_topic",
       "preferred_client_prefixes": ["oci.ons.notification_control_plane_client"],
-      "wait_for_delete": true,
+      "wait_for_delete": false,
       "notes": "Topic cleanup runs after subscriptions."
     },
     {
@@ -541,6 +552,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_subnet",
+      "wait_for_delete": false,
       "notes": "Deleted after resources that own VNICs/IPs."
     },
     {
@@ -553,6 +565,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_network_security_group",
+      "wait_for_delete": true,
       "notes": "Deleted after compute and load balancer resources."
     },
     {
@@ -565,6 +578,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_security_list",
+      "wait_for_delete": true,
       "notes": "Default VCN security lists are skipped; non-default lists are deleted before the VCN."
     },
     {
@@ -577,6 +591,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_route_table",
+      "wait_for_delete": true,
       "notes": "Default VCN route tables are skipped; non-default route tables are deleted before the VCN."
     },
     {
@@ -589,6 +604,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_dhcp_options",
+      "wait_for_delete": true,
       "notes": "Default VCN DHCP options are skipped; non-default DHCP options are deleted before the VCN."
     },
     {
@@ -601,6 +617,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_internet_gateway",
+      "wait_for_delete": true,
       "pre_delete": ["remove_route_rules"],
       "notes": "Route table rules referencing the gateway are removed before delete."
     },
@@ -614,6 +631,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_nat_gateway",
+      "wait_for_delete": true,
       "pre_delete": ["remove_route_rules"],
       "notes": "Route table rules referencing the gateway are removed before delete."
     },
@@ -627,6 +645,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_service_gateway",
+      "wait_for_delete": true,
       "pre_delete": ["remove_route_rules"],
       "notes": "Route table rules referencing the gateway are removed before delete."
     },
@@ -640,6 +659,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_local_peering_gateway",
+      "wait_for_delete": true,
       "pre_delete": ["remove_route_rules"],
       "notes": "Route table rules referencing the gateway are removed before delete."
     },
@@ -653,6 +673,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_drg_attachment",
+      "wait_for_delete": true,
       "notes": "Detached before DRG cleanup."
     },
     {
@@ -665,6 +686,7 @@
       "service": "Networking",
       "client_class": "VirtualNetworkClient",
       "method": "delete_drg",
+      "wait_for_delete": true,
       "pre_delete": ["remove_route_rules"],
       "notes": "Route table rules referencing the DRG are removed before delete."
     },
@@ -690,6 +712,7 @@
       "action": "dynamic_delete",
       "service": "DNS",
       "method": "delete_zone",
+      "wait_for_delete": true,
       "notes": "Customer DNS zones are deleted; VCN-managed DNS zones are skipped."
     },
     {

@@ -37,7 +37,11 @@ def _required_single_id_parameter(method: Any) -> str | None:
     if len(required) != 1:
         return None
     name = required[0]
-    if name.endswith("_id") or name.endswith("_name_or_id") or name in {"id", "resource_id", "name_or_id"}:
+    if (
+        name.endswith("_id")
+        or name.endswith("_name_or_id")
+        or name in {"id", "resource_id", "name_or_id"}
+    ):
         return name
     return None
 
@@ -98,9 +102,7 @@ def _manifest_wait_targets(handler: HandlerSpec) -> list[tuple[type[Any], str]]:
 
     expected_class = handler.wait_client_class or handler.client_class
     if expected_class:
-        exact_class_targets = [
-            target for target in targets if target[0].__name__ == expected_class
-        ]
+        exact_class_targets = [target for target in targets if target[0].__name__ == expected_class]
         if exact_class_targets:
             targets = exact_class_targets
 
@@ -122,10 +124,7 @@ def _manifest_wait_targets(handler: HandlerSpec) -> list[tuple[type[Any], str]]:
             targets = preferred_targets
 
     if handler.wait_id_parameter:
-        targets = [
-            (client_class, handler.wait_id_parameter)
-            for client_class, _ in targets
-        ]
+        targets = [(client_class, handler.wait_id_parameter) for client_class, _ in targets]
 
     return sorted(targets, key=lambda target: _target_score(handler, target[0]))
 
@@ -135,25 +134,25 @@ def _manifest_complete_states(handler: HandlerSpec) -> set[str]:
     return {state.upper() for state in states}
 
 
-def _wait_with_manifest(entry: PlanEntry, context: CleanupContext) -> bool | None:
+def _wait_with_manifest(entry: PlanEntry, context: CleanupContext) -> bool:
     handler = entry.handler
     resource = entry.resource
-    if not handler.wait_for_delete:
-        return None
     if context.delete_wait_timeout_seconds <= 0:
-        context.logger.info("Delete wait disabled for %s %s", resource.resource_type, resource.display_name)
+        context.logger.info(
+            "Delete wait disabled for %s %s", resource.resource_type, resource.display_name
+        )
         return True
 
     wait_method = _handler_wait_method(handler)
     targets = _manifest_wait_targets(handler)
     if not wait_method or not targets:
-        context.logger.info(
-            "No manifest wait target found for %s %s (%s); falling back to built-in waiter table",
+        context.logger.error(
+            "Manifest requires a delete wait for %s %s (%s), but no compatible wait target was found",
             resource.resource_type,
             resource.display_name,
             resource.identifier,
         )
-        return None
+        return False
 
     client_class, id_parameter_name = targets[0]
     client = context.client(client_class)
@@ -239,14 +238,11 @@ def _wait_with_manifest(entry: PlanEntry, context: CleanupContext) -> bool | Non
 
 
 def wait_for_handler_delete_completion(entry: PlanEntry, context: CleanupContext) -> bool:
-    manifest_result = _wait_with_manifest(entry, context)
-    if manifest_result is not None:
-        return manifest_result
-    return runtime.wait_for_delete_completion(
-        entry.resource,
-        context.config,
-        context.signer,
-        timeout_seconds=context.delete_wait_timeout_seconds,
-        interval_seconds=context.delete_wait_interval_seconds,
-        logger=context.logger,
-    )
+    if not entry.handler.wait_for_delete:
+        context.logger.info(
+            "Manifest disables post-delete wait for %s %s",
+            entry.resource.resource_type,
+            entry.resource.display_name,
+        )
+        return True
+    return _wait_with_manifest(entry, context)

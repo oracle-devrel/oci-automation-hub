@@ -342,39 +342,6 @@ DELETE_PRIORITY = {
 
 DEFAULT_DELETE_PRIORITY = 120
 
-DELETE_WAIT_RESOURCE_TYPES = {
-    "autonomous_database",
-    "bastion",
-    "bastion_session",
-    "cluster",
-    "compute_capacity_reservation",
-    "devops_project",
-    "devops_repository",
-    "dr_protection_group",
-    "file_system",
-    "load_balancer",
-    "network_load_balancer",
-    "db_backup",
-    "db_system",
-    "mysql_backup",
-    "mysql_configuration",
-    "mysql_db_system",
-    "nosql_table",
-    "node_pool",
-    "ons_subscription",
-    "ons_topic",
-    "postgresql_backup",
-    "postgresql_db_system",
-    "replication",
-    "replication_target",
-    "session",
-    "vcn",
-    "volume",
-    "volume_backup",
-    "volume_group",
-    "volume_group_backup",
-}
-
 DELETE_COMPLETE_STATES = {
     "DELETED",
     "TERMINATED",
