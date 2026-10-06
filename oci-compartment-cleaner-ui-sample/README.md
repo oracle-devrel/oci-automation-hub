@@ -26,8 +26,8 @@ deletion logic.
 - Optional Resource Manager resource-discovery stack creation before deletion.
 - Live logs, process output, plan artifacts, completion status, and simple
   error-level log analysis.
-- A local heartbeat supervisor that interrupts an execute process if the UI
-  server stops unexpectedly.
+- A local supervisor that interrupts an execute process if the UI/server pipe
+  closes or its heartbeat stops unexpectedly.
 
 ## Requirements
 
@@ -77,8 +77,9 @@ Later starts:
 .\.venv\Scripts\python.exe run-ui.py
 ```
 
-The server listens only on `127.0.0.1`; OCI config and private-key material
-remain on the local machine.
+The server listens only on `127.0.0.1`; Streamlit usage statistics are disabled
+by the launcher; OCI config and private-key material remain on the local
+machine.
 
 If a Homebrew-managed Python reports `externally-managed-environment`, use the
 virtual-environment commands above. Do not use `--break-system-packages`.
