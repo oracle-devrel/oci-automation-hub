@@ -1,0 +1,41 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+# Copy this file to terraform.tfvars and set values for your tenancy.
+# Do not commit terraform.tfvars.
+
+config_file_profile = "DEFAULT"
+region              = "us-ashburn-1"
+
+tenancy_ocid             = "REPLACE_WITH_TENANCY_OCID"
+parent_compartment_ocid  = "REPLACE_WITH_PARENT_COMPARTMENT_OCID"
+parent_compartment_name  = "terraform"
+project_compartment_ocid = "REPLACE_WITH_PROJECT_COMPARTMENT_OCID"
+project_compartment_name = "OKEOptimization"
+oke_image_compartment_ocid = "REPLACE_WITH_ORACLE_OKE_IMAGE_COMPARTMENT_OCID"
+
+ssh_public_key_path  = "~/.ssh/id_rsa.pub"
+ssh_private_key_path = "~/.ssh/id_rsa"
+
+# Restrict this to the public IP/CIDR of the workstation or CI runner that will
+# SSH to the temporary image-builder VM.
+image_builder_ssh_cidr = "203.0.113.10/32"
+
+# Restrict this before using the cluster outside a short-lived test environment.
+allowed_kubernetes_api_cidrs = ["203.0.113.10/32"]
+
+name = "oke-optimization"
+
+kubernetes_version            = "v1.35.2"
+karpenter_chart_version       = "1.1.0"
+oke_worker_image_display_name = "Oracle-Linux-8.10-2026.02.28-0-OKE-1.35.2-1402"
+
+karpenter_shape_configs = [
+  {
+    ocpus         = 4
+    memory_in_gbs = 16
+  }
+]
+
+karpenter_node_cpu_limit    = "96"
+karpenter_node_memory_limit = "384Gi"

@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+set -euo pipefail
+
+TIMING_DIR="/var/lib/oke-optimization"
+TIMING_LOG="/var/log/oke-optimized-bootstrap-timing.log"
+mkdir -p "$TIMING_DIR"
+touch "$TIMING_LOG"
+
+mark() {
+  local event="$1"
+  local ts epoch uptime_seconds
+  ts=$(date -Is)
+  epoch=$(date +%s)
+  uptime_seconds=$(cut -d' ' -f1 /proc/uptime)
+  printf '%s epoch=%s uptime_seconds=%s event=%s\n' "$ts" "$epoch" "$uptime_seconds" "$event" | tee -a "$TIMING_LOG"
+  printf '%s\n' "$ts" > "$TIMING_DIR/$event"
+}
+
+wait_for_kubelet_active() {
+  local deadline
+  deadline=$((SECONDS + 300))
+  while (( SECONDS < deadline )); do
+    if systemctl is-active --quiet kubelet; then
+      mark "kubelet-active"
+      return 0
+    fi
+    sleep 2
+  done
+  mark "kubelet-active-timeout"
+  return 0
+}
+
+wait_for_node_ready() {
+  local api_server ca_file cert_file deadline node_name
+  deadline=$((SECONDS + 300))
+  ca_file="/etc/kubernetes/ca.crt"
+  cert_file="/var/lib/kubelet/pki/kubelet-client-current.pem"
+  node_name=$(hostname -I 2>/dev/null | awk '{print $1}')
+  if [[ -z "$node_name" ]]; then
+    node_name=$(hostname -f 2>/dev/null || hostname)
+  fi
+
+  while (( SECONDS < deadline )); do
+    if [[ -s /etc/kubernetes/kubelet.conf && -s "$ca_file" && -s "$cert_file" ]]; then
+      api_server=$(awk '/server: / {print $2; exit}' /etc/kubernetes/kubelet.conf)
+      if [[ -n "$api_server" ]]; then
+        if curl -sfL --max-time 5 --cacert "$ca_file" --cert "$cert_file" --key "$cert_file" \
+          "$api_server/api/v1/nodes/$node_name" 2>/dev/null |
+          jq -er '.status.conditions[] | select(.type == "Ready" and .status == "True")' >/dev/null; then
+          mark "node-ready"
+          return 0
+        fi
+      fi
+    fi
+
+    if command -v kubectl >/dev/null 2>&1; then
+      if kubectl get node "$node_name" -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}' 2>/dev/null | grep -q True; then
+        mark "node-ready"
+        return 0
+      fi
+    fi
+
+    sleep 2
+  done
+  mark "node-ready-timeout"
+  return 0
+}
+
+echo "Fetching OKE bootstrap metadata with a single IMDS request..."
+
+mark "imds-fetch-start"
+INSTANCE_JSON=$(curl -sfL -m 5 --retry 3 \
+  -H "Authorization: Bearer Oracle" \
+  "http://169.254.169.254/opc/v2/instance")
+mark "imds-fetch-end"
+
+APISERVER=$(echo "$INSTANCE_JSON" | jq -er '.metadata.apiserver_host')
+CA_CERT=$(echo "$INSTANCE_JSON" | jq -er '.metadata.cluster_ca_cert')
+DNS=$(echo "$INSTANCE_JSON" | jq -r '.metadata.cluster_dns // .metadata.kubedns_svc_ip // "${cluster_dns_ip}"')
+
+KUBELET_ARGS="\
+--kube-reserved=cpu=70m,memory=1Gi \
+--system-reserved=cpu=100m,memory=256Mi \
+--eviction-hard=memory.available<500Mi"
+
+echo "Launching OKE installer with explicit bootstrap values..."
+mark "oke-installer-start"
+bash /etc/oke/oke-install.sh \
+  --apiserver-endpoint "$${APISERVER}" \
+  --kubelet-ca-cert "$${CA_CERT}" \
+  --cluster-dns "$${DNS}" \
+  --kubelet-extra-args "$${KUBELET_ARGS}"
+mark "oke-installer-end"
+
+wait_for_kubelet_active &
+wait_for_node_ready &
+
+echo "Bootstrap logic complete."
