@@ -1,0 +1,24 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+[project]
+name = "oci-oke-mcp"
+version = "1.0.0"
+description = "MCP server for OCI compute/network/OKE tooling"
+requires-python = ">=3.11"
+dependencies = [
+    "oci==2.184.0",
+    "oci-cli==3.90.1",
+    "fastmcp==3.4.5",
+    "starlette==1.3.1",
+    "uvicorn[standard]==0.52.0",
+    "python-dotenv==1.2.2",
+    "msgpack>=1.2.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+include = ["oke_mcp.py", "__init__.py"]

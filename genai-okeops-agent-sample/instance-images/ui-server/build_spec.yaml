@@ -1,0 +1,38 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+version: 0.1
+component: build
+timeoutInSeconds: 3600
+shell: bash
+
+env:
+  variables:
+    IMAGE: ""
+    IMAGE_TAG: "latest"
+    PLATFORM: "linux/arm64"
+  exportedVariables:
+    - IMAGE_TAG
+
+steps:
+  - type: Command
+    name: Build image
+    command: |
+      set -eu
+      if [ -n "$PLATFORM" ]; then
+        docker buildx create --use --name oci-agent-builder || docker buildx use oci-agent-builder
+        docker buildx build --platform "$PLATFORM" -t "$IMAGE" --push .
+      else
+        docker build -t "$IMAGE" .
+        docker push "$IMAGE"
+      fi
+
+  - type: Command
+    name: Confirm image
+    command: |
+      set -eu
+      echo "Pushed $IMAGE for platform ${PLATFORM:-default}"
+
+outputArtifacts:
+  - name: container-image
+    type: DOCKER_IMAGE
+    location: ${IMAGE}

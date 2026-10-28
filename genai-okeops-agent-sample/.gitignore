@@ -1,0 +1,22 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+# Local deployment inputs and generated Terraform files
+**/.terraform/
+*.tfvars
+*.tfvars.json
+*.tfplan
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+crash.log
+
+# Local credentials, application data, and editor files
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+.DS_Store
+instance-images/ui-server/data/

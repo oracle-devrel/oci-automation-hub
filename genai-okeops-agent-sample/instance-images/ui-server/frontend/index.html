@@ -1,0 +1,186 @@
+<!-- Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved. -->
+<!-- The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/ -->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OCI AI Chat</title>
+  <link rel="stylesheet" href="/static/styles.css?v=20260530-collapsible-panels" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <h1>OCI AI Chat</h1>
+        <span id="sessionBadge">thread: loading</span>
+        <div class="auth-row">
+          <span id="userBadge">Checking sign-in...</span>
+          <a id="loginLink" href="/auth/login" class="auth-link hidden">Sign in</a>
+          <a id="logoutLink" href="/auth/logout" class="auth-link hidden">Sign out</a>
+        </div>
+      </div>
+
+      <section class="model-strip" aria-label="Model controls">
+        <label class="control">
+          <span>Region</span>
+          <select id="regionSelect"></select>
+        </label>
+        <label class="control">
+          <span>Compartment</span>
+          <select id="compartmentSelect"></select>
+        </label>
+        <label class="control">
+          <span>Gen AI Project</span>
+          <select id="projectSelect"></select>
+        </label>
+        <label class="control model-control">
+          <span>Model</span>
+          <select id="modelSelect"></select>
+        </label>
+        <label class="control compact">
+          <span>Temp</span>
+          <input id="temperatureInput" type="number" min="0" max="2" step="0.1" value="0.5" />
+        </label>
+        <label class="control compact">
+          <span>Top P</span>
+          <input id="topPInput" type="number" min="0" max="1" step="0.05" value="0.7" />
+        </label>
+        <label class="control compact">
+          <span>Tokens</span>
+          <input id="maxTokensInput" type="number" min="1" max="32000" step="256" value="16000" />
+        </label>
+      </section>
+    </header>
+
+    <section class="workspace">
+      <aside class="rail">
+        <section class="panel history-panel collapsible-panel" data-panel-id="conversations">
+          <div class="panel-head">
+            <div>
+              <h2>Conversations</h2>
+              <span id="historyStatus">Loading</span>
+            </div>
+            <div class="panel-head-actions">
+              <button id="sidebarNewChatBtn" class="icon-button" type="button" title="New conversation">+</button>
+              <button class="icon-button panel-collapse-btn" type="button" title="Collapse Conversations" aria-label="Collapse Conversations" aria-expanded="true" data-panel-toggle>▾</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div id="conversationList" class="conversation-list empty">Loading conversations...</div>
+          </div>
+        </section>
+
+        <section class="panel rag-panel collapsible-panel" data-panel-id="rag-source">
+          <div class="panel-head">
+            <div>
+              <h2>RAG Source</h2>
+              <span id="ragStatus">Not configured</span>
+            </div>
+            <div class="panel-head-actions">
+              <label class="switch" title="Enable or disable RAG for the next chat turn">
+                <input id="ragEnabledInput" type="checkbox" />
+                <span></span>
+              </label>
+              <button class="icon-button panel-collapse-btn" type="button" title="Collapse RAG Source" aria-label="Collapse RAG Source" aria-expanded="true" data-panel-toggle>▾</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <form id="ragSourceForm" class="rag-form">
+              <details class="rag-details" open>
+                <summary>
+                  <span>Configure source</span>
+                  <span id="ragSelectedFiles" class="selected-files">No file selected</span>
+                </summary>
+                <div class="rag-details-body">
+                  <select id="ragStoreSelect"></select>
+                  <input id="ragNameInput" type="text" placeholder="Source name" value="OCI chat RAG source" />
+                  <div class="rag-upload-row">
+                    <label class="file-picker-button" for="ragFileUploadInput">Choose Files</label>
+                    <button id="uploadRagFilesBtn" class="secondary" type="button">Upload</button>
+                  </div>
+                  <input id="ragFileUploadInput" class="native-file-input" type="file" multiple />
+                  <div class="rag-actions">
+                    <button id="saveRagBtn" type="submit">Save</button>
+                    <button id="refreshRagBtn" class="secondary" type="button">Refresh</button>
+                  </div>
+                  <textarea id="ragFileIdsInput" class="manual-file-ids" rows="4" placeholder="File IDs, one per line"></textarea>
+                  <div id="ragSourceOutput" class="rag-output empty">Select a project to load its RAG source.</div>
+                </div>
+              </details>
+            </form>
+          </div>
+        </section>
+
+        <section class="panel mcp-panel collapsible-panel" data-panel-id="mcp-servers">
+          <div class="panel-head">
+            <div>
+              <h2>MCP Servers</h2>
+              <span id="mcpStatus">Loading</span>
+            </div>
+            <div class="panel-head-actions mcp-head-actions">
+              <button id="refreshMcpBtn" class="icon-button" type="button" title="Refresh MCP tool discovery">↻</button>
+              <label class="switch" title="Enable or disable MCP for the next chat turn">
+                <input id="mcpEnabledInput" type="checkbox" checked />
+                <span></span>
+              </label>
+              <button class="icon-button panel-collapse-btn" type="button" title="Collapse MCP Servers" aria-label="Collapse MCP Servers" aria-expanded="true" data-panel-toggle>▾</button>
+            </div>
+          </div>
+          <div class="panel-body mcp-panel-body">
+            <form id="mcpServerForm" class="mcp-form">
+              <input id="mcpServerNameInput" type="text" placeholder="Server name" />
+              <input id="mcpServerUrlInput" type="url" placeholder="https://host/mcp" />
+              <button id="addMcpServerBtn" type="submit">Add</button>
+            </form>
+            <div id="serversOutput" class="server-list empty">Loading connected servers and tools...</div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="chat-pane" aria-label="Chat">
+        <div id="messages" class="messages"></div>
+        <div id="typingIndicator" class="typing hidden">Assistant is responding</div>
+        <form id="chatForm" class="composer">
+          <textarea id="input" rows="3" placeholder="Message the selected OCI model..."></textarea>
+          <div class="composer-actions">
+            <button id="newChatBtn" class="secondary" type="button">New</button>
+            <button id="sendBtn" type="submit">Send</button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="inspector">
+        <section class="panel response-panel collapsible-panel" data-panel-id="response">
+          <div class="panel-head">
+            <div>
+              <h2>Response</h2>
+              <span>Latest assistant output</span>
+            </div>
+            <button class="icon-button panel-collapse-btn" type="button" title="Collapse Response" aria-label="Collapse Response" aria-expanded="true" data-panel-toggle>▾</button>
+          </div>
+          <div class="panel-body">
+            <div id="agentOutput" class="output empty">The assistant reply will appear here.</div>
+          </div>
+        </section>
+
+        <section class="panel trace-panel collapsible-panel" data-panel-id="trace">
+          <div class="panel-head">
+            <div>
+              <h2>Trace</h2>
+              <span>Visible execution events</span>
+            </div>
+            <button class="icon-button panel-collapse-btn" type="button" title="Collapse Trace" aria-label="Collapse Trace" aria-expanded="true" data-panel-toggle>▾</button>
+          </div>
+          <div class="panel-body">
+            <div id="traceOutput" class="output empty">Tool activity and request status will appear here.</div>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script src="/static/app.js?v=20260530-collapsible-panels" defer></script>
+</body>
+</html>

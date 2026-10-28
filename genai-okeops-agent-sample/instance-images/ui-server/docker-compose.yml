@@ -1,0 +1,25 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+services:
+  app:
+    build:
+      context: .
+    image: oci-agent-mvp:latest
+    restart: unless-stopped
+    environment:
+      OCI_IDENTITY_DOMAIN_ISSUER: ${OCI_IDENTITY_DOMAIN_ISSUER:?Set OCI_IDENTITY_DOMAIN_ISSUER}
+      OCI_OIDC_CLIENT_ID: ${OCI_OIDC_CLIENT_ID:?Set OCI_OIDC_CLIENT_ID}
+      OCI_OIDC_CLIENT_SECRET: ${OCI_OIDC_CLIENT_SECRET:?Set OCI_OIDC_CLIENT_SECRET}
+    ports:
+      - "8080:8000"
+    volumes:
+      - app-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=5).read()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  app-data:
