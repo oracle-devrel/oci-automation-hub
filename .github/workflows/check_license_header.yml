@@ -59,6 +59,9 @@ jobs:
               *.sql)
                 PREFIX="--"
                 ;;
+              *.cmd)
+                PREFIX="REM"
+                ;;
               *)
                 PREFIX="#"
                 ;;
@@ -76,7 +79,7 @@ jobs:
             fi
 
             EXPECTED_LINES="1-2"
-            if [[ "$FILE" == *.sh || "$FILE" == *.sh.tftpl ]]; then
+            if [[ "$FILE" == *.sh || "$FILE" == *.sh.tftpl || "$FILE" == *.command ]]; then
               SHEBANG=$(sed -n '1p' "$FILE")
               if [[ "$SHEBANG" != \#!* ]]; then
                 echo "BAD - $FILE — missing shebang on line 1"
@@ -119,7 +122,7 @@ jobs:
             if [ "$ACTUAL_LINE1" = "$LINE1" ] && [ "$ACTUAL_LINE2" = "$LINE2" ]; then
               echo "GOOD - $FILE"
             else
-              if [[ "$FILE" == *.sh || "$FILE" == *.py || "$FILE" == *.sh.tftpl || "$FILE" == *.cloud-init.tftpl || "$FILE" == *.ps1-cloud-init.tftpl ]]; then
+              if [[ "$FILE" == *.sh || "$FILE" == *.py || "$FILE" == *.sh.tftpl || "$FILE" == *.command || "$FILE" == *.cloud-init.tftpl || "$FILE" == *.ps1-cloud-init.tftpl ]]; then
                 echo "BAD - $FILE — missing or incorrect UPL license header (expected on lines ${EXPECTED_LINES})"
               else
                 echo "BAD - $FILE — missing or incorrect UPL license header"
