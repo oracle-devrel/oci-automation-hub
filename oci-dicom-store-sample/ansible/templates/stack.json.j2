@@ -1,0 +1,20 @@
+{# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved. #}
+{# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/ #}
+
+{
+  "deployment_name": {{ deployment_name | to_json }},
+  "region": {{ region | to_json }},
+  "api_endpoint": {{ api_endpoint | to_json }},
+  "dicomweb_endpoint": {{ dicomweb_endpoint | to_json }},
+  "private_orthanc_endpoint": {{ private_orthanc_endpoint | to_json }},
+  "private_ingest_endpoint": {{ private_ingest_endpoint | to_json }},
+  "orthanc_username": {{ orthanc_username | to_json }},
+  "orthanc_password": {{ orthanc_password | to_json }},
+  "postgres_host": {{ postgres_host | to_json }},
+  "postgres_port": 5432,
+  "postgres_database": "postgres",
+  "postgres_username": {{ postgres_username | to_json }},
+  "postgres_password": {{ postgres_password | to_json }},
+  "object_storage_namespace": {{ object_storage_namespace | to_json }},
+  "object_storage_bucket": {{ object_storage_bucket | to_json }}
+}
