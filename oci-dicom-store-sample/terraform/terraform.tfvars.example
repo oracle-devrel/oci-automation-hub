@@ -1,0 +1,89 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+# Required OCI placement
+tenancy_id     = "ocid1.tenancy.oc1..replace_me"
+compartment_id = "ocid1.compartment.oc1..replace_me"
+region         = "eu-frankfurt-1"
+home_region    = "eu-frankfurt-1"
+oci_profile    = "DEFAULT"
+
+# Optional OCI IAM Identity Domains SSO. Use the OCID of the identity domain
+# that owns the existing workforce users. Terraform creates a confidential
+# OIDC application plus four empty role groups; it does not create users.
+# oci_identity_domain_sso = {
+#   identity_domain_id = "ocid1.domain.oc1..replace_me"
+#   group_names = {
+#     orthanc-viewer   = "Orthanc-Viewers"
+#     orthanc-uploader = "Orthanc-Uploaders"
+#     orthanc-editor   = "Orthanc-Editors"
+#     orthanc-admin    = "Orthanc-Administrators"
+#   }
+# }
+
+# Restrict this to hospital, VPN, or corporate egress ranges.
+allowed_client_cidrs = [
+  "203.0.113.10/32",
+]
+
+# Public key for the operator bastion. Terraform reads the public half from
+# disk; no key content is stored in this file. Keep the matching private key
+# outside this repository. bastion_allowed_ssh_cidrs falls back to
+# allowed_client_cidrs when omitted.
+ssh_public_key_path = "~/.ssh/id_rsa.pub"
+# bastion_allowed_ssh_cidrs = ["203.0.113.10/32"]
+
+# Optional FastConnect partner circuit for private, TLS-protected large-file
+# ingest. Obtain the provider service OCID and activation key from OCI and the
+# selected provider. The physical/provider order and on-premises BGP work are
+# external prerequisites.
+# enable_fastconnect                  = true
+# fastconnect_on_premises_cidrs       = ["10.80.0.0/16"]
+# fastconnect_provider_service_id     = "ocid1.providerservice.oc1.eu-frankfurt-1.replace_me"
+# fastconnect_provider_service_key_name = "provider-activation-key"
+# fastconnect_bandwidth_shape_name    = "1 Gbps"
+# fastconnect_customer_asn            = "64512"
+# fastconnect_is_bfd_enabled          = true
+
+# The enforced minimum is two OKE workers, two Orthanc pods, and two managed
+# PostgreSQL nodes. Confirm the selected OKE version is available in the region
+# before deployment.
+oke_kubernetes_version = "v1.35.2"
+oke_node_count         = 2
+orthanc_replicas       = 2
+keycloak_replicas      = 2
+postgres_instances     = 2
+
+# Study-level tenant isolation. The label defaults to "tenant-<map-key>".
+orthanc_tenants = {
+  hospital-a = { display_name = "Hospital A" }
+  hospital-b = { display_name = "Hospital B" }
+}
+
+# Enable only while running make verify-compliance, then set false and apply.
+enable_tenant_test_users = false
+
+# Optional explicit S3-compatible bucket name. The bucket is always created in
+# compartment_id and is accessed through OCI's S3 compatibility endpoint.
+# object_storage_bucket_name = "hospital-dicom-images"
+
+# Optional: route alarm notifications to an existing OCI Notifications topic.
+# alarm_notification_topic_id = "ocid1.onstopic.oc1.eu-frankfurt-1.replace_me"
+
+# Optional: browsers need explicit CORS origins. Non-browser DICOMweb clients do not.
+# cors_allowed_origins = ["https://viewer.example.org"]
+
+# Existing OCI IAM user that will own the stack-specific Customer Secret Key.
+# Terraform does not create, update, or delete this user. The selected user
+# must be unique by email and have the Customer Secret Key capability enabled.
+storage_user_email = "existing.user@example.org"
+
+# Alternatively, prevent Terraform from creating a Customer Secret Key and
+# supply an existing pair through TF_VAR_storage_access_key and
+# TF_VAR_storage_secret_key instead of storing secrets in this file.
+# create_storage_customer_secret_key = false
+
+# Optional HTTPS NLB for uploads larger than the API Gateway 20 MB limit.
+# Restricted to allowed_client_cidrs; clients must explicitly trust the output
+# large_upload_certificate. NLB port 443 terminates TLS at the NGINX pods.
+# enable_large_upload_endpoint = true

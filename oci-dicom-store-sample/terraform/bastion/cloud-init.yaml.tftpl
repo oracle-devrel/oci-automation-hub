@@ -1,0 +1,23 @@
+#cloud-config
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+package_update: false
+package_upgrade: false
+ssh_pwauth: false
+disable_root: true
+
+write_files:
+  - path: /etc/motd.d/50-oci-dicom
+    owner: root:root
+    permissions: "0644"
+    content: |
+      ${deployment_name} OCI DICOM management bastion
+      Configuration is managed by Ansible. Run: sudo dicom-status
+
+runcmd:
+  - [bash, -lc, "command -v python3 >/dev/null"]
+  - [bash, -lc, "touch /var/lib/cloud/instance/ansible-ready"]
+
+final_message: "${deployment_name} bastion cloud-init completed"
