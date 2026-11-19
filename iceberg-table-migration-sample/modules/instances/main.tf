@@ -43,6 +43,12 @@ resource "oci_core_instance" "this" {
     source_id               = var.linux_images[var.region][each.value.image_version]
   }
 
+  # This tenancy enforces IMDSv2-only instances.  Explicitly disable the
+  # legacy IMDSv1 endpoints so instance creation is accepted.
+  instance_options {
+    are_legacy_imds_endpoints_disabled = true
+  }
+
   metadata = {
     ssh_authorized_keys = file(var.ssh_public_key)
     user_data = base64encode(templatefile("${path.module}/../../userdata/cloudinit.sh.tftpl", {

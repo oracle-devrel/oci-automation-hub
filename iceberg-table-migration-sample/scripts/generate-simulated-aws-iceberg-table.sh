@@ -26,7 +26,7 @@ mkdir -p "${CATALOG_WAREHOUSE_DIR}"
 cat >/opt/iceberg/simulated-aws-s3/docker-compose.yml <<MINIO_EOF
 services:
   minio:
-    image: quay.io/minio/minio:latest
+    image: docker.io/pgsty/silo:RELEASE.2026-11-12T00-00-00Z
     container_name: simulated-aws-s3
     restart: unless-stopped
     command: server /data --console-address ":9001"
