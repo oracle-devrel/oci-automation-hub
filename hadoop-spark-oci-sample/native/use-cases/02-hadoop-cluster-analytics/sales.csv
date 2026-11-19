@@ -1,0 +1,16 @@
+order_id,region,product_category,amount
+1001,EMEA,Hardware,1200.00
+1002,EMEA,Software,450.00
+1003,AMER,Hardware,2300.50
+1004,AMER,Services,980.00
+1005,APAC,Software,610.25
+1006,APAC,Hardware,1750.00
+1007,EMEA,Services,330.00
+1008,AMER,Software,1280.75
+1009,APAC,Services,540.00
+1010,EMEA,Hardware,890.40
+1011,AMER,Hardware,3025.00
+1012,APAC,Software,220.10
+1013,EMEA,Software,775.60
+1014,AMER,Services,1490.00
+1015,APAC,Hardware,1340.80

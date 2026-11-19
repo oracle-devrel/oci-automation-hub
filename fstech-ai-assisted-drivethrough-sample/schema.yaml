@@ -1,0 +1,221 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+title: FSTech Intelligent Drive-Thru
+description: Deploy the complete OCI drive-thru application, database, AI agent, speech, vision, and web runtime.
+informationalText: |
+  This Resource Manager stack creates an Autonomous AI Database 26ai, loads the
+  bundled offers and order-history CSV files, publishes ORDS APIs, creates the
+  Generative AI Agent and endpoint, and starts the text/image/voice web app.
+  It also creates the runtime dynamic group and IAM policies automatically.
+  IAM mutations use the tenancy home region independently of the application region.
+  The runtime uses OCI Vision for number plates and OCI Speech with Victoria.
+schemaVersion: 1.1.0
+version: "20260708.1"
+locale: en
+
+variableGroups:
+  - title: Required OCI placement
+    variables:
+      - ${tenancy_ocid}
+      - ${compartment_ocid}
+      - ${region}
+
+  - title: Network choice
+    variables:
+      - ${use_existing_network}
+
+  - title: Create a dedicated network
+    visible:
+      not:
+        - ${use_existing_network}
+    variables:
+      - ${new_vcn_cidr}
+      - ${new_subnet_cidr}
+
+  - title: Use an existing network
+    visible: ${use_existing_network}
+    variables:
+      - ${existing_network_compartment_ocid}
+      - ${existing_vcn_id}
+      - ${existing_subnet_id}
+
+  - title: Optional naming and diagnostics
+    variables:
+      - ${name_prefix}
+      - ${ssh_public_key}
+
+  - title: Optional sizing
+    variables:
+      - ${adb_compute_count}
+      - ${vm_shape}
+      - ${vm_ocpus}
+      - ${vm_memory_gbs}
+
+  - title: Generative AI Agent quota
+    variables:
+      - ${create_genai_agent}
+      - ${existing_agent_id}
+      - ${existing_agent_endpoint_id}
+      - ${existing_agent_compartment_ocid}
+
+variables:
+  tenancy_ocid:
+    type: string
+    title: Tenancy OCID
+    description: Supplied automatically by OCI Resource Manager.
+    required: true
+    visible: false
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: Parent application compartment
+    description: Parent compartment in which Terraform creates Network, Data, AI, and Application child compartments.
+    required: true
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+
+  region:
+    type: oci:identity:region:name
+    title: Region
+    description: Resource Manager supplies the stack region. OCI Generative AI Agents must be available there.
+    required: true
+    visible: false
+
+  name_prefix:
+    type: string
+    title: Resource name prefix
+    description: Three to thirteen lowercase letters or numbers.
+    required: true
+    default: fstech
+    pattern: "^[a-z][a-z0-9]{2,12}$"
+
+  create_genai_agent:
+    type: boolean
+    title: Create a new GenAI Agent
+    description: Disable this when agent-count is exhausted and supply an existing endpoint below.
+    required: true
+    default: true
+
+  existing_agent_endpoint_id:
+    type: string
+    title: Existing Agent endpoint OCID
+    description: Required only when Create a new GenAI Agent is disabled.
+    required: false
+    default: ""
+
+  existing_agent_id:
+    type: string
+    title: Existing parent Agent OCID
+    description: Parent Agent of the reused endpoint. Terraform attaches the function tools to this Agent.
+    required: false
+    default: ""
+
+  existing_agent_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: Existing Agent compartment
+    description: Compartment containing the reused endpoint. Required only when new Agent creation is disabled.
+    required: false
+    default: ""
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+
+  ssh_public_key:
+    type: oci:core:ssh:publickey
+    title: SSH public key
+    description: Optional. Add a key only if shell diagnostics are required.
+    required: false
+    default: ""
+
+  use_existing_network:
+    type: boolean
+    title: Use an existing VCN and subnet
+    description: Select this to deploy into an existing public subnet. Leave it unselected to create a dedicated VCN using CIDRs that you provide.
+    required: true
+
+  new_vcn_cidr:
+    type: string
+    title: New VCN CIDR
+    description: Required when creating a network. Choose a non-overlapping RFC1918 CIDR if this VCN may later be peered.
+    required: true
+    default: ""
+    pattern: "^(10|172|192)\\."
+
+  new_subnet_cidr:
+    type: string
+    title: New public subnet CIDR
+    description: Required when creating a network. It must be contained within the new VCN CIDR.
+    required: true
+    default: ""
+    pattern: "^(10|172|192)\\."
+
+  existing_network_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: Existing network compartment
+    description: Compartment containing the VCN and public subnet.
+    required: true
+    default: ""
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+
+  existing_vcn_id:
+    type: oci:core:vcn:id
+    title: Existing VCN
+    description: VCN in which the application NSG and VNIC will be created.
+    required: true
+    default: ""
+    dependsOn:
+      compartmentId: ${existing_network_compartment_ocid}
+
+  existing_subnet_id:
+    type: oci:core:subnet:id
+    title: Existing public subnet
+    description: Must allow public IP addresses and have a route to an Internet Gateway.
+    required: true
+    default: ""
+    dependsOn:
+      compartmentId: ${existing_network_compartment_ocid}
+      vcnId: ${existing_vcn_id}
+      hidePrivateSubnet: true
+
+  adb_compute_count:
+    type: number
+    title: Autonomous Database ECPUs
+    required: true
+    default: 2
+    minimum: 2
+
+  vm_shape:
+    type: enum
+    title: Application VM shape
+    required: true
+    default: VM.Standard.E4.Flex
+    enum:
+      - VM.Standard.E4.Flex
+      - VM.Standard.E5.Flex
+
+  vm_ocpus:
+    type: number
+    title: Application VM OCPUs
+    required: true
+    default: 2
+    minimum: 1
+
+  vm_memory_gbs:
+    type: number
+    title: Application VM memory (GB)
+    required: true
+    default: 16
+    minimum: 8
+
+  provider_auth:
+    type: string
+    required: false
+    visible: false
+    default: ""
+
+  tts_voice_id:
+    type: string
+    required: true
+    visible: false
+    default: Victoria

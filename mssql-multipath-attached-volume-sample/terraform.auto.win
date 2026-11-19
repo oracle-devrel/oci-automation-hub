@@ -1,0 +1,122 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+config_file_profile = "ION-IAD"
+
+tenancy_ocid     = ""
+compartment_ocid = ""
+
+enable_agent_auto_iscsi_login = false
+
+instance_params = {
+  db01 = {
+    ad                      = 1
+    os_type                 = "windows"
+    display_name            = "mssql-db01"
+    shape                   = "VM.Standard.E5.Flex"
+    hostname                = "mssqldb01"
+    subnet_ocid             = ""
+    image_ocid              = "ocid1.image.oc1.iad.aaaaaaaajw2g5apn3z4kqshyezbhre7gcyuky3f4qlyqoazyxl6hr24en56q"
+    boot_volume_size_in_gbs = 100
+    assign_public_ip        = true
+    ssh_public_key          = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyReplaceMeWithYourKey"
+    nsg_ocids               = []
+    shape_config = {
+      ocpus         = 16
+      memory_in_gbs = 128
+    }
+    freeform_tags = {
+      role = "primary"
+    }
+  }
+}
+
+# One or many volumes per compute, bound by instance_key.
+# RAID-0 is created when exactly 2 volumes on the same instance share the same raid0_group value.
+# Linux volumes must use attachment_type = "iscsi".
+# Windows volumes can use attachment_type = "iscsi" or "paravirtualized".
+bv_params = {
+  db01_data_a = {
+    instance_key    = "db01"
+    display_name    = "db01-data-a"
+    bv_size         = 200
+    device_name     = "/dev/oracleoci/oraclevdb"
+    attachment_type = "paravirtualized"
+    vpus_per_gb     = 40
+    use_chap        = false
+    raid0_group     = "db01-data-raid"
+    filesystem_type = "ntfs"
+    mount_point     = "D:"
+  }
+
+  db01_data_b = {
+    instance_key    = "db01"
+    display_name    = "db01-data-b"
+    bv_size         = 200
+    device_name     = "/dev/oracleoci/oraclevdc"
+    attachment_type = "paravirtualized"
+    vpus_per_gb     = 40
+    use_chap        = false
+    raid0_group     = "db01-data-raid"
+    filesystem_type = "ntfs"
+    mount_point     = "D:"
+  }
+
+  db01_backup = {
+    instance_key    = "db01"
+    display_name    = "db01-backup"
+    bv_size         = 200
+    device_name     = "/dev/oracleoci/oraclevdd"
+    attachment_type = "paravirtualized"
+    vpus_per_gb     = 30
+    use_chap        = false
+    raid0_group     = ""
+    filesystem_type = "ntfs"
+    mount_point     = "E:"
+  }
+
+  db01_temp = {
+    instance_key    = "db01"
+    display_name    = "db01-temp"
+    bv_size         = 200
+    device_name     = "/dev/oracleoci/oraclevde"
+    attachment_type = "paravirtualized"
+    vpus_per_gb     = 30
+    use_chap        = false
+    raid0_group     = ""
+    filesystem_type = "ntfs"
+    mount_point     = "F:"
+  }
+}
+
+# Linux cloud-init SQL Server settings
+linux_timezone                 = "UTC"
+linux_mssql_pid                = "Developer"
+linux_mssql_sa_password        = "Str0ngPassword!ChangeMe"
+linux_sql_tcp_port             = 1433
+linux_install_mssql_tools      = true
+linux_open_firewall            = true
+linux_enable_mssql_agent       = true
+linux_mssql_configure_memory   = false
+linux_mssql_memory_limit_mb    = 4096
+linux_mssql_default_data_dir   = "/var/opt/mssql/data"
+linux_mssql_default_log_dir    = "/var/opt/mssql/log"
+linux_mssql_default_backup_dir = "/var/opt/mssql/backup"
+linux_volume_mount_owner       = "mssql"
+linux_volume_mount_group       = "mssql"
+linux_volume_mount_mode        = "0770"
+
+# Windows cloud-init SQL Server settings (used only for instances with os_type = "windows")
+windows_mssql_sa_password  = "Str0ngPassword!ChangeMe"
+windows_sql_instance_name  = "SQLEXPRESS"
+windows_sql_features       = "SQLENGINE"
+windows_sql_tcp_port       = 1433
+windows_choco_package_name = "sql-server-express"
+windows_open_firewall      = true
+windows_sql_collation      = "SQL_Latin1_General_CP1_CI_AS"
+
+freeform_tags = {
+  environment = "dev"
+  managed_by  = "terraform"
+  workload    = "mssql"
+}

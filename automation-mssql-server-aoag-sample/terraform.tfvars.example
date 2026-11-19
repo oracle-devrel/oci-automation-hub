@@ -1,0 +1,94 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+# This example is for a local Terraform CLI deployment. Copy it to the local,
+# Git-ignored terraform.tfvars file, then review every input before applying.
+# Replace every placeholder beginning with REPLACE_, keep intentionally blank
+# values blank unless their comments say otherwise, and adjust the example
+# defaults when they do not suit the target environment. The module is not
+# tied to San Jose.
+# Do not commit or upload a populated terraform.tfvars file.
+#
+# For OCI Resource Manager, leave this example in the source ZIP and set the
+# equivalent values in the Stack variables page instead of creating a local
+# terraform.tfvars file.
+
+# For a local CLI deployment use "local" and ensure oci_config_profile exists
+# in ~/.oci/config. For an OCI Resource Manager stack, set this to
+# "resource_manager" in the Stack variables page.
+execution_environment = "local"
+oci_config_profile    = "DEFAULT" # Used only when execution_environment = "local".
+region             = "REPLACE_WITH_OCI_REGION"
+compartment_id     = "REPLACE_WITH_COMPARTMENT_ID"
+windows_image_ocid = "REPLACE_WITH_IMAGE_OCID"
+
+# Leave these empty for automatic placement: DC/SQL1 use AD-1, and SQL2 uses
+# AD-2 when available; in one-AD regions all three use AD-1.
+dc_availability_domain   = ""
+sql1_availability_domain = ""
+sql2_availability_domain = ""
+
+vcn_name         = "SQL_VCN"
+vcn_dns_label    = "sqlvcn"
+vcn_cidr         = "10.0.0.0/16"
+dc_subnet_cidr   = "10.0.10.0/24"
+sql1_subnet_cidr = "10.0.20.0/24"
+sql2_subnet_cidr = "10.0.30.0/24"
+dc_private_ip    = "10.0.10.10"
+sql1_private_ip  = "10.0.20.10"
+sql2_private_ip  = "10.0.30.10"
+
+# Credentials are sensitive. Choose one method after copying this file:
+# 1. Keep the password lines commented and set the TF_VAR_* environment
+#    variables before running Terraform; or
+# 2. Uncomment and populate the password lines in your local, uncommitted
+#    terraform.tfvars file. Never commit real passwords.
+domain_name                  = "mssqlaoag.demo"
+domain_netbios_name          = "MSSQLAOAG"
+domain_admin_user            = "domainadmin"
+sql_service_account_user     = "sqlsa"
+local_admin_user             = "opc"
+
+# domain_admin_password        = "REPLACE_WITH_DOMAIN_ADMIN_PASSWORD"
+# sql_service_account_password = "" # Empty reuses domain_admin_password for this POC.
+# windows_admin_password       = "" # Empty reuses domain_admin_password for local Administrator and opc.
+
+auto_configure_domain_controller = true
+auto_configure_windows_nodes     = true
+auto_install_sql_server          = true
+install_ssms                     = true
+auto_configure_wsfc              = true
+skip_cluster_validation          = true
+automation_artifact_expiration   = "2030-01-01T00:00:00Z"
+sql_server_download_url          = "https://go.microsoft.com/fwlink/?linkid=2344626"
+ssms_download_url                = "https://aka.ms/ssms/22/release/vs_SSMS.exe"
+
+wsfc_cluster_name       = "SQLAGCLUSTER"
+wsfc_witness_path       = "C:\\ClusterWitness"
+wsfc_witness_share_name = "ClusterWitness"
+wsfc_cluster_ip_sql1    = "10.0.20.20"
+wsfc_cluster_ip_sql2    = "10.0.30.20"
+
+aoag_database_name           = "AdventureWorks2025"
+aoag_availability_group_name = "TestAOAG"
+aoag_listener_name           = "AOAG-LSN"
+aoag_listener_port           = 1433
+aoag_listener_ip_sql1        = "10.0.20.30"
+aoag_listener_ip_sql2        = "10.0.30.30"
+hadr_endpoint_name           = "Hadr_endpoint"
+hadr_endpoint_port           = 5022
+sample_database_download_url  = "https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2025.bak"
+
+shape                       = "VM.Standard.E5.Flex"
+ocpus                       = 6
+memory_in_gbs               = 16
+sql_ocpus                   = 8
+sql_memory_in_gbs           = 32
+boot_volume_size_in_gbs     = 100
+sql_data_volume_size_in_gbs = 100
+sql_data_drive_letter       = "F"
+
+dc_rdp_source_cidr          = "0.0.0.0/0"
+sql_rdp_source_cidr         = "0.0.0.0/0"
+freeform_tags = {
+  Project = "sqlagtest"
+}

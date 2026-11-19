@@ -1,0 +1,364 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+schemaVersion: 1.1.0
+version: "20260604"
+locale: "en"
+title: "OCI FLB SSL Benchmark Simple"
+description: "Simple Resource Manager stack to benchmark OCI Flexible Load Balancer CPS and bandwidth with SSL termination. Results upload to an existing Object Storage bucket."
+
+variableGroups:
+  - title: "Required OCI Inputs"
+    variables:
+      - region
+      - compartment_ocid
+      - availability_domain
+      - image_ocid
+      - ssh_public_key
+  - title: "Existing Results Bucket"
+    variables:
+      - results_bucket_name
+      - results_namespace
+      - results_prefix
+  - title: "Topology"
+    variables:
+      - lb_count
+      - lb_min_mbps
+      - lb_max_mbps
+      - backend_count
+      - backend_shape
+      - backend_ocpus
+      - backend_memory_gb
+      - generator_shape
+      - generator_ocpus
+      - generator_memory_gb
+  - title: "Benchmark Suite"
+    variables:
+      - run_suite_on_apply
+      - cps_tiers
+      - cps_warmup_seconds
+      - cps_hold_seconds
+      - throughput_targets_gbps
+      - throughput_payload_key
+      - throughput_warmup_seconds
+      - throughput_hold_seconds
+      - worker_processes
+  - title: "Sizing Inputs"
+    variables:
+      - customer_peak_cps
+      - customer_peak_gbps
+      - sizing_headroom_percent
+  - title: "Advanced"
+    variables:
+      - name_prefix
+      - ssh_allowed_cidr
+      - use_stateless_security_rules
+      - vcn_cidr
+      - lb_subnet_cidr
+      - backend_subnet_cidr
+      - generator_subnet_cidr
+      - generate_lb_certificate
+      - certificate_common_name
+      - lb_certificate_pem
+      - lb_private_key_pem
+      - lb_ca_certificate_pem
+      - payload_sizes
+      - initial_wait_seconds
+      - locust_wait_time_seconds
+      - locust_connect_timeout_seconds
+      - locust_read_timeout_seconds
+      - locust_verify_tls
+      - cpu_reserve
+      - min_workers
+      - max_workers
+
+variables:
+  region:
+    type: oci:identity:region:name
+    required: true
+    title: Region
+    description: OCI region where the benchmark environment is created.
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    required: true
+    title: Benchmark Compartment
+    description: Compartment where benchmark resources are created.
+  availability_domain:
+    type: oci:identity:availabilitydomain:name
+    required: true
+    title: Availability Domain
+    description: Availability domain for backend and generator instances.
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+  image_ocid:
+    type: string
+    required: true
+    title: Oracle Linux Image OCID
+    description: Oracle Linux image OCID used by backend and generator instances.
+  ssh_public_key:
+    type: oci:core:ssh:publickey
+    required: true
+    title: SSH Public Key
+    description: SSH public key injected into benchmark instances.
+  results_bucket_name:
+    type: string
+    required: true
+    title: Existing Results Bucket Name
+    description: Existing Object Storage bucket that receives benchmark artifacts.
+    minLength: 1
+  results_namespace:
+    type: string
+    required: false
+    title: Object Storage Namespace
+    description: Leave blank to auto-detect with get_namespace() from the generator.
+  results_prefix:
+    type: string
+    required: false
+    title: Results Object Prefix
+    description: Object prefix under the existing bucket.
+  name_prefix:
+    type: string
+    required: false
+    title: Resource Name Prefix
+    description: Display-name prefix for created resources.
+    minLength: 1
+    maxLength: 32
+  ssh_allowed_cidr:
+    type: string
+    required: false
+    title: SSH Allowed CIDR
+    description: CIDR allowed to SSH to the generator public IP. Leave blank to disable SSH ingress.
+  use_stateless_security_rules:
+    type: boolean
+    required: false
+    title: Use Stateless Security Rules
+    description: Enable stateless NSG rules on the benchmark data path for CPS-focused A/B testing. Leave disabled for the default stateful behavior.
+  vcn_cidr:
+    type: string
+    required: false
+    title: VCN CIDR
+    description: CIDR block for the benchmark VCN.
+  lb_subnet_cidr:
+    type: string
+    required: false
+    title: Load Balancer Subnet CIDR
+    description: Private subnet CIDR for flexible load balancers.
+  backend_subnet_cidr:
+    type: string
+    required: false
+    title: Backend Subnet CIDR
+    description: Private subnet CIDR for backend web servers.
+  generator_subnet_cidr:
+    type: string
+    required: false
+    title: Generator Subnet CIDR
+    description: Public subnet CIDR for the generator/controller instance.
+  lb_count:
+    type: number
+    required: false
+    title: Number of Load Balancers
+    description: Number of flexible load balancers to create and benchmark.
+    minimum: 1
+    maximum: 50
+  lb_min_mbps:
+    type: number
+    required: false
+    title: Per-LB Minimum Mbps
+    description: Minimum flexible load balancer bandwidth per LB, in Mbps.
+    minimum: 10
+    maximum: 8000
+  lb_max_mbps:
+    type: number
+    required: false
+    title: Per-LB Maximum Mbps
+    description: Maximum flexible load balancer bandwidth per LB, in Mbps. Must be at least the minimum Mbps.
+    minimum: 10
+    maximum: 8000
+  backend_count:
+    type: number
+    required: false
+    title: Backend Count
+    description: Number of backend NGINX instances.
+    minimum: 1
+    maximum: 200
+  backend_shape:
+    type: string
+    required: false
+    title: Backend Shape
+    description: Compute shape for backend NGINX instances.
+  backend_ocpus:
+    type: number
+    required: false
+    title: Backend OCPUs
+    description: OCPUs per backend when using a Flex shape.
+    minimum: 1
+  backend_memory_gb:
+    type: number
+    required: false
+    title: Backend Memory GB
+    description: Memory in GB per backend when using a Flex shape.
+    minimum: 1
+  generator_shape:
+    type: string
+    required: false
+    title: Generator Shape
+    description: Compute shape for the generator/controller instance.
+  generator_ocpus:
+    type: number
+    required: false
+    title: Generator OCPUs
+    description: OCPUs for the generator when using a Flex shape.
+    minimum: 1
+  generator_memory_gb:
+    type: number
+    required: false
+    title: Generator Memory GB
+    description: Memory in GB for the generator when using a Flex shape.
+    minimum: 1
+  generate_lb_certificate:
+    type: boolean
+    required: false
+    title: Generate LB Certificate
+    description: Generate a self-signed ECDSA certificate for SSL termination.
+  certificate_common_name:
+    type: string
+    required: false
+    title: Certificate Common Name
+    description: Common Name for the generated self-signed load balancer certificate.
+  run_suite_on_apply:
+    type: boolean
+    required: false
+    title: Run Suite On Apply
+    description: Run the benchmark suite automatically after provisioning.
+  initial_wait_seconds:
+    type: number
+    required: false
+    title: Initial Wait Seconds
+    description: Controller wait time before readiness checks.
+    minimum: 0
+  cps_tiers:
+    type: list(number)
+    required: false
+    title: CPS Tiers
+    description: Non-empty list of positive CPS targets.
+  cps_warmup_seconds:
+    type: number
+    required: false
+    title: CPS Warmup Seconds
+    description: Warmup duration for each CPS tier.
+    minimum: 1
+  cps_hold_seconds:
+    type: number
+    required: false
+    title: CPS Hold Seconds
+    description: Hold duration for each CPS tier.
+    minimum: 1
+  throughput_targets_gbps:
+    type: list(number)
+    required: false
+    title: Throughput Targets Gbps
+    description: Non-empty list of positive throughput targets in Gbps.
+  throughput_payload_key:
+    type: string
+    required: false
+    title: Throughput Payload Key
+    description: Payload key used for throughput tests. Must match a key in payload_sizes.
+    pattern: "^[A-Za-z0-9._-]+$"
+  throughput_warmup_seconds:
+    type: number
+    required: false
+    title: Throughput Warmup Seconds
+    description: Warmup duration for each throughput target.
+    minimum: 1
+  throughput_hold_seconds:
+    type: number
+    required: false
+    title: Throughput Hold Seconds
+    description: Hold duration for each throughput target.
+    minimum: 1
+  worker_processes:
+    type: string
+    required: false
+    title: Local Locust Workers
+    description: Use auto or a positive integer string.
+  cpu_reserve:
+    type: number
+    required: false
+    title: CPU Reserve
+    description: CPUs to reserve when worker_processes is auto.
+    minimum: 0
+  min_workers:
+    type: number
+    required: false
+    title: Minimum Workers
+    description: Minimum local Locust workers.
+    minimum: 1
+  max_workers:
+    type: number
+    required: false
+    title: Maximum Workers
+    description: Maximum local Locust workers. Must be at least the minimum workers value.
+    minimum: 1
+  payload_sizes:
+    type: map(number)
+    required: false
+    title: Payload Sizes
+    description: Map of payload keys to positive byte sizes. Keys become /payload_<key>.
+  locust_wait_time_seconds:
+    type: number
+    required: false
+    title: Locust Wait Time Seconds
+    description: Constant Locust wait time between tasks.
+    minimum: 0
+  locust_connect_timeout_seconds:
+    type: number
+    required: false
+    title: Locust Connect Timeout Seconds
+    description: Locust connection timeout in seconds.
+    minimum: 1
+  locust_read_timeout_seconds:
+    type: number
+    required: false
+    title: Locust Read Timeout Seconds
+    description: Locust read timeout in seconds.
+    minimum: 1
+  locust_verify_tls:
+    type: boolean
+    required: false
+    title: Verify LB TLS Certificate
+    description: Whether Locust verifies the load balancer certificate.
+  customer_peak_cps:
+    type: number
+    required: false
+    title: Customer Peak CPS
+    description: Optional customer peak CPS used for sizing recommendations. Use 0 to skip.
+    minimum: 0
+  customer_peak_gbps:
+    type: number
+    required: false
+    title: Customer Peak Gbps
+    description: Optional customer peak Gbps used for sizing recommendations. Use 0 to skip.
+    minimum: 0
+  sizing_headroom_percent:
+    type: number
+    required: false
+    title: Sizing Headroom Percent
+    description: Headroom percentage for sizing recommendations.
+    minimum: 0
+  lb_certificate_pem:
+    type: text
+    required: false
+    title: Load Balancer Certificate PEM
+    description: Existing public certificate PEM when certificate generation is disabled.
+    sensitive: true
+  lb_private_key_pem:
+    type: text
+    required: false
+    title: Load Balancer Private Key PEM
+    description: Existing private key PEM when certificate generation is disabled.
+    sensitive: true
+  lb_ca_certificate_pem:
+    type: text
+    required: false
+    title: Load Balancer CA Certificate PEM
+    description: Optional CA certificate PEM when certificate generation is disabled.
+    sensitive: true

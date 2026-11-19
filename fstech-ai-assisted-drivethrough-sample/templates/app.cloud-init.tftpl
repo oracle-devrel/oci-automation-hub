@@ -1,0 +1,125 @@
+#cloud-config
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+
+package_update: true
+
+write_files:
+  - path: /etc/fstech.env
+    permissions: '0600'
+    content: |
+      AUTH_TYPE=instance_principal
+      OCI_REGION=${region}
+      VISION_REGION=${vision_region}
+      COMPARTMENT_ID=${compartment_ocid}
+      SUPERVISOR_ENDPOINT=${endpoint_ocid}
+      NAMESPACE_NAME=${namespace}
+      BUCKET_NAME=${bucket_name}
+      TTS_REGION=${tts_region}
+      TTS_VOICE_ID=${tts_voice_id}
+      STT_MODEL_TYPE=WHISPER_MEDIUM
+      STT_LANGUAGE_CODE=en
+      ADB_DSN=${adb_dsn}
+      ADB_ADMIN_PASSWORD=${adb_admin_password}
+      ADB_WALLET_PASSWORD=${adb_wallet_password}
+      GET_ORDER_HISTORY_ENDPOINT=${ords_root}/get_order_history
+      SEARCH_OFFERS_ENDPOINT=${ords_root}/search_offers
+      GET_ORDERS_ENDPOINT=${ords_root}/get_orders
+      INSERT_ORDER_ENDPOINT=${ords_root}/insert_order
+      WEATHER_LATITUDE=32.7767
+      WEATHER_LONGITUDE=-96.7970
+      WEATHER_LOCATION=Dallas
+      LOG_LEVEL=INFO
+      TRACE_AGENT_FLOW=true
+
+  - path: /etc/systemd/system/fstech-api.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=FSTech Drive-Thru API
+      After=network-online.target
+      Wants=network-online.target
+
+      [Service]
+      Type=simple
+      EnvironmentFile=/etc/fstech.env
+      Environment=TNS_ADMIN=/opt/fstech/wallet
+      ExecStart=/opt/fstech/app/start-backend.sh
+      Restart=always
+      RestartSec=20
+      User=fstech
+      Group=fstech
+
+      [Install]
+      WantedBy=multi-user.target
+
+  - path: /etc/systemd/system/fstech-ui.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=FSTech Drive-Thru UI
+      After=network-online.target fstech-api.service
+      Wants=network-online.target
+
+      [Service]
+      Type=simple
+      Environment=PATH=/usr/local/bin:/usr/bin:/bin
+      ExecStart=/opt/fstech/app/start-ui.sh
+      Restart=always
+      RestartSec=10
+      User=fstech
+      Group=fstech
+
+      [Install]
+      WantedBy=multi-user.target
+
+  - path: /etc/nginx/conf.d/fstech.conf
+    permissions: '0644'
+    content: |
+      server {
+        listen 80 default_server;
+        server_name drivethru.local;
+        client_max_body_size 25m;
+
+        location /api/ {
+          proxy_pass http://127.0.0.1:8000;
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_read_timeout 360s;
+        }
+
+        location = /health {
+          proxy_pass http://127.0.0.1:8000/health;
+        }
+
+        location / {
+          proxy_pass http://127.0.0.1:3000;
+          proxy_set_header Host $host;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+        }
+      }
+
+runcmd:
+  - [bash, -lc, "dnf -y install python3.11 python3.11-pip unzip nginx xz policycoreutils-python-utils"]
+  - [bash, -lc, "curl --fail --location --retry 10 --retry-delay 5 https://nodejs.org/dist/v22.14.0/node-v22.14.0-linux-x64.tar.xz -o /tmp/node.tar.xz"]
+  - [bash, -lc, "tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1 && rm -f /tmp/node.tar.xz"]
+  - [bash, -lc, "/usr/local/bin/node --version && /usr/local/bin/npm --version"]
+  - [bash, -lc, "id fstech >/dev/null 2>&1 || useradd --system --create-home --shell /sbin/nologin fstech"]
+  - [bash, -lc, "mkdir -p /opt/fstech/app /opt/fstech/wallet"]
+  - [bash, -lc, "curl --fail --retry 20 --retry-delay 10 '${runtime_url}' -o /opt/fstech/runtime.zip"]
+  - [bash, -lc, "curl --fail --retry 20 --retry-delay 10 '${wallet_url}' -o /opt/fstech/wallet.zip.b64"]
+  - [bash, -lc, "base64 --decode /opt/fstech/wallet.zip.b64 > /opt/fstech/wallet.zip && rm -f /opt/fstech/wallet.zip.b64"]
+  - [bash, -lc, "unzip -oq /opt/fstech/runtime.zip -d /opt/fstech/app"]
+  - [bash, -lc, "unzip -oq /opt/fstech/wallet.zip -d /opt/fstech/wallet"]
+  - [bash, -lc, "python3.11 -m venv /opt/fstech/venv"]
+  - [bash, -lc, "/opt/fstech/venv/bin/pip install --upgrade pip && /opt/fstech/venv/bin/pip install -r /opt/fstech/app/requirements.txt"]
+  - [bash, -lc, "cd /opt/fstech/app/ui && NEXT_PUBLIC_AGENT_API_URL='' /usr/local/bin/npm ci --include=dev && NEXT_PUBLIC_AGENT_API_URL='' /usr/local/bin/npm run build && touch .fstech-build-ready"]
+  - [bash, -lc, "chmod +x /opt/fstech/app/start-backend.sh /opt/fstech/app/start-ui.sh"]
+  - [bash, -lc, "chown -R fstech:fstech /opt/fstech /etc/fstech.env"]
+  - [bash, -lc, "rm -f /etc/nginx/conf.d/default.conf"]
+  - [bash, -lc, "setsebool -P httpd_can_network_connect 1"]
+  - [bash, -lc, "firewall-cmd --permanent --add-service=http && firewall-cmd --reload || true"]
+  - [bash, -lc, "test -x /usr/local/bin/node && test -x /usr/local/bin/npm && systemctl daemon-reload && systemctl enable --now fstech-api fstech-ui nginx"]

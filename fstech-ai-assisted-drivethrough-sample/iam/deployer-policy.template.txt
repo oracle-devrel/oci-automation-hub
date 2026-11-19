@@ -1,0 +1,17 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+Allow group FSTechDeployers to manage orm-stacks in compartment id <APP_COMPARTMENT_OCID>
+Allow group FSTechDeployers to manage orm-jobs in compartment id <APP_COMPARTMENT_OCID>
+Allow group FSTechDeployers to inspect all-resources in tenancy
+Allow group FSTechDeployers to manage compartments in compartment id <APP_COMPARTMENT_OCID>
+
+Allow group FSTechDeployers to manage virtual-network-family in compartment id <APP_COMPARTMENT_OCID>
+Allow group FSTechDeployers to manage instance-family in compartment id <APP_COMPARTMENT_OCID>
+Allow group FSTechDeployers to manage volume-family in compartment id <APP_COMPARTMENT_OCID>
+Allow group FSTechDeployers to manage object-family in compartment id <APP_COMPARTMENT_OCID>
+Allow group FSTechDeployers to manage autonomous-database-family in compartment id <APP_COMPARTMENT_OCID>
+Allow group FSTechDeployers to manage genai-agent-family in compartment id <APP_COMPARTMENT_OCID>
+
+Allow group FSTechDeployers to manage dynamic-groups in tenancy
+Allow group FSTechDeployers to manage policies in tenancy

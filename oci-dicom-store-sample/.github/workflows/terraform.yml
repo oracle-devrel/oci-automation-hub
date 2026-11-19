@@ -1,0 +1,33 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+name: Terraform
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.14.3
+          terraform_wrapper: false
+      - name: Install Ansible
+        run: python3 -m pip install 'ansible-core~=2.17.0'
+      - name: Create validation-only SSH key
+        run: ssh-keygen -q -t rsa -b 3072 -N '' -f /tmp/oci-dicom-validation
+      - name: Validate
+        env:
+          TF_VAR_ssh_public_key_path: /tmp/oci-dicom-validation.pub
+          VALIDATION_TEST_TIMEOUT_SECONDS: 120
+        run: scripts/validate.sh

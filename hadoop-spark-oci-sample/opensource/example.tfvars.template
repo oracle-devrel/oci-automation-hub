@@ -1,0 +1,41 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+###############################################################################
+# Example variable file for local (CLI) runs. Copy it before editing:
+#
+#   cp example.tfvars.template my.tfvars
+#   terraform apply -var-file=my.tfvars
+#
+# In OCI Resource Manager the console form (schema.yaml) collects every value.
+###############################################################################
+
+# Context (Resource Manager fills these automatically).
+tenancy_ocid     = "ocid1.tenancy.oc1..xxxxxxxx"
+compartment_ocid = "ocid1.compartment.oc1..xxxxxxxx"
+region           = "eu-frankfurt-1"
+
+# Required.
+ssh_public_key = "ssh-rsa AAAA... you@example.com"
+
+# Required - the ONLY network allowed to reach the API endpoint / Bastion.
+# Set this to your own IP. It must not be 0.0.0.0/0.
+admin_cidr = "203.0.113.4/32"
+
+# Cluster.
+cluster_name = "bigdata"
+# Full version only (vMAJOR.MINOR.PATCH); 'v1.36' won't match a worker image.
+# v1.35.2 is the latest GA; v1.36.0 is preview-only (not for production).
+# List valid versions: oci ce cluster-options get --cluster-option-id all
+kubernetes_version = "v1.35.2"
+node_count         = 3
+
+# Storage backends - deploy either, or both.
+deploy_hdfs           = true
+deploy_object_storage = true
+
+# Spark.
+deploy_spark = true
+
+# Container images: "upstream" (public Apache images) or "ocir" (your own).
+image_source = "upstream"

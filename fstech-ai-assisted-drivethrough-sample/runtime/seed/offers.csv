@@ -1,0 +1,26 @@
+OfferID,OfferName,ItemsIncluded,RegularPrice,DiscountedPrice,ValidUntil
+OFR001,Starter Delight Combo,"Green Bean Fries, Giant Onion Rings",15.68,13.99,31/12/27
+OFR002,Fries Lover Special,"Seasoned Fries, Green Bean Fries",7.69,6.49,31/12/27
+OFR003,Quesadilla Feast,"Chicken Quesadilla, Seasoned Fries",8.99,7.99,31/12/27
+OFR004,Burger Bonanza,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Cheddar, Seasoned Fries)",11.69,9.99,31/12/27
+OFR005,Ribs and Sides Combo,"BBQ Ribs (Coleslaw, Seasoned Fries)",20.69,18.49,31/12/27
+OFR006,Bone Bucket Deal,"Bucket of Bones, Coleslaw",18.99,16.99,31/12/27
+OFR007,Combo Friday Special,"Friday's Combo, Giant Onion Rings",21.28,18.99,31/12/27
+OFR008,Sirloin Supreme,"Center Cut Sirloin (Mashed Potatoes, Medium)",12.99,11.49,31/12/27
+OFR009,Slider Snack Pack,"Cheeseburger Sliders, Seasoned Fries",7.99,6.99,31/12/27
+OFR010,Double Quesadilla Combo,"Chicken Quesadilla (x2), Green Bean Fries",17.98,15.99,31/12/27
+OFR011,Onion Ring Extravaganza,"Giant Onion Rings (x2), Seasoned Fries",15.98,13.49,31/12/27
+OFR012,Cheeseburger Classic,"Cheeseburger (Lettuce, Tomatoes, Onions, Challah Bun, Cheddar, Seasoned Fries)",9.99,8.99,31/12/27
+OFR013,Ribs and Quesadilla Duo,"BBQ Ribs (Coleslaw), Chicken Quesadilla",29.68,26.99,31/12/27
+OFR014,Bucket Starter Combo,"Bucket of Bones, Green Bean Fries",26.68,23.99,31/12/27
+OFR015,Fries and Burger Pair,"Bacon Cheeseburger (Cheddar, Med Rare), Seasoned Fries",11.69,10.49,31/12/27
+OFR016,Quesadilla Refresh Combo,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,10.99,31/12/27
+OFR017,Bacon Burger Latte Combo,"Bacon Cheeseburger, Seasoned Fries, Ice Latte",18.95,16.49,31/12/27
+OFR018,Ribs and Mint Treat,"BBQ Ribs, Coleslaw, Seasoned Fries, Mint chocochips Icecream",24.50,21.99,31/12/27
+OFR019,Classic Lemonade Meal,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,12.49,31/12/27
+OFR020,Veggie Fresh Combo,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,11.75,31/12/27
+OFR021,Shake and Burger Meal,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,13.99,31/12/27
+OFR022,Chicken Sandwich Cooler,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,12.79,31/12/27
+OFR023,Sirloin Dinner Special,"Center Cut Sirloin, Mashed Potatoes, Broccoli",17.80,15.99,31/12/27
+OFR024,Family Share Box,"Chicken Quesadilla (x2), Cheeseburger Sliders, Giant Onion Rings, Lemonade (x2)",35.50,30.99,31/12/27
+OFR025,Late Night Snack Pair,"Cheeseburger Sliders, Seasoned Fries, Ice Latte",13.58,11.99,31/12/27

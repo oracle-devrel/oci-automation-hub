@@ -1,0 +1,2001 @@
+OrderID,RegistrationNumber,OrderDate,OrderedItems,TotalOrderCost,Name
+12081,TX1234AB,19/11/18,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,
+12082,TX5678CD,19/11/18,No items recorded,0,
+12083,TX9012EF,19/11/18,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo)",12.63,
+12084,TX3456GH,19/11/18,"BBQ Ribs (Coleslaw), Center Cut Sirloin (Seasoned Fries, Mashed Potatoes, Broccoli, Medium, Garlic Parm, Lemon Soy Vin), Green Bean Fries (x2), Giant Onion Rings, Chicken Quesadilla, Friday's Combo, Bucket of Bones",106.19,
+12085,TX7890IJ,19/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Cheddar, Seasoned Fries, Med Rare, No Side)",10.79,
+12086,TX2345KL,19/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12087,TX6789MN,19/11/18,"Bucket of Bones, Coleslaw",20.51,
+12088,TX1234AB,19/11/18,"Bacon Cheeseburger (Lettuce, Tomatoes, Challah Bun, Cheddar)",12.63,
+12089,TX9012EF,19/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12090,TX4567OP,19/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12091,TX8901QR,20/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12092,TX2345KL,20/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12093,TX1111ST,20/11/18,"Chicken Quesadilla (x2), Green Bean Fries",18.34,
+12094,TX2222UV,20/11/18,"Bacon Cheeseburger (Lettuce, Pickles, Challah Bun, Med Rare)",12.63,
+12095,TX3333WX,20/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12096,TX5678CD,20/11/18,"Center Cut Sirloin (Broccoli, Garlic Parm)",14.03,
+12097,TX7890IJ,20/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions, Challah Bun)",10.79,
+12098,TX4444YZ,20/11/18,"Bucket of Bones, Green Bean Fries",26.99,
+12099,TX5555AA,20/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12100,TX1234AB,20/11/18,"Giant Onion Rings (x2), Cheeseburger Sliders",17.27,
+12101,TX6666BB,21/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare, No Side)",14.58,
+12102,TX7777CC,21/11/18,"BBQ Ribs (Coleslaw), Green Bean Fries",28.94,
+12103,TX9012EF,21/11/18,"Chicken Quesadilla, Giant Onion Rings",17.27,
+12104,TX8888DD,21/11/18,"Center Cut Sirloin (Mashed Potatoes, Lemon Soy Vin)",14.03,
+12105,TX9999EE,21/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12106,TX2345KL,21/11/18,"Bucket of Bones, Coleslaw",20.51,
+12107,TX1111ST,21/11/18,"Green Bean Fries (x2), Chicken Quesadilla",17.27,
+12108,TX3456GH,21/11/18,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun)",12.63,
+12109,TX2222UV,21/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12110,TX4567OP,21/11/18,"Cheeseburger (Cheddar, Med Rare, Seasoned Fries)",10.79,
+12111,TX7890IJ,22/11/18,"Chicken Quesadilla (x2), Green Bean Fries",18.34,
+12112,TX5678CD,22/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12113,TX1234AB,22/11/18,"Giant Onion Rings, Cheeseburger Sliders",16.71,
+12114,TX9012EF,22/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12115,TX3333WX,22/11/18,"Bucket of Bones, Green Bean Fries",26.99,
+12116,TX4444YZ,22/11/18,"Bacon Cheeseburger (Lettuce, Challah Bun, Cheddar)",12.63,
+12117,TX5555AA,22/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12118,TX6666BB,22/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12119,TX7777CC,22/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12120,TX8888DD,22/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12121,TX9999EE,23/11/18,"BBQ Ribs (Coleslaw), Chicken Quesadilla",30.62,
+12122,TX2345KL,23/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12123,TX1111ST,23/11/18,"Giant Onion Rings (x2), Seasoned Fries",17.27,
+12124,TX3456GH,23/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12125,TX2222UV,23/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12126,TX4567OP,23/11/18,"Bucket of Bones, Coleslaw",20.51,
+12127,TX7890IJ,23/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12128,TX5678CD,23/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12129,TX1234AB,23/11/18,"Bacon Cheeseburger (Lettuce, Tomatoes, Challah Bun)",12.63,
+12130,TX9012EF,23/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12131,TX3333WX,24/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12132,TX4444YZ,24/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12133,TX5555AA,24/11/18,"Cheeseburger (Cheddar, Med Rare, No Side)",10.79,
+12134,TX6666BB,24/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12135,TX7777CC,24/11/18,"Bucket of Bones, Coleslaw",20.51,
+12136,TX8888DD,24/11/18,"Bacon Cheeseburger (Lettuce, Pickles, Challah Bun)",12.63,
+12137,TX9999EE,24/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12138,TX2345KL,24/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12139,TX1111ST,24/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12140,TX3456GH,24/11/18,"Chicken Quesadilla (x2), Green Bean Fries",18.34,
+12141,TX2222UV,25/11/18,"BBQ Ribs (Coleslaw), Giant Onion Rings",28.94,
+12142,TX4567OP,25/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12143,TX7890IJ,25/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12144,TX5678CD,25/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12145,TX1234AB,25/11/18,"Bucket of Bones, Coleslaw",20.51,
+12146,TX9012EF,25/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions, Challah Bun)",10.79,
+12147,TX3333WX,25/11/18,"Friday's Combo, Green Bean Fries",21.59,
+12148,TX4444YZ,25/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12149,TX5555AA,25/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12150,TX6666BB,25/11/18,"Bacon Cheeseburger (Lettuce, Challah Bun, Cheddar)",12.63,
+12151,TX7777CC,19/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12152,TX8888DD,19/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12153,TX9999EE,19/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12154,TX2345KL,19/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12155,TX1111ST,19/11/18,"Bucket of Bones, Coleslaw",20.51,
+12156,TX3456GH,19/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12157,TX2222UV,19/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12158,TX4567OP,19/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12159,TX7890IJ,19/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12160,TX5678CD,19/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12161,TX1234AB,20/11/18,"Green Bean Fries, Giant Onion Rings (x2)",24.29,
+12162,TX9012EF,20/11/18,"BBQ Ribs (Coleslaw), Chicken Quesadilla",30.62,
+12163,TX3333WX,20/11/18,"Bacon Cheeseburger (Lettuce, Pickles, Challah Bun)",12.63,
+12164,TX4444YZ,20/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12165,TX5555AA,20/11/18,"Bucket of Bones, Green Bean Fries",26.99,
+12166,TX6666BB,20/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12167,TX7777CC,20/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12168,TX8888DD,20/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12169,TX9999EE,20/11/18,"Chicken Quesadilla (x2), Green Bean Fries",18.34,
+12170,TX2345KL,20/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12171,TX1111ST,21/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12172,TX3456GH,21/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12173,TX2222UV,21/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12174,TX4567OP,21/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12175,TX7890IJ,21/11/18,"Bucket of Bones, Coleslaw",20.51,
+12176,TX5678CD,21/11/18,"Bacon Cheeseburger (Lettuce, Challah Bun, Cheddar)",12.63,
+12177,TX1234AB,21/11/18,"Friday's Combo, Green Bean Fries",21.59,
+12178,TX9012EF,21/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12179,TX3333WX,21/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12180,TX4444YZ,21/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12181,TX5555AA,22/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12182,TX6666BB,22/11/18,"BBQ Ribs (Coleslaw), Chicken Quesadilla",30.62,
+12183,TX7777CC,22/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12184,TX8888DD,22/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12185,TX9999EE,22/11/18,"Bucket of Bones, Coleslaw",20.51,
+12186,TX2345KL,22/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12187,TX1111ST,22/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12188,TX3456GH,22/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12189,TX2222UV,22/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12190,TX4567OP,22/11/18,"Bacon Cheeseburger (Lettuce, Pickles, Challah Bun)",12.63,
+12191,TX7890IJ,23/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12192,TX5678CD,23/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12193,TX1234AB,23/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12194,TX9012EF,23/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12195,TX3333WX,23/11/18,"Bucket of Bones, Coleslaw",20.51,
+12196,TX4444YZ,23/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12197,TX5555AA,23/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12198,TX6666BB,23/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12199,TX7777CC,23/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12200,TX8888DD,23/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12201,TX9999EE,24/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12202,TX2345KL,24/11/18,"BBQ Ribs (Coleslaw), Chicken Quesadilla",30.62,
+12203,TX1111ST,24/11/18,"Bacon Cheeseburger (Lettuce, Challah Bun, Cheddar)",12.63,
+12204,TX3456GH,24/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12205,TX2222UV,24/11/18,"Bucket of Bones, Green Bean Fries",26.99,
+12206,TX4567OP,24/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12207,TX7890IJ,24/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12208,TX5678CD,24/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12209,TX1234AB,24/11/18,"Chicken Quesadilla (x2), Green Bean Fries",18.34,
+12210,TX9012EF,24/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12211,TX3333WX,25/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12212,TX4444YZ,25/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12213,TX5555AA,25/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12214,TX6666BB,25/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12215,TX7777CC,25/11/18,"Bucket of Bones, Coleslaw",20.51,
+12216,TX8888DD,25/11/18,"Bacon Cheeseburger (Lettuce, Pickles, Challah Bun)",12.63,
+12217,TX9999EE,25/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12218,TX2345KL,25/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12219,TX1111ST,25/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12220,TX3456GH,25/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12221,TX2222UV,19/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12222,TX4567OP,19/11/18,"BBQ Ribs (Coleslaw), Chicken Quesadilla",30.62,
+12223,TX7890IJ,19/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12224,TX5678CD,19/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12225,TX1234AB,19/11/18,"Bucket of Bones, Green Bean Fries",26.99,
+12226,TX9012EF,19/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12227,TX3333WX,19/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12228,TX4444YZ,19/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12229,TX5555AA,19/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12230,TX6666BB,19/11/18,"Bacon Cheeseburger (Lettuce, Challah Bun, Cheddar)",12.63,
+12231,TX7777CC,20/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12232,TX8888DD,20/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12233,TX9999EE,20/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12234,TX2345KL,20/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12235,TX1111ST,20/11/18,"Bucket of Bones, Coleslaw",20.51,
+12236,TX3456GH,20/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12237,TX2222UV,20/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12238,TX4567OP,20/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12239,TX7890IJ,20/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12240,TX5678CD,20/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12241,TX1234AB,21/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12242,TX9012EF,21/11/18,"BBQ Ribs (Coleslaw), Chicken Quesadilla",30.62,
+12243,TX3333WX,21/11/18,"Bacon Cheeseburger (Lettuce, Challah Bun, Cheddar)",12.63,
+12244,TX4444YZ,21/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12245,TX5555AA,21/11/18,"Bucket of Bones, Green Bean Fries",26.99,
+12246,TX6666BB,21/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12247,TX7777CC,21/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12248,TX8888DD,21/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12249,TX9999EE,21/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12250,TX2345KL,21/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12251,TX1111ST,22/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12252,TX3456GH,22/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12253,TX2222UV,22/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12254,TX4567OP,22/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12255,TX7890IJ,22/11/18,"Bucket of Bones, Coleslaw",20.51,
+12256,TX5678CD,22/11/18,"Bacon Cheeseburger (Lettuce, Challah Bun, Cheddar)",12.63,
+12257,TX1234AB,22/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12258,TX9012EF,22/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12259,TX3333WX,22/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12260,TX4444YZ,22/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12261,TX5555AA,23/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12262,TX6666BB,23/11/18,"BBQ Ribs (Coleslaw), Chicken Quesadilla",30.62,
+12263,TX7777CC,23/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12264,TX8888DD,23/11/18,"Chicken Quesadilla, Seasoned Fries",9.71,
+12265,TX9999EE,23/11/18,"Bucket of Bones, Green Bean Fries",26.99,
+12266,TX2345KL,23/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12267,TX1111ST,23/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12268,TX3456GH,23/11/18,"Center Cut Sirloin (Mashed Potatoes, Medium)",14.03,
+12269,TX2222UV,23/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12270,TX4567OP,23/11/18,"Bacon Cheeseburger (Lettuce, Pickles, Challah Bun)",12.63,
+12271,TX7890IJ,24/11/18,"Green Bean Fries, Giant Onion Rings",16.71,
+12272,TX5678CD,24/11/18,"BBQ Ribs (Coleslaw, Seasoned Fries)",22.35,
+12273,TX1234AB,24/11/18,"Cheeseburger (Lettuce, Tomatoes, Onions)",10.79,
+12274,TX9012EF,24/11/18,"Chicken Quesadilla, Green Bean Fries",16.71,
+12275,TX3333WX,24/11/18,"Bucket of Bones, Coleslaw",20.51,
+12276,TX4444YZ,24/11/18,"Bacon Cheeseburger (Cheddar, Bacon, Med Rare)",14.58,
+12277,TX5555AA,24/11/18,"Friday's Combo, Giant Onion Rings",22.67,
+12278,TX6666BB,24/11/18,"Center Cut Sirloin (Mashed Potatoes, Broccoli)",14.03,
+12279,TX7777CC,24/11/18,"Chicken Quesadilla (x2), Seasoned Fries",19.43,
+12280,TX8888DD,24/11/18,"Cheeseburger Sliders, Seasoned Fries",8.63,
+12281,ILP9054,28/03/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+12282,TX6789MN,22/01/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+12283,AZ7QW552,02/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+12284,NVX7720,27/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Olivia Lewis
+12285,FLK92MTR,27/12/25,"Bucket of Bones, Coleslaw",20.51,William King
+12286,RGZ9000,10/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Naveen Chandra
+12287,FLK92MTR,27/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+12288,NCK6686,13/03/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Saketh Nair
+12289,TX5555AA,12/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12290,NYC4821,28/12/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+12291,NCK6686,08/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Saketh Nair
+12292,NYC4821,18/06/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+12293,KEWC50,22/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Michael Jean
+12294,TX6789MN,29/03/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+12295,OHB4509,17/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+12296,TX5555AA,18/10/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+12297,TX1234AB,10/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+12298,KEWC50,30/04/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Michael Jean
+12299,EVZ3667,26/06/25,"Friday's Combo, Giant Onion Rings",22.95,Legina Andrews
+12300,PAJ8123,02/03/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+12301,NVX7720,11/01/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Olivia Lewis
+12302,CA8RPL21,09/11/25,"Friday's Combo, Giant Onion Rings",22.95,Amelia Brown
+12303,TX9012EF,11/04/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+12304,CA8RPL21,09/12/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Amelia Brown
+12305,PAJ8123,09/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12306,PAJ8123,30/05/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12307,PAJ8123,06/06/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+12308,NCK6686,18/02/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Saketh Nair
+12309,TX5555AA,20/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12310,KEWC50,15/03/25,"Bucket of Bones, Coleslaw",20.51,Michael Jean
+12311,TX5555AA,14/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+12312,CA8RPL21,24/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+12313,CA8RPL21,07/09/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+12314,TX2345KL,15/06/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+12315,TX5555AA,26/05/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+12316,WA6NCK88,18/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Jacob Anderson
+12317,ILP9054,12/11/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Noah Harris
+12318,FLK92MTR,04/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+12319,KEWC50,21/03/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Michael Jean
+12320,KEWC50,21/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Michael Jean
+12321,GAH3812,15/04/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Charlotte Wilson
+12322,EVZ3667,05/01/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Legina Andrews
+12323,FLK92MTR,14/07/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+12324,TX8901QR,28/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Deepa Rao
+12325,TX6789MN,17/09/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Rohan Gupta
+12326,GAH3812,08/05/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Charlotte Wilson
+12327,TX9012EF,10/08/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+12328,TX9012EF,03/12/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12329,TX9012EF,28/10/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+12330,KEWC50,11/07/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Michael Jean
+12331,KEWC50,03/05/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Michael Jean
+12332,TX6789MN,01/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Rohan Gupta
+12333,TX6789MN,31/01/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+12334,TX3456GH,14/02/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+12335,TX9012EF,08/02/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+12336,TX8901QR,01/01/26,"Friday's Combo, Giant Onion Rings",22.95,Deepa Rao
+12337,TX5678CD,07/04/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Isabella Martinez
+12338,CA8RPL21,25/08/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+12339,TX1234AB,15/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+12340,PAJ8123,09/07/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+12341,OHB4509,24/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+12342,TX9012EF,05/02/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12343,TX2345KL,03/08/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+12344,WA6NCK88,10/06/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+12345,TX5555AA,26/02/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12346,TX1234AB,17/10/25,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+12347,TX7890IJ,16/03/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+12348,TX5678CD,17/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Isabella Martinez
+12349,KEWC50,21/05/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Michael Jean
+12350,KEWC50,23/02/25,"Friday's Combo, Giant Onion Rings",22.95,Michael Jean
+12351,OHB4509,19/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+12352,TX7890IJ,20/10/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Mia Robinson
+12353,NYC4821,25/10/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+12354,NVX7720,05/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Olivia Lewis
+12355,TX7890IJ,26/12/25,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+12356,TX7890IJ,17/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+12357,TX2345KL,05/04/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+12358,NVX7720,09/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Olivia Lewis
+12359,TX2345KL,06/05/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+12360,NCK6686,02/08/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Saketh Nair
+12361,TX1234AB,20/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12362,AZ7QW552,15/09/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+12363,TX6789MN,04/06/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+12364,OHB4509,03/01/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+12365,NCK6686,08/07/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Saketh Nair
+12366,TX9012EF,18/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+12367,TX5555AA,12/02/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+12368,TX9012EF,06/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+12369,NYC4821,13/02/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+12370,NYC4821,22/03/26,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+12371,TX5555AA,01/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12372,TX9012EF,27/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12373,TX4567OP,06/08/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Sophia Hall
+12374,TX3456GH,07/02/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+12375,PAJ8123,22/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+12376,TX1234AB,20/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+12377,TX6789MN,26/05/26,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+12378,TX4567OP,02/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Sophia Hall
+12379,WA6NCK88,03/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Jacob Anderson
+12380,RGZ9000,06/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Naveen Chandra
+12381,GAH3812,23/05/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Charlotte Wilson
+12382,KEWC50,15/11/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Michael Jean
+12383,AZ7QW552,22/05/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+12384,PAJ8123,26/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+12385,TX5555AA,21/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+12386,NVX7720,03/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Olivia Lewis
+12387,NCK6686,12/08/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Saketh Nair
+12388,TX1234AB,09/06/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+12389,CA8RPL21,24/06/26,"Bucket of Bones, Coleslaw",20.51,Amelia Brown
+12390,TX5555AA,01/06/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+12391,TX3456GH,30/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Liam Thompson
+12392,AZ7QW552,14/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Mia Robinson
+12393,WA6NCK88,23/02/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Jacob Anderson
+12394,EVZ3667,04/05/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Legina Andrews
+12395,GAH3812,20/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Charlotte Wilson
+12396,TX6789MN,26/12/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+12397,TX5555AA,08/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+12398,TX9012EF,23/12/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+12399,RGZ9000,02/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Naveen Chandra
+12400,TX1234AB,19/06/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+12401,TX5555AA,26/03/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+12402,CA8RPL21,04/04/26,"Bucket of Bones, Coleslaw",20.51,Amelia Brown
+12403,KEWC50,24/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Michael Jean
+12404,TX7890IJ,10/11/25,"Friday's Combo, Giant Onion Rings",22.95,Mia Robinson
+12405,ILP9054,09/12/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+12406,GAH3812,11/01/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Charlotte Wilson
+12407,TX2345KL,23/01/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+12408,TX5555AA,22/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+12409,NYC4821,14/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+12410,TX3456GH,06/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Liam Thompson
+12411,WA6NCK88,26/04/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+12412,TX4567OP,04/10/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Sophia Hall
+12413,TX2345KL,22/07/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+12414,CA8RPL21,17/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+12415,TX9012EF,29/12/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+12416,TX8901QR,25/03/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Deepa Rao
+12417,NYC4821,25/06/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+12418,PAJ8123,01/01/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+12419,EVZ3667,21/04/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Legina Andrews
+12420,TX2345KL,13/04/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+12421,TX1234AB,03/05/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Zoe Scott
+12422,TX4567OP,17/01/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Sophia Hall
+12423,TX5678CD,31/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Isabella Martinez
+12424,CA8RPL21,01/02/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Amelia Brown
+12425,TX4567OP,23/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Sophia Hall
+12426,OHB4509,17/03/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+12427,NYC4821,04/03/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+12428,TX1234AB,09/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+12429,PAJ8123,23/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+12430,WA6NCK88,27/10/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Jacob Anderson
+12431,TX2345KL,19/06/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+12432,GAH3812,26/03/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Charlotte Wilson
+12433,TX9012EF,05/04/25,"Bucket of Bones, Coleslaw",20.51,William King
+12434,AZ7QW552,08/02/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+12435,KEWC50,26/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Michael Jean
+12436,ILP9054,17/02/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+12437,TX5555AA,06/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Aisha Khan
+12438,TX1234AB,08/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+12439,TX1234AB,31/05/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+12440,WA6NCK88,03/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Jacob Anderson
+12441,TX1234AB,07/09/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+12442,TX1234AB,25/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12443,TX1234AB,17/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+12444,TX3456GH,13/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Liam Thompson
+12445,TX5555AA,18/04/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Aisha Khan
+12446,AZ7QW552,20/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+12447,TX2345KL,07/04/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+12448,TX5555AA,28/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+12449,FLK92MTR,03/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+12450,NCK6686,08/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Saketh Nair
+12451,EVZ3667,22/09/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Legina Andrews
+12452,TX4567OP,01/02/25,"Bucket of Bones, Coleslaw",20.51,Sophia Hall
+12453,TX6789MN,09/05/26,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+12454,TX4567OP,29/06/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+12455,TX1234AB,31/01/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12456,TX2345KL,09/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+12457,ILP9054,05/08/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+12458,TX4567OP,11/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Sophia Hall
+12459,TX8901QR,30/03/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Deepa Rao
+12460,TX9012EF,16/09/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+12461,KEWC50,04/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+12462,NVX7720,27/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Olivia Lewis
+12463,TX4567OP,23/04/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Sophia Hall
+12464,ILP9054,16/06/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12465,NVX7720,16/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Olivia Lewis
+12466,FLK92MTR,20/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+12467,NYC4821,22/03/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+12468,NYC4821,10/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+12469,TX4567OP,08/07/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Sophia Hall
+12470,TX8901QR,13/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Deepa Rao
+12471,NYC4821,23/07/25,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+12472,RGZ9000,12/05/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Naveen Chandra
+12473,TX5555AA,26/11/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Aisha Khan
+12474,TX2345KL,03/03/26,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+12475,TX6789MN,17/05/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+12476,TX7890IJ,29/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+12477,EVZ3667,25/11/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Legina Andrews
+12478,TX5555AA,10/05/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+12479,TX1234AB,29/06/25,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+12480,TX5555AA,22/02/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+12481,TX1234AB,09/02/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+12482,TX5555AA,06/02/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+12483,TX5555AA,10/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+12484,TX1234AB,22/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+12485,EVZ3667,31/03/26,"Friday's Combo, Giant Onion Rings",22.95,Legina Andrews
+12486,RGZ9000,22/08/25,"Friday's Combo, Giant Onion Rings",22.95,Naveen Chandra
+12487,TX5555AA,13/10/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+12488,TX2345KL,12/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Noah Harris
+12489,RGZ9000,12/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Naveen Chandra
+12490,WA6NCK88,21/01/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+12491,TX9012EF,19/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,William King
+12492,TX9012EF,20/06/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+12493,EVZ3667,20/07/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Legina Andrews
+12494,TX9012EF,18/10/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12495,NCK6686,10/03/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Saketh Nair
+12496,RGZ9000,12/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Naveen Chandra
+12497,TX1234AB,17/06/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12498,NVX7720,12/06/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Olivia Lewis
+12499,TX4567OP,09/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Sophia Hall
+12500,TX5678CD,18/12/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Isabella Martinez
+12501,TX2345KL,29/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+12502,RGZ9000,03/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Naveen Chandra
+12503,WA6NCK88,17/03/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Jacob Anderson
+12504,GAH3812,05/04/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Charlotte Wilson
+12505,TX3456GH,20/12/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Liam Thompson
+12506,PAJ8123,20/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+12507,CA8RPL21,27/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Amelia Brown
+12508,OHB4509,20/02/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+12509,NCK6686,12/09/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Saketh Nair
+12510,FLK92MTR,28/05/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+12511,OHB4509,22/10/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+12512,WA6NCK88,19/09/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Jacob Anderson
+12513,KEWC50,26/08/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Michael Jean
+12514,TX4567OP,14/04/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Sophia Hall
+12515,ILP9054,02/11/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12516,TX7890IJ,29/01/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+12517,TX4567OP,02/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Sophia Hall
+12518,GAH3812,31/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Charlotte Wilson
+12519,OHB4509,23/04/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+12520,TX3456GH,02/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Liam Thompson
+12521,WA6NCK88,28/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Jacob Anderson
+12522,TX3456GH,27/11/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Liam Thompson
+12523,TX7890IJ,23/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Mia Robinson
+12524,TX1234AB,16/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+12525,ILP9054,18/06/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+12526,NYC4821,30/01/26,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+12527,TX9012EF,18/04/26,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+12528,AZ7QW552,14/05/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+12529,PAJ8123,21/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12530,WA6NCK88,21/04/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Jacob Anderson
+12531,TX3456GH,19/09/25,"Friday's Combo, Giant Onion Rings",22.95,Liam Thompson
+12532,GAH3812,18/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Charlotte Wilson
+12533,TX8901QR,08/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Deepa Rao
+12534,ILP9054,19/12/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12535,PAJ8123,25/02/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+12536,TX3456GH,21/01/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Liam Thompson
+12537,NYC4821,25/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+12538,TX8901QR,22/09/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Deepa Rao
+12539,CA8RPL21,26/11/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Amelia Brown
+12540,TX1234AB,19/09/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+12541,TX2345KL,06/01/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Noah Harris
+12542,CA8RPL21,29/12/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Amelia Brown
+12543,TX3456GH,11/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Liam Thompson
+12544,WA6NCK88,19/10/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Jacob Anderson
+12545,TX9012EF,04/10/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,William King
+12546,EVZ3667,03/04/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Legina Andrews
+12547,TX5555AA,26/03/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+12548,ILP9054,18/09/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+12549,TX1234AB,11/05/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+12550,TX6789MN,04/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+12551,EVZ3667,16/11/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Legina Andrews
+12552,NVX7720,02/03/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Olivia Lewis
+12553,TX2345KL,15/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+12554,NVX7720,24/01/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Olivia Lewis
+12555,TX7890IJ,18/08/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Mia Robinson
+12556,TX5555AA,13/06/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+12557,TX2345KL,21/05/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+12558,TX8901QR,02/01/25,"Friday's Combo, Giant Onion Rings",22.95,Deepa Rao
+12559,AZ7QW552,21/08/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+12560,TX5555AA,16/12/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12561,TX7890IJ,27/10/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+12562,KEWC50,18/05/26,"Friday's Combo, Giant Onion Rings",22.95,Michael Jean
+12563,TX5555AA,24/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+12564,TX2345KL,22/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+12565,TX5555AA,14/05/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12566,CA8RPL21,05/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+12567,TX9012EF,09/04/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+12568,EVZ3667,26/11/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Legina Andrews
+12569,TX9012EF,06/06/26,"Friday's Combo, Giant Onion Rings",22.95,William King
+12570,KEWC50,23/03/26,"Friday's Combo, Giant Onion Rings",22.95,Michael Jean
+12571,TX9012EF,21/09/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+12572,TX5678CD,07/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Isabella Martinez
+12573,PAJ8123,25/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12574,TX4567OP,22/07/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Sophia Hall
+12575,TX9012EF,09/06/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+12576,ILP9054,10/10/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+12577,PAJ8123,24/01/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+12578,TX1234AB,18/04/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+12579,TX7890IJ,05/04/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+12580,PAJ8123,18/09/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12581,NVX7720,06/05/26,"Bucket of Bones, Coleslaw",20.51,Olivia Lewis
+12582,TX4567OP,06/07/25,"Friday's Combo, Giant Onion Rings",22.95,Sophia Hall
+12583,GAH3812,08/10/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Charlotte Wilson
+12584,KEWC50,10/01/25,"Friday's Combo, Giant Onion Rings",22.95,Michael Jean
+12585,TX4567OP,05/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Sophia Hall
+12586,CA8RPL21,14/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Amelia Brown
+12587,AZ7QW552,26/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+12588,TX5555AA,23/02/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+12589,TX9012EF,04/08/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,William King
+12590,TX9012EF,08/02/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12591,WA6NCK88,23/07/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Jacob Anderson
+12592,TX8901QR,08/05/25,"Friday's Combo, Giant Onion Rings",22.95,Deepa Rao
+12593,KEWC50,04/05/25,"Friday's Combo, Giant Onion Rings",22.95,Michael Jean
+12594,FLK92MTR,30/05/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+12595,TX6789MN,19/08/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Rohan Gupta
+12596,KEWC50,15/06/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Michael Jean
+12597,FLK92MTR,26/03/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+12598,TX7890IJ,25/08/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+12599,TX2345KL,07/01/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+12600,FLK92MTR,03/10/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+12601,TX6789MN,21/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+12602,TX1234AB,18/02/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+12603,RGZ9000,25/03/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Naveen Chandra
+12604,ILP9054,21/10/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+12605,TX6789MN,20/03/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+12606,NCK6686,08/07/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Saketh Nair
+12607,OHB4509,11/03/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+12608,TX1234AB,02/08/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+12609,TX5555AA,01/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+12610,EVZ3667,26/04/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Legina Andrews
+12611,TX6789MN,02/12/25,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+12612,TX2345KL,03/07/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12613,RGZ9000,11/04/25,"Bucket of Bones, Coleslaw",20.51,Naveen Chandra
+12614,TX7890IJ,06/12/25,"Friday's Combo, Giant Onion Rings",22.95,Mia Robinson
+12615,NYC4821,17/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Rohan Gupta
+12616,TX8901QR,24/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Deepa Rao
+12617,TX9012EF,14/02/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+12618,GAH3812,22/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Charlotte Wilson
+12619,TX2345KL,27/10/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+12620,TX3456GH,29/10/25,"Bucket of Bones, Coleslaw",20.51,Liam Thompson
+12621,OHB4509,30/04/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Zoe Scott
+12622,TX9012EF,15/12/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+12623,NVX7720,30/09/25,"Bucket of Bones, Coleslaw",20.51,Olivia Lewis
+12624,TX2345KL,14/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+12625,TX7890IJ,30/10/25,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+12626,TX3456GH,23/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+12627,TX5678CD,12/07/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Isabella Martinez
+12628,TX2345KL,15/05/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+12629,TX2345KL,04/11/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+12630,TX5678CD,17/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Isabella Martinez
+12631,TX1234AB,17/06/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+12632,NVX7720,17/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Olivia Lewis
+12633,TX5678CD,14/02/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Isabella Martinez
+12634,TX3456GH,22/06/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+12635,TX5555AA,09/03/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+12636,TX3456GH,24/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Liam Thompson
+12637,TX4567OP,24/11/25,"Bucket of Bones, Coleslaw",20.51,Sophia Hall
+12638,NVX7720,24/04/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Olivia Lewis
+12639,FLK92MTR,04/12/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+12640,TX4567OP,22/03/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Sophia Hall
+12641,TX1234AB,29/12/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12642,TX1234AB,06/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+12643,TX6789MN,07/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+12644,WA6NCK88,05/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+12645,TX9012EF,15/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+12646,EVZ3667,05/01/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Legina Andrews
+12647,TX1234AB,31/08/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+12648,RGZ9000,31/01/25,"Bucket of Bones, Coleslaw",20.51,Naveen Chandra
+12649,NCK6686,25/07/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Saketh Nair
+12650,EVZ3667,15/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Legina Andrews
+12651,TX7890IJ,15/11/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+12652,AZ7QW552,22/07/25,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+12653,NVX7720,01/12/25,"Bucket of Bones, Coleslaw",20.51,Olivia Lewis
+12654,RGZ9000,02/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Naveen Chandra
+12655,FLK92MTR,21/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,William King
+12656,RGZ9000,06/06/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Naveen Chandra
+12657,TX4567OP,28/02/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Sophia Hall
+12658,KEWC50,18/04/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Michael Jean
+12659,TX5678CD,27/06/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Isabella Martinez
+12660,TX1234AB,19/10/25,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+12661,NCK6686,16/04/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Saketh Nair
+12662,TX5555AA,09/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+12663,GAH3812,21/03/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Charlotte Wilson
+12664,TX4567OP,05/05/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+12665,NYC4821,03/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Rohan Gupta
+12666,WA6NCK88,21/02/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Jacob Anderson
+12667,TX4567OP,21/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+12668,EVZ3667,06/09/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Legina Andrews
+12669,TX2345KL,14/09/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+12670,TX6789MN,05/05/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+12671,NCK6686,17/12/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Saketh Nair
+12672,TX3456GH,30/03/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+12673,TX2345KL,11/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+12674,NCK6686,09/01/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Saketh Nair
+12675,WA6NCK88,17/12/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Jacob Anderson
+12676,GAH3812,12/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Charlotte Wilson
+12677,TX8901QR,28/12/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Deepa Rao
+12678,TX6789MN,26/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+12679,TX5678CD,10/03/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Isabella Martinez
+12680,TX1234AB,02/09/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+12681,CA8RPL21,07/09/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Amelia Brown
+12682,TX9012EF,04/04/25,"Bucket of Bones, Coleslaw",20.51,William King
+12683,TX6789MN,03/08/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Rohan Gupta
+12684,NYC4821,25/10/25,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+12685,RGZ9000,01/03/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Naveen Chandra
+12686,EVZ3667,21/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Legina Andrews
+12687,RGZ9000,03/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Naveen Chandra
+12688,TX5678CD,25/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Isabella Martinez
+12689,AZ7QW552,12/05/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Mia Robinson
+12690,RGZ9000,10/03/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Naveen Chandra
+12691,NYC4821,17/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Rohan Gupta
+12692,TX5555AA,26/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+12693,TX5555AA,05/06/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12694,KEWC50,24/05/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Michael Jean
+12695,TX5555AA,06/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+12696,PAJ8123,07/01/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+12697,TX6789MN,14/06/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+12698,TX2345KL,25/05/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+12699,NCK6686,07/01/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Saketh Nair
+12700,CA8RPL21,25/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Amelia Brown
+12701,AZ7QW552,04/08/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+12702,TX9012EF,13/01/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12703,KEWC50,10/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+12704,NYC4821,29/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+12705,AZ7QW552,03/06/25,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+12706,TX5555AA,08/08/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+12707,TX4567OP,27/02/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Sophia Hall
+12708,CA8RPL21,06/01/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Amelia Brown
+12709,PAJ8123,03/04/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+12710,NYC4821,04/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+12711,CA8RPL21,30/07/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Amelia Brown
+12712,TX1234AB,23/11/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+12713,GAH3812,25/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Charlotte Wilson
+12714,KEWC50,15/04/26,"Bucket of Bones, Coleslaw",20.51,Michael Jean
+12715,GAH3812,14/02/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Charlotte Wilson
+12716,GAH3812,10/01/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Charlotte Wilson
+12717,CA8RPL21,02/12/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Amelia Brown
+12718,TX6789MN,15/05/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+12719,TX8901QR,17/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Deepa Rao
+12720,TX2345KL,12/07/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Noah Harris
+12721,WA6NCK88,03/02/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+12722,ILP9054,05/02/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+12723,NCK6686,11/09/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Saketh Nair
+12724,TX5678CD,11/05/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Isabella Martinez
+12725,ILP9054,25/05/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12726,TX3456GH,22/05/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Liam Thompson
+12727,TX9012EF,01/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+12728,TX1234AB,28/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+12729,TX1234AB,15/06/26,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+12730,ILP9054,15/05/26,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12731,TX2345KL,15/06/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+12732,TX2345KL,25/03/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+12733,NYC4821,17/07/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+12734,TX6789MN,13/04/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+12735,TX2345KL,11/05/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+12736,WA6NCK88,22/11/25,"Bucket of Bones, Coleslaw",20.51,Jacob Anderson
+12737,CA8RPL21,09/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+12738,EVZ3667,19/06/25,"Bucket of Bones, Coleslaw",20.51,Legina Andrews
+12739,TX9012EF,06/02/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+12740,TX8901QR,15/04/26,"Bucket of Bones, Coleslaw",20.51,Deepa Rao
+12741,ILP9054,18/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+12742,TX3456GH,16/02/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Liam Thompson
+12743,TX9012EF,26/01/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+12744,TX1234AB,20/03/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+12745,TX1234AB,10/07/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12746,TX2345KL,31/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+12747,TX2345KL,06/11/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+12748,TX4567OP,07/01/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Sophia Hall
+12749,KEWC50,21/07/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Michael Jean
+12750,TX6789MN,24/07/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+12751,TX1234AB,07/02/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12752,CA8RPL21,18/08/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+12753,TX8901QR,04/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Deepa Rao
+12754,TX9012EF,03/05/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+12755,TX9012EF,18/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+12756,NYC4821,13/07/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+12757,TX4567OP,01/02/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Sophia Hall
+12758,TX1234AB,25/06/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+12759,WA6NCK88,21/01/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Jacob Anderson
+12760,EVZ3667,06/07/25,"Bucket of Bones, Coleslaw",20.51,Legina Andrews
+12761,NYC4821,25/03/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Rohan Gupta
+12762,WA6NCK88,21/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Jacob Anderson
+12763,TX6789MN,21/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+12764,TX5678CD,04/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Isabella Martinez
+12765,TX5555AA,24/07/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+12766,WA6NCK88,22/06/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Jacob Anderson
+12767,EVZ3667,10/01/25,"Bucket of Bones, Coleslaw",20.51,Legina Andrews
+12768,TX2345KL,26/05/26,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12769,KEWC50,08/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+12770,TX3456GH,08/02/25,"Bucket of Bones, Coleslaw",20.51,Liam Thompson
+12771,NVX7720,12/02/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Olivia Lewis
+12772,TX7890IJ,02/03/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Mia Robinson
+12773,EVZ3667,18/07/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Legina Andrews
+12774,GAH3812,22/06/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Charlotte Wilson
+12775,TX9012EF,19/06/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+12776,TX6789MN,19/05/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+12777,CA8RPL21,03/10/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+12778,TX2345KL,02/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+12779,TX3456GH,04/05/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Liam Thompson
+12780,AZ7QW552,01/08/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+12781,EVZ3667,14/06/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Legina Andrews
+12782,TX5555AA,23/02/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12783,EVZ3667,22/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Legina Andrews
+12784,WA6NCK88,28/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+12785,TX7890IJ,27/07/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Mia Robinson
+12786,TX8901QR,28/04/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Deepa Rao
+12787,TX9012EF,11/07/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12788,TX6789MN,14/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+12789,TX2345KL,10/03/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+12790,AZ7QW552,15/06/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+12791,ILP9054,05/03/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12792,TX9012EF,08/02/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+12793,TX6789MN,22/01/26,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+12794,TX1234AB,25/04/26,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+12795,EVZ3667,15/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Legina Andrews
+12796,NCK6686,14/03/26,"Friday's Combo, Giant Onion Rings",22.95,Saketh Nair
+12797,TX9012EF,04/09/25,"Bucket of Bones, Coleslaw",20.51,William King
+12798,NCK6686,30/06/25,"Friday's Combo, Giant Onion Rings",22.95,Saketh Nair
+12799,TX9012EF,05/02/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+12800,TX8901QR,15/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Deepa Rao
+12801,KEWC50,26/10/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+12802,EVZ3667,17/02/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Legina Andrews
+12803,NCK6686,18/06/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Saketh Nair
+12804,ILP9054,24/08/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+12805,TX6789MN,06/09/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Rohan Gupta
+12806,NVX7720,03/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Olivia Lewis
+12807,WA6NCK88,02/03/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Jacob Anderson
+12808,TX4567OP,19/06/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Sophia Hall
+12809,TX2345KL,18/03/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+12810,NCK6686,29/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Saketh Nair
+12811,TX6789MN,23/05/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Rohan Gupta
+12812,OHB4509,30/05/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+12813,PAJ8123,12/01/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+12814,TX4567OP,15/02/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Sophia Hall
+12815,RGZ9000,12/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Naveen Chandra
+12816,TX7890IJ,12/01/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+12817,TX4567OP,20/11/25,"Bucket of Bones, Coleslaw",20.51,Sophia Hall
+12818,TX2345KL,12/08/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+12819,TX8901QR,29/12/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Deepa Rao
+12820,TX1234AB,02/05/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+12821,CA8RPL21,27/08/25,"Bucket of Bones, Coleslaw",20.51,Amelia Brown
+12822,TX9012EF,06/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12823,AZ7QW552,27/01/25,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+12824,TX9012EF,13/06/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+12825,NCK6686,16/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Saketh Nair
+12826,CA8RPL21,17/11/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Amelia Brown
+12827,TX5555AA,09/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12828,ILP9054,02/05/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+12829,GAH3812,10/12/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Charlotte Wilson
+12830,TX5555AA,23/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12831,OHB4509,27/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+12832,OHB4509,17/02/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+12833,NVX7720,29/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Olivia Lewis
+12834,TX1234AB,07/04/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+12835,CA8RPL21,17/05/26,"Bucket of Bones, Coleslaw",20.51,Amelia Brown
+12836,OHB4509,03/06/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Zoe Scott
+12837,TX9012EF,03/01/26,"Bucket of Bones, Coleslaw",20.51,William King
+12838,GAH3812,02/10/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Charlotte Wilson
+12839,NCK6686,29/08/25,"Friday's Combo, Giant Onion Rings",22.95,Saketh Nair
+12840,KEWC50,03/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Michael Jean
+12841,RGZ9000,21/11/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Naveen Chandra
+12842,CA8RPL21,28/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+12843,KEWC50,04/01/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Michael Jean
+12844,NVX7720,24/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Olivia Lewis
+12845,TX5555AA,27/03/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+12846,PAJ8123,01/07/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12847,FLK92MTR,15/01/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+12848,GAH3812,28/03/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Charlotte Wilson
+12849,WA6NCK88,26/05/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Jacob Anderson
+12850,TX8901QR,10/11/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Deepa Rao
+12851,TX9012EF,18/08/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+12852,TX1234AB,04/08/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+12853,TX7890IJ,16/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Mia Robinson
+12854,TX6789MN,10/12/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+12855,AZ7QW552,28/05/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+12856,TX9012EF,08/12/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+12857,TX4567OP,03/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Sophia Hall
+12858,GAH3812,04/11/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Charlotte Wilson
+12859,NVX7720,20/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Olivia Lewis
+12860,PAJ8123,24/03/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Aisha Khan
+12861,WA6NCK88,07/06/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Jacob Anderson
+12862,AZ7QW552,14/01/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+12863,TX4567OP,14/04/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+12864,TX7890IJ,20/01/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Mia Robinson
+12865,TX1234AB,03/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+12866,TX6789MN,13/05/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+12867,TX7890IJ,16/01/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Mia Robinson
+12868,ILP9054,04/11/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+12869,TX3456GH,07/01/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Liam Thompson
+12870,TX5555AA,28/06/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12871,TX5555AA,03/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+12872,NYC4821,04/03/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+12873,NCK6686,13/09/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Saketh Nair
+12874,NCK6686,30/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Saketh Nair
+12875,PAJ8123,22/11/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+12876,TX6789MN,05/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Rohan Gupta
+12877,TX1234AB,10/01/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+12878,TX3456GH,05/04/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Liam Thompson
+12879,TX2345KL,20/10/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+12880,ILP9054,16/04/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+12881,OHB4509,03/01/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+12882,TX1234AB,08/05/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+12883,TX7890IJ,23/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+12884,TX3456GH,13/02/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Liam Thompson
+12885,EVZ3667,02/05/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Legina Andrews
+12886,RGZ9000,01/04/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Naveen Chandra
+12887,TX5555AA,01/12/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Aisha Khan
+12888,GAH3812,09/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Charlotte Wilson
+12889,TX1234AB,07/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+12890,TX8901QR,05/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Deepa Rao
+12891,TX7890IJ,05/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+12892,NVX7720,12/10/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Olivia Lewis
+12893,TX8901QR,30/09/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Deepa Rao
+12894,NVX7720,17/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Olivia Lewis
+12895,NCK6686,21/05/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Saketh Nair
+12896,TX2345KL,30/03/26,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12897,TX7890IJ,16/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+12898,TX2345KL,20/05/26,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12899,CA8RPL21,14/02/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Amelia Brown
+12900,EVZ3667,17/12/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Legina Andrews
+12901,OHB4509,14/06/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+12902,TX1234AB,26/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+12903,TX1234AB,16/05/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+12904,NCK6686,09/06/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Saketh Nair
+12905,AZ7QW552,11/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+12906,GAH3812,12/04/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Charlotte Wilson
+12907,TX5555AA,24/06/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+12908,WA6NCK88,03/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+12909,TX9012EF,17/11/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+12910,TX1234AB,22/05/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+12911,WA6NCK88,07/02/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Jacob Anderson
+12912,TX4567OP,11/01/26,"Friday's Combo, Giant Onion Rings",22.95,Sophia Hall
+12913,KEWC50,09/04/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Michael Jean
+12914,TX1234AB,21/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+12915,RGZ9000,15/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Naveen Chandra
+12916,TX7890IJ,06/03/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+12917,CA8RPL21,01/05/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Amelia Brown
+12918,CA8RPL21,18/07/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Amelia Brown
+12919,WA6NCK88,05/06/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+12920,TX6789MN,17/06/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+12921,TX6789MN,11/01/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+12922,NVX7720,14/03/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Olivia Lewis
+12923,TX9012EF,12/12/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+12924,WA6NCK88,28/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Jacob Anderson
+12925,ILP9054,05/07/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+12926,PAJ8123,02/05/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+12927,CA8RPL21,19/05/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+12928,RGZ9000,11/03/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Naveen Chandra
+12929,NCK6686,10/02/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Saketh Nair
+12930,FLK92MTR,27/11/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+12931,TX4567OP,18/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Sophia Hall
+12932,TX8901QR,30/06/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Deepa Rao
+12933,KEWC50,13/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Michael Jean
+12934,TX8901QR,30/03/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Deepa Rao
+12935,TX2345KL,27/06/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+12936,AZ7QW552,03/06/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+12937,EVZ3667,29/04/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Legina Andrews
+12938,TX1234AB,25/06/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+12939,GAH3812,22/05/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Charlotte Wilson
+12940,ILP9054,18/01/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+12941,TX8901QR,24/04/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Deepa Rao
+12942,TX7890IJ,09/11/25,"Friday's Combo, Giant Onion Rings",22.95,Mia Robinson
+12943,TX4567OP,28/06/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Sophia Hall
+12944,RGZ9000,11/05/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Naveen Chandra
+12945,TX5555AA,25/05/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+12946,TX1234AB,26/03/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12947,TX6789MN,17/10/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+12948,RGZ9000,16/03/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Naveen Chandra
+12949,CA8RPL21,24/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Amelia Brown
+12950,TX4567OP,27/04/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+12951,OHB4509,02/11/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+12952,TX6789MN,27/04/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+12953,TX4567OP,29/04/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+12954,EVZ3667,14/02/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Legina Andrews
+12955,TX1234AB,29/04/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+12956,OHB4509,13/02/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+12957,WA6NCK88,09/11/25,"Bucket of Bones, Coleslaw",20.51,Jacob Anderson
+12958,TX2345KL,07/01/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Noah Harris
+12959,RGZ9000,12/02/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Naveen Chandra
+12960,TX7890IJ,06/06/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+12961,TX2345KL,16/01/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+12962,EVZ3667,14/02/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Legina Andrews
+12963,TX5678CD,26/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Isabella Martinez
+12964,TX3456GH,05/05/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Liam Thompson
+12965,AZ7QW552,25/07/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Mia Robinson
+12966,RGZ9000,07/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Naveen Chandra
+12967,TX6789MN,05/09/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Rohan Gupta
+12968,TX5555AA,22/03/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+12969,TX1234AB,09/12/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+12970,TX5555AA,09/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12971,WA6NCK88,26/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Jacob Anderson
+12972,TX5555AA,27/04/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+12973,TX2345KL,11/05/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+12974,TX5678CD,22/08/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Isabella Martinez
+12975,TX3456GH,05/05/26,"Friday's Combo, Giant Onion Rings",22.95,Liam Thompson
+12976,TX5678CD,18/03/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Isabella Martinez
+12977,TX4567OP,02/04/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Sophia Hall
+12978,WA6NCK88,12/04/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Jacob Anderson
+12979,TX1234AB,30/08/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+12980,ILP9054,26/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+12981,TX9012EF,06/05/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+12982,TX1234AB,29/04/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+12983,NVX7720,26/08/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Olivia Lewis
+12984,TX3456GH,12/06/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Liam Thompson
+12985,AZ7QW552,29/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Mia Robinson
+12986,KEWC50,02/01/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Michael Jean
+12987,WA6NCK88,16/11/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Jacob Anderson
+12988,OHB4509,12/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+12989,TX5555AA,20/06/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+12990,TX2345KL,08/03/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Noah Harris
+12991,FLK92MTR,30/09/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+12992,NYC4821,22/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+12993,EVZ3667,18/10/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Legina Andrews
+12994,WA6NCK88,10/05/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Jacob Anderson
+12995,AZ7QW552,22/03/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Mia Robinson
+12996,PAJ8123,03/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+12997,TX6789MN,13/08/25,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+12998,TX8901QR,19/10/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Deepa Rao
+12999,GAH3812,12/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Charlotte Wilson
+13000,KEWC50,21/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Michael Jean
+13001,TX4567OP,14/10/25,"Bucket of Bones, Coleslaw",20.51,Sophia Hall
+13002,NYC4821,11/07/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+13003,AZ7QW552,22/10/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Mia Robinson
+13004,ILP9054,10/02/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+13005,AZ7QW552,25/01/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+13006,NCK6686,10/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Saketh Nair
+13007,NCK6686,16/05/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Saketh Nair
+13008,TX2345KL,02/08/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+13009,TX9012EF,27/10/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+13010,TX6789MN,06/11/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Rohan Gupta
+13011,NCK6686,15/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Saketh Nair
+13012,WA6NCK88,25/04/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Jacob Anderson
+13013,GAH3812,11/10/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Charlotte Wilson
+13014,OHB4509,18/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+13015,CA8RPL21,12/06/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Amelia Brown
+13016,NYC4821,11/04/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+13017,TX3456GH,08/11/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Liam Thompson
+13018,TX1234AB,11/10/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13019,TX1234AB,23/11/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+13020,CA8RPL21,06/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Amelia Brown
+13021,CA8RPL21,10/01/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Amelia Brown
+13022,TX5678CD,26/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Isabella Martinez
+13023,NVX7720,17/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Olivia Lewis
+13024,NYC4821,28/09/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+13025,TX2345KL,02/02/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13026,NYC4821,11/01/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+13027,GAH3812,29/08/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Charlotte Wilson
+13028,TX2345KL,29/06/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13029,NVX7720,21/05/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Olivia Lewis
+13030,ILP9054,26/01/26,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+13031,TX4567OP,17/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+13032,TX7890IJ,10/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+13033,TX1234AB,05/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13034,KEWC50,26/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Michael Jean
+13035,WA6NCK88,16/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Jacob Anderson
+13036,GAH3812,16/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Charlotte Wilson
+13037,GAH3812,07/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Charlotte Wilson
+13038,NCK6686,17/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Saketh Nair
+13039,GAH3812,20/08/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Charlotte Wilson
+13040,OHB4509,14/01/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+13041,PAJ8123,09/10/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+13042,FLK92MTR,24/04/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+13043,TX5555AA,08/04/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Aisha Khan
+13044,PAJ8123,29/08/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+13045,TX9012EF,23/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+13046,TX1234AB,23/03/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+13047,GAH3812,20/05/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Charlotte Wilson
+13048,TX2345KL,11/01/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+13049,TX2345KL,18/08/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13050,AZ7QW552,30/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Mia Robinson
+13051,OHB4509,19/05/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13052,TX9012EF,09/02/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13053,OHB4509,04/04/26,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+13054,TX2345KL,06/10/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13055,TX1234AB,05/02/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+13056,TX5678CD,03/09/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Isabella Martinez
+13057,TX2345KL,05/04/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+13058,PAJ8123,11/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13059,EVZ3667,07/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Legina Andrews
+13060,KEWC50,01/07/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+13061,TX6789MN,28/06/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+13062,TX5555AA,25/07/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+13063,TX4567OP,18/10/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Sophia Hall
+13064,TX3456GH,24/11/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Liam Thompson
+13065,TX8901QR,27/02/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Deepa Rao
+13066,RGZ9000,04/06/26,"Friday's Combo, Giant Onion Rings",22.95,Naveen Chandra
+13067,NCK6686,07/06/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Saketh Nair
+13068,EVZ3667,04/01/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Legina Andrews
+13069,AZ7QW552,26/10/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+13070,TX8901QR,27/05/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Deepa Rao
+13071,TX2345KL,05/01/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+13072,NVX7720,08/09/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Olivia Lewis
+13073,GAH3812,27/05/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Charlotte Wilson
+13074,TX1234AB,21/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+13075,TX5678CD,01/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Isabella Martinez
+13076,TX3456GH,07/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Liam Thompson
+13077,EVZ3667,01/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Legina Andrews
+13078,TX8901QR,25/04/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Deepa Rao
+13079,GAH3812,23/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Charlotte Wilson
+13080,OHB4509,26/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13081,PAJ8123,07/06/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13082,TX7890IJ,28/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+13083,TX5555AA,11/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13084,NCK6686,21/08/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Saketh Nair
+13085,NYC4821,24/05/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Rohan Gupta
+13086,RGZ9000,25/04/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Naveen Chandra
+13087,TX5555AA,04/11/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13088,TX9012EF,15/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+13089,OHB4509,25/04/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+13090,RGZ9000,03/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Naveen Chandra
+13091,TX3456GH,14/03/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Liam Thompson
+13092,KEWC50,22/03/25,"Bucket of Bones, Coleslaw",20.51,Michael Jean
+13093,TX1234AB,08/05/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+13094,TX9012EF,28/09/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13095,WA6NCK88,19/04/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Jacob Anderson
+13096,OHB4509,23/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13097,TX5678CD,05/03/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Isabella Martinez
+13098,NCK6686,30/10/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Saketh Nair
+13099,ILP9054,25/11/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+13100,TX1234AB,04/05/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13101,TX8901QR,05/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Deepa Rao
+13102,FLK92MTR,08/06/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+13103,FLK92MTR,26/03/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+13104,AZ7QW552,08/03/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+13105,NVX7720,24/02/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Olivia Lewis
+13106,TX1234AB,08/12/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13107,NYC4821,03/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+13108,TX5678CD,21/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Isabella Martinez
+13109,TX7890IJ,05/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+13110,ILP9054,21/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+13111,ILP9054,22/10/25,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+13112,TX7890IJ,22/09/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+13113,PAJ8123,18/01/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+13114,TX1234AB,21/10/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13115,TX1234AB,11/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13116,TX4567OP,06/03/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Sophia Hall
+13117,NYC4821,17/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Rohan Gupta
+13118,GAH3812,13/08/25,"Bucket of Bones, Coleslaw",20.51,Charlotte Wilson
+13119,TX5555AA,14/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+13120,NVX7720,24/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Olivia Lewis
+13121,TX5678CD,27/05/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Isabella Martinez
+13122,TX4567OP,06/04/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Sophia Hall
+13123,TX5678CD,04/02/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Isabella Martinez
+13124,TX2345KL,15/06/26,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+13125,TX9012EF,15/02/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+13126,CA8RPL21,26/04/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Amelia Brown
+13127,TX9012EF,18/10/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+13128,TX5555AA,17/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+13129,TX5555AA,26/11/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+13130,TX5555AA,13/07/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13131,TX1234AB,09/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13132,TX5555AA,08/02/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+13133,PAJ8123,28/12/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13134,TX2345KL,01/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13135,PAJ8123,08/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+13136,TX2345KL,03/10/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+13137,CA8RPL21,17/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+13138,TX3456GH,04/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Liam Thompson
+13139,TX5555AA,13/04/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+13140,TX5555AA,14/04/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13141,TX9012EF,09/02/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13142,OHB4509,18/11/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13143,GAH3812,20/01/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Charlotte Wilson
+13144,TX2345KL,21/02/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13145,TX5555AA,13/02/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+13146,WA6NCK88,01/05/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+13147,PAJ8123,29/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13148,TX1234AB,27/01/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+13149,NCK6686,20/12/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Saketh Nair
+13150,PAJ8123,20/06/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+13151,TX5555AA,17/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13152,GAH3812,17/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Charlotte Wilson
+13153,KEWC50,26/04/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Michael Jean
+13154,TX5678CD,10/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Isabella Martinez
+13155,TX9012EF,17/09/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+13156,TX1234AB,10/03/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13157,KEWC50,08/04/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Michael Jean
+13158,RGZ9000,02/04/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Naveen Chandra
+13159,TX1234AB,23/08/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13160,EVZ3667,04/10/25,"Friday's Combo, Giant Onion Rings",22.95,Legina Andrews
+13161,RGZ9000,02/05/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Naveen Chandra
+13162,TX3456GH,29/03/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Liam Thompson
+13163,TX8901QR,24/02/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Deepa Rao
+13164,TX5678CD,28/09/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Isabella Martinez
+13165,OHB4509,08/03/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13166,GAH3812,07/01/26,"Friday's Combo, Giant Onion Rings",22.95,Charlotte Wilson
+13167,TX6789MN,08/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Rohan Gupta
+13168,WA6NCK88,05/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Jacob Anderson
+13169,TX9012EF,29/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13170,TX9012EF,05/12/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+13171,TX4567OP,02/06/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+13172,TX9012EF,29/05/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,William King
+13173,CA8RPL21,02/08/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+13174,TX9012EF,05/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+13175,TX8901QR,20/06/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Deepa Rao
+13176,EVZ3667,02/06/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Legina Andrews
+13177,NVX7720,23/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Olivia Lewis
+13178,TX2345KL,03/06/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Noah Harris
+13179,RGZ9000,08/04/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Naveen Chandra
+13180,TX6789MN,03/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Rohan Gupta
+13181,TX3456GH,31/12/25,"Friday's Combo, Giant Onion Rings",22.95,Liam Thompson
+13182,TX4567OP,05/03/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Sophia Hall
+13183,OHB4509,14/01/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13184,TX8901QR,25/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Deepa Rao
+13185,TX1234AB,01/01/26,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+13186,AZ7QW552,24/04/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+13187,TX3456GH,03/11/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Liam Thompson
+13188,PAJ8123,31/01/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13189,TX8901QR,30/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Deepa Rao
+13190,TX2345KL,23/03/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+13191,WA6NCK88,07/04/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Jacob Anderson
+13192,OHB4509,05/04/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13193,AZ7QW552,05/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+13194,WA6NCK88,17/01/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Jacob Anderson
+13195,CA8RPL21,11/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Amelia Brown
+13196,TX7890IJ,10/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+13197,TX9012EF,14/05/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,William King
+13198,TX5555AA,23/11/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Aisha Khan
+13199,NCK6686,17/09/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Saketh Nair
+13200,KEWC50,05/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Michael Jean
+13201,TX2345KL,23/05/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+13202,OHB4509,28/05/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+13203,TX5555AA,02/11/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+13204,WA6NCK88,13/12/25,"Friday's Combo, Giant Onion Rings",22.95,Jacob Anderson
+13205,TX6789MN,07/03/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Rohan Gupta
+13206,FLK92MTR,15/05/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+13207,TX9012EF,26/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+13208,TX5555AA,25/04/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13209,TX5555AA,30/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13210,EVZ3667,18/03/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Legina Andrews
+13211,KEWC50,27/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Michael Jean
+13212,TX2345KL,08/06/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+13213,RGZ9000,18/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Naveen Chandra
+13214,PAJ8123,01/07/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+13215,TX1234AB,18/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13216,TX5555AA,15/03/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13217,TX5555AA,24/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+13218,TX3456GH,01/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Liam Thompson
+13219,EVZ3667,01/04/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Legina Andrews
+13220,TX5555AA,19/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13221,OHB4509,25/04/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+13222,TX1234AB,12/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13223,NVX7720,02/09/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Olivia Lewis
+13224,TX5555AA,28/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13225,TX9012EF,28/03/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+13226,TX1234AB,16/11/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13227,TX6789MN,07/02/26,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+13228,FLK92MTR,03/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+13229,TX1234AB,07/10/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+13230,TX7890IJ,16/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+13231,TX1234AB,30/09/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13232,GAH3812,26/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Charlotte Wilson
+13233,NYC4821,13/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+13234,GAH3812,31/05/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Charlotte Wilson
+13235,ILP9054,27/05/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13236,NCK6686,24/06/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Saketh Nair
+13237,NVX7720,23/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Olivia Lewis
+13238,TX5678CD,24/02/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Isabella Martinez
+13239,TX6789MN,15/10/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+13240,GAH3812,18/05/26,"Friday's Combo, Giant Onion Rings",22.95,Charlotte Wilson
+13241,TX9012EF,15/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+13242,GAH3812,17/09/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Charlotte Wilson
+13243,FLK92MTR,05/06/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+13244,TX1234AB,24/03/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+13245,PAJ8123,20/03/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13246,NVX7720,22/09/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Olivia Lewis
+13247,AZ7QW552,11/06/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Mia Robinson
+13248,CA8RPL21,22/07/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+13249,TX1234AB,24/09/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13250,WA6NCK88,05/06/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Jacob Anderson
+13251,AZ7QW552,27/02/25,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+13252,TX3456GH,13/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Liam Thompson
+13253,GAH3812,24/06/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Charlotte Wilson
+13254,CA8RPL21,27/04/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+13255,RGZ9000,19/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Naveen Chandra
+13256,TX1234AB,10/07/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+13257,WA6NCK88,09/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Jacob Anderson
+13258,TX5555AA,19/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13259,TX9012EF,15/02/26,"Friday's Combo, Giant Onion Rings",22.95,William King
+13260,PAJ8123,20/08/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+13261,TX5555AA,14/02/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13262,TX2345KL,06/05/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+13263,TX9012EF,11/10/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,William King
+13264,TX5555AA,17/01/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+13265,FLK92MTR,08/06/26,"Bucket of Bones, Coleslaw",20.51,William King
+13266,TX9012EF,26/08/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+13267,TX5555AA,06/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13268,KEWC50,22/03/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Michael Jean
+13269,GAH3812,05/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Charlotte Wilson
+13270,TX5678CD,13/04/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Isabella Martinez
+13271,NVX7720,23/02/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Olivia Lewis
+13272,TX5678CD,21/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Isabella Martinez
+13273,TX1234AB,12/11/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13274,OHB4509,14/10/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13275,FLK92MTR,19/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+13276,GAH3812,12/01/26,"Friday's Combo, Giant Onion Rings",22.95,Charlotte Wilson
+13277,TX8901QR,20/02/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Deepa Rao
+13278,TX2345KL,14/02/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+13279,TX7890IJ,30/05/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+13280,TX2345KL,23/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+13281,TX5678CD,25/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Isabella Martinez
+13282,FLK92MTR,20/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+13283,TX5678CD,30/03/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Isabella Martinez
+13284,TX6789MN,22/12/25,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+13285,TX9012EF,17/01/26,"Friday's Combo, Giant Onion Rings",22.95,William King
+13286,WA6NCK88,15/01/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Jacob Anderson
+13287,NCK6686,01/05/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Saketh Nair
+13288,TX4567OP,01/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+13289,FLK92MTR,13/04/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+13290,CA8RPL21,04/04/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Amelia Brown
+13291,GAH3812,19/05/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Charlotte Wilson
+13292,NYC4821,28/02/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+13293,TX3456GH,13/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Liam Thompson
+13294,TX8901QR,13/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Deepa Rao
+13295,TX5678CD,17/01/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Isabella Martinez
+13296,TX4567OP,31/08/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Sophia Hall
+13297,TX3456GH,14/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Liam Thompson
+13298,TX1234AB,28/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+13299,TX9012EF,25/03/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,William King
+13300,EVZ3667,03/08/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Legina Andrews
+13301,TX4567OP,01/02/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Sophia Hall
+13302,WA6NCK88,03/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Jacob Anderson
+13303,TX5555AA,27/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13304,KEWC50,30/09/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Michael Jean
+13305,NYC4821,18/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Rohan Gupta
+13306,TX3456GH,04/03/26,"Bucket of Bones, Coleslaw",20.51,Liam Thompson
+13307,KEWC50,15/03/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Michael Jean
+13308,TX4567OP,05/05/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Sophia Hall
+13309,TX5555AA,17/10/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13310,TX6789MN,15/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+13311,OHB4509,24/06/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+13312,CA8RPL21,08/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+13313,NVX7720,10/02/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Olivia Lewis
+13314,WA6NCK88,06/08/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Jacob Anderson
+13315,TX3456GH,30/08/25,"Friday's Combo, Giant Onion Rings",22.95,Liam Thompson
+13316,NYC4821,06/03/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+13317,TX7890IJ,27/10/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+13318,EVZ3667,04/07/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Legina Andrews
+13319,TX7890IJ,17/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+13320,WA6NCK88,11/05/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Jacob Anderson
+13321,TX9012EF,03/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,William King
+13322,NVX7720,12/07/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Olivia Lewis
+13323,EVZ3667,09/01/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Legina Andrews
+13324,TX9012EF,25/02/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+13325,EVZ3667,13/04/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Legina Andrews
+13326,TX2345KL,26/06/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+13327,CA8RPL21,15/08/25,"Bucket of Bones, Coleslaw",20.51,Amelia Brown
+13328,NYC4821,26/04/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+13329,FLK92MTR,22/05/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13330,EVZ3667,12/08/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Legina Andrews
+13331,TX2345KL,12/01/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+13332,WA6NCK88,05/03/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Jacob Anderson
+13333,NCK6686,11/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Saketh Nair
+13334,TX1234AB,27/06/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+13335,KEWC50,07/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Michael Jean
+13336,TX1234AB,06/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13337,TX2345KL,24/05/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+13338,NVX7720,24/12/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Olivia Lewis
+13339,TX3456GH,19/07/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Liam Thompson
+13340,TX4567OP,24/01/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+13341,WA6NCK88,13/02/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Jacob Anderson
+13342,TX3456GH,19/06/26,"Bucket of Bones, Coleslaw",20.51,Liam Thompson
+13343,PAJ8123,09/01/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+13344,TX5678CD,25/08/25,"Friday's Combo, Giant Onion Rings",22.95,Isabella Martinez
+13345,TX3456GH,18/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+13346,TX2345KL,05/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13347,GAH3812,05/01/26,"Friday's Combo, Giant Onion Rings",22.95,Charlotte Wilson
+13348,TX1234AB,09/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+13349,PAJ8123,26/05/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13350,TX5555AA,17/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13351,WA6NCK88,16/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+13352,TX5678CD,06/02/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Isabella Martinez
+13353,ILP9054,29/03/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13354,OHB4509,15/04/25,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+13355,OHB4509,12/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+13356,FLK92MTR,14/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+13357,FLK92MTR,11/03/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+13358,FLK92MTR,31/01/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13359,TX5555AA,31/05/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13360,FLK92MTR,09/02/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+13361,TX7890IJ,22/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+13362,KEWC50,17/04/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Michael Jean
+13363,TX1234AB,21/07/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13364,TX1234AB,04/10/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Zoe Scott
+13365,OHB4509,07/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+13366,CA8RPL21,20/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Amelia Brown
+13367,TX4567OP,01/01/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Sophia Hall
+13368,TX2345KL,12/01/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+13369,TX7890IJ,10/05/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Mia Robinson
+13370,TX5555AA,07/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13371,TX5555AA,06/06/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13372,TX1234AB,24/07/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13373,RGZ9000,24/01/25,"Friday's Combo, Giant Onion Rings",22.95,Naveen Chandra
+13374,NCK6686,28/05/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Saketh Nair
+13375,NYC4821,29/03/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Rohan Gupta
+13376,GAH3812,08/01/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Charlotte Wilson
+13377,PAJ8123,18/01/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13378,NCK6686,05/03/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Saketh Nair
+13379,FLK92MTR,11/05/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+13380,TX9012EF,30/09/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+13381,TX5678CD,19/02/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Isabella Martinez
+13382,ILP9054,25/01/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Noah Harris
+13383,NYC4821,08/01/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+13384,NCK6686,05/01/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Saketh Nair
+13385,TX2345KL,07/04/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13386,WA6NCK88,22/04/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+13387,TX1234AB,24/03/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13388,EVZ3667,03/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Legina Andrews
+13389,TX5555AA,07/10/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13390,TX3456GH,06/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Liam Thompson
+13391,TX2345KL,06/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Noah Harris
+13392,KEWC50,06/09/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+13393,CA8RPL21,28/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Amelia Brown
+13394,TX9012EF,11/02/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+13395,GAH3812,19/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Charlotte Wilson
+13396,TX8901QR,15/04/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Deepa Rao
+13397,EVZ3667,08/03/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Legina Andrews
+13398,TX5555AA,03/10/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+13399,ILP9054,20/02/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+13400,WA6NCK88,21/05/25,"Friday's Combo, Giant Onion Rings",22.95,Jacob Anderson
+13401,TX9012EF,18/12/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,William King
+13402,TX5555AA,07/02/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13403,TX3456GH,03/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Liam Thompson
+13404,TX9012EF,07/08/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13405,TX1234AB,03/02/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13406,EVZ3667,06/01/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Legina Andrews
+13407,PAJ8123,08/03/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Aisha Khan
+13408,CA8RPL21,11/01/25,"Friday's Combo, Giant Onion Rings",22.95,Amelia Brown
+13409,AZ7QW552,04/02/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+13410,NCK6686,05/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Saketh Nair
+13411,WA6NCK88,28/03/25,"Friday's Combo, Giant Onion Rings",22.95,Jacob Anderson
+13412,TX9012EF,12/04/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+13413,TX5555AA,02/03/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13414,TX5555AA,14/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13415,TX5555AA,07/04/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+13416,TX8901QR,12/12/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Deepa Rao
+13417,TX2345KL,31/03/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13418,TX2345KL,26/09/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Noah Harris
+13419,TX4567OP,04/03/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Sophia Hall
+13420,RGZ9000,04/03/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Naveen Chandra
+13421,NCK6686,12/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Saketh Nair
+13422,AZ7QW552,24/08/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+13423,WA6NCK88,28/06/26,"Friday's Combo, Giant Onion Rings",22.95,Jacob Anderson
+13424,OHB4509,05/04/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Zoe Scott
+13425,TX2345KL,17/02/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+13426,PAJ8123,03/05/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+13427,AZ7QW552,27/05/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+13428,TX2345KL,20/05/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+13429,TX6789MN,03/02/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+13430,RGZ9000,26/12/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Naveen Chandra
+13431,TX1234AB,16/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+13432,GAH3812,14/02/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Charlotte Wilson
+13433,TX5555AA,16/06/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13434,NCK6686,19/12/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Saketh Nair
+13435,CA8RPL21,17/10/25,"Friday's Combo, Giant Onion Rings",22.95,Amelia Brown
+13436,NVX7720,23/05/26,"Friday's Combo, Giant Onion Rings",22.95,Olivia Lewis
+13437,AZ7QW552,19/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Mia Robinson
+13438,TX1234AB,05/01/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13439,CA8RPL21,18/03/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+13440,CA8RPL21,12/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Amelia Brown
+13441,FLK92MTR,29/04/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+13442,TX1234AB,21/05/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13443,TX9012EF,15/02/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+13444,AZ7QW552,15/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Mia Robinson
+13445,OHB4509,28/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13446,TX1234AB,04/03/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+13447,PAJ8123,18/04/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13448,RGZ9000,29/01/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Naveen Chandra
+13449,PAJ8123,13/04/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+13450,TX4567OP,03/02/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Sophia Hall
+13451,FLK92MTR,10/10/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13452,TX1234AB,03/12/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13453,TX1234AB,13/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13454,NVX7720,26/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Olivia Lewis
+13455,ILP9054,10/10/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+13456,TX2345KL,07/02/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Noah Harris
+13457,TX1234AB,17/11/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+13458,TX3456GH,05/11/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Liam Thompson
+13459,RGZ9000,17/06/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Naveen Chandra
+13460,TX5678CD,18/05/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Isabella Martinez
+13461,AZ7QW552,27/10/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+13462,ILP9054,15/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Noah Harris
+13463,KEWC50,28/09/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Michael Jean
+13464,NYC4821,02/06/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+13465,NYC4821,31/12/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Rohan Gupta
+13466,TX5555AA,02/11/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13467,TX6789MN,19/07/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Rohan Gupta
+13468,WA6NCK88,31/01/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Jacob Anderson
+13469,AZ7QW552,08/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+13470,RGZ9000,15/02/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Naveen Chandra
+13471,PAJ8123,16/01/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13472,RGZ9000,16/06/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Naveen Chandra
+13473,GAH3812,06/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Charlotte Wilson
+13474,TX5678CD,16/02/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Isabella Martinez
+13475,FLK92MTR,20/06/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+13476,TX5678CD,18/04/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Isabella Martinez
+13477,FLK92MTR,17/07/25,"Bucket of Bones, Coleslaw",20.51,William King
+13478,OHB4509,03/11/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+13479,KEWC50,29/10/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Michael Jean
+13480,NCK6686,06/11/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Saketh Nair
+13481,RGZ9000,27/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Naveen Chandra
+13482,TX1234AB,07/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13483,PAJ8123,10/04/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13484,WA6NCK88,27/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Jacob Anderson
+13485,TX6789MN,10/03/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+13486,TX5555AA,19/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13487,KEWC50,13/04/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Michael Jean
+13488,FLK92MTR,09/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+13489,KEWC50,25/03/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Michael Jean
+13490,TX2345KL,29/08/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13491,TX9012EF,12/03/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+13492,TX4567OP,30/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+13493,NVX7720,29/01/25,"Friday's Combo, Giant Onion Rings",22.95,Olivia Lewis
+13494,TX5678CD,13/01/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Isabella Martinez
+13495,FLK92MTR,14/05/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13496,TX2345KL,12/10/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+13497,NYC4821,16/02/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+13498,TX1234AB,28/02/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13499,TX5555AA,17/11/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+13500,TX5555AA,23/03/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13501,OHB4509,24/10/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13502,TX1234AB,21/01/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Zoe Scott
+13503,TX8901QR,22/03/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Deepa Rao
+13504,NCK6686,11/10/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Saketh Nair
+13505,TX2345KL,04/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+13506,OHB4509,02/05/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+13507,TX9012EF,11/03/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13508,CA8RPL21,11/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+13509,TX2345KL,08/07/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Noah Harris
+13510,GAH3812,02/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Charlotte Wilson
+13511,GAH3812,21/08/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Charlotte Wilson
+13512,TX4567OP,14/01/26,"Friday's Combo, Giant Onion Rings",22.95,Sophia Hall
+13513,TX1234AB,04/04/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13514,AZ7QW552,26/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Mia Robinson
+13515,TX5555AA,03/08/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13516,TX7890IJ,04/01/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Mia Robinson
+13517,TX7890IJ,01/04/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+13518,EVZ3667,04/03/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Legina Andrews
+13519,TX6789MN,04/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+13520,OHB4509,01/06/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+13521,KEWC50,18/01/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Michael Jean
+13522,AZ7QW552,24/05/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+13523,ILP9054,10/08/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+13524,FLK92MTR,28/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+13525,TX2345KL,25/04/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13526,TX3456GH,03/05/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Liam Thompson
+13527,TX6789MN,11/06/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+13528,OHB4509,28/12/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13529,TX2345KL,18/10/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13530,KEWC50,30/03/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Michael Jean
+13531,TX5555AA,14/06/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13532,NCK6686,30/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Saketh Nair
+13533,RGZ9000,30/05/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Naveen Chandra
+13534,ILP9054,11/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13535,GAH3812,22/08/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Charlotte Wilson
+13536,NCK6686,05/01/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Saketh Nair
+13537,FLK92MTR,26/08/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+13538,TX5678CD,27/04/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Isabella Martinez
+13539,GAH3812,27/02/25,"Bucket of Bones, Coleslaw",20.51,Charlotte Wilson
+13540,TX3456GH,07/01/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Liam Thompson
+13541,TX1234AB,27/07/25,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+13542,ILP9054,07/01/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+13543,KEWC50,09/02/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+13544,TX5678CD,22/03/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Isabella Martinez
+13545,TX3456GH,11/05/25,"Bucket of Bones, Coleslaw",20.51,Liam Thompson
+13546,TX4567OP,20/11/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+13547,AZ7QW552,12/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Mia Robinson
+13548,KEWC50,04/08/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Michael Jean
+13549,CA8RPL21,05/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+13550,TX2345KL,03/01/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Noah Harris
+13551,OHB4509,24/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+13552,NYC4821,10/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+13553,TX7890IJ,16/05/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Mia Robinson
+13554,OHB4509,13/10/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13555,TX5555AA,07/09/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+13556,KEWC50,21/06/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Michael Jean
+13557,KEWC50,15/04/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Michael Jean
+13558,OHB4509,21/03/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+13559,OHB4509,08/01/26,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+13560,OHB4509,27/08/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13561,GAH3812,06/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Charlotte Wilson
+13562,TX2345KL,04/04/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Noah Harris
+13563,PAJ8123,16/02/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13564,EVZ3667,24/04/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Legina Andrews
+13565,TX8901QR,26/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Deepa Rao
+13566,RGZ9000,26/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Naveen Chandra
+13567,RGZ9000,04/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Naveen Chandra
+13568,TX9012EF,01/10/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+13569,TX4567OP,26/05/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+13570,TX1234AB,04/07/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13571,TX6789MN,12/03/25,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+13572,TX8901QR,31/01/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Deepa Rao
+13573,TX4567OP,13/03/26,"Bucket of Bones, Coleslaw",20.51,Sophia Hall
+13574,TX2345KL,27/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Noah Harris
+13575,TX9012EF,09/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+13576,FLK92MTR,05/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13577,TX1234AB,13/10/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13578,TX8901QR,11/06/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Deepa Rao
+13579,KEWC50,17/06/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Michael Jean
+13580,OHB4509,29/03/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+13581,KEWC50,13/06/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Michael Jean
+13582,TX1234AB,14/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+13583,TX5678CD,17/03/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Isabella Martinez
+13584,TX5678CD,04/05/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Isabella Martinez
+13585,TX9012EF,19/05/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+13586,OHB4509,10/03/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13587,CA8RPL21,11/11/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+13588,GAH3812,22/03/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Charlotte Wilson
+13589,WA6NCK88,04/07/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+13590,FLK92MTR,12/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+13591,EVZ3667,24/03/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Legina Andrews
+13592,TX1234AB,05/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13593,GAH3812,11/01/26,"Bucket of Bones, Coleslaw",20.51,Charlotte Wilson
+13594,TX4567OP,30/03/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Sophia Hall
+13595,TX3456GH,05/07/25,"Bucket of Bones, Coleslaw",20.51,Liam Thompson
+13596,TX1234AB,11/01/26,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+13597,TX2345KL,22/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+13598,ILP9054,06/11/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+13599,CA8RPL21,24/05/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Amelia Brown
+13600,TX9012EF,13/02/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,William King
+13601,NCK6686,22/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Saketh Nair
+13602,AZ7QW552,05/12/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+13603,OHB4509,03/02/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13604,KEWC50,24/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Michael Jean
+13605,RGZ9000,07/09/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Naveen Chandra
+13606,OHB4509,30/01/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13607,AZ7QW552,06/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+13608,TX5678CD,07/05/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Isabella Martinez
+13609,TX9012EF,12/08/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+13610,RGZ9000,08/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Naveen Chandra
+13611,PAJ8123,06/06/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Aisha Khan
+13612,WA6NCK88,25/11/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Jacob Anderson
+13613,TX4567OP,22/01/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Sophia Hall
+13614,WA6NCK88,02/02/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+13615,GAH3812,16/05/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Charlotte Wilson
+13616,NCK6686,27/05/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Saketh Nair
+13617,TX7890IJ,20/05/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Mia Robinson
+13618,NYC4821,02/02/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+13619,FLK92MTR,14/01/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+13620,CA8RPL21,09/08/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+13621,TX6789MN,04/04/25,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+13622,AZ7QW552,10/05/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+13623,TX1234AB,11/10/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13624,ILP9054,03/04/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Noah Harris
+13625,TX9012EF,24/06/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13626,NCK6686,12/02/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Saketh Nair
+13627,TX5555AA,16/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+13628,WA6NCK88,11/10/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+13629,TX9012EF,16/07/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+13630,TX9012EF,26/01/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+13631,OHB4509,03/03/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13632,TX4567OP,26/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+13633,TX9012EF,22/08/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+13634,TX2345KL,01/04/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13635,TX1234AB,14/08/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Zoe Scott
+13636,PAJ8123,15/02/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13637,TX2345KL,27/01/26,"Bucket of Bones, Coleslaw",20.51,Noah Harris
+13638,OHB4509,24/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13639,TX5555AA,21/06/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13640,EVZ3667,21/12/25,"Bucket of Bones, Coleslaw",20.51,Legina Andrews
+13641,TX5555AA,21/04/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13642,TX9012EF,23/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13643,ILP9054,22/07/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+13644,TX8901QR,16/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Deepa Rao
+13645,TX9012EF,19/05/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+13646,TX8901QR,13/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Deepa Rao
+13647,CA8RPL21,24/07/25,"Friday's Combo, Giant Onion Rings",22.95,Amelia Brown
+13648,NYC4821,21/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Rohan Gupta
+13649,RGZ9000,13/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Naveen Chandra
+13650,EVZ3667,27/01/25,"Friday's Combo, Giant Onion Rings",22.95,Legina Andrews
+13651,TX2345KL,28/07/25,"Friday's Combo, Giant Onion Rings",22.95,Noah Harris
+13652,CA8RPL21,07/01/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+13653,FLK92MTR,05/02/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13654,NCK6686,13/01/25,"Friday's Combo, Giant Onion Rings",22.95,Saketh Nair
+13655,TX4567OP,18/06/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+13656,NVX7720,31/05/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Olivia Lewis
+13657,CA8RPL21,30/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+13658,TX9012EF,27/02/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13659,AZ7QW552,29/03/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+13660,TX8901QR,05/10/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Deepa Rao
+13661,PAJ8123,26/08/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13662,NCK6686,25/01/26,"Bucket of Bones, Coleslaw",20.51,Saketh Nair
+13663,WA6NCK88,28/01/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+13664,TX1234AB,05/02/25,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+13665,ILP9054,28/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+13666,WA6NCK88,26/09/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+13667,TX1234AB,23/06/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+13668,ILP9054,12/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+13669,OHB4509,10/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+13670,EVZ3667,02/04/26,"Friday's Combo, Giant Onion Rings",22.95,Legina Andrews
+13671,CA8RPL21,05/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Amelia Brown
+13672,NYC4821,01/12/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+13673,TX9012EF,27/03/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+13674,KEWC50,03/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Michael Jean
+13675,TX3456GH,26/10/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Liam Thompson
+13676,NCK6686,16/03/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Saketh Nair
+13677,TX3456GH,12/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Liam Thompson
+13678,TX8901QR,01/06/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Deepa Rao
+13679,EVZ3667,23/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Legina Andrews
+13680,EVZ3667,13/03/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Legina Andrews
+13681,TX5555AA,10/06/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Aisha Khan
+13682,NYC4821,03/11/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+13683,WA6NCK88,12/04/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Jacob Anderson
+13684,EVZ3667,10/01/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Legina Andrews
+13685,NVX7720,16/05/26,"Friday's Combo, Giant Onion Rings",22.95,Olivia Lewis
+13686,TX7890IJ,18/02/26,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+13687,AZ7QW552,06/03/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+13688,NCK6686,19/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Saketh Nair
+13689,TX7890IJ,04/04/26,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+13690,NCK6686,29/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Saketh Nair
+13691,OHB4509,24/04/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+13692,PAJ8123,20/08/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13693,TX2345KL,03/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13694,TX6789MN,05/01/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Rohan Gupta
+13695,TX8901QR,03/09/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Deepa Rao
+13696,TX5678CD,30/03/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Isabella Martinez
+13697,OHB4509,06/02/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13698,NVX7720,17/04/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Olivia Lewis
+13699,NVX7720,06/05/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Olivia Lewis
+13700,TX3456GH,02/10/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+13701,FLK92MTR,19/02/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+13702,TX5555AA,25/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13703,TX8901QR,15/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Deepa Rao
+13704,NYC4821,13/10/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+13705,NVX7720,25/02/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Olivia Lewis
+13706,RGZ9000,17/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Naveen Chandra
+13707,TX1234AB,01/06/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13708,EVZ3667,20/11/25,"Bucket of Bones, Coleslaw",20.51,Legina Andrews
+13709,FLK92MTR,01/11/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+13710,TX1234AB,15/04/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+13711,TX2345KL,19/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Noah Harris
+13712,TX1234AB,12/04/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13713,TX9012EF,20/11/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13714,TX5555AA,24/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13715,TX5555AA,12/06/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13716,TX9012EF,19/11/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+13717,KEWC50,11/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Michael Jean
+13718,NYC4821,24/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+13719,PAJ8123,22/05/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13720,TX9012EF,16/07/25,"Friday's Combo, Giant Onion Rings",22.95,William King
+13721,TX6789MN,12/05/26,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+13722,TX7890IJ,25/02/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Mia Robinson
+13723,NVX7720,10/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Olivia Lewis
+13724,TX8901QR,18/06/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Deepa Rao
+13725,NVX7720,23/04/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Olivia Lewis
+13726,FLK92MTR,20/07/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,William King
+13727,NCK6686,12/05/25,"Bucket of Bones, Coleslaw",20.51,Saketh Nair
+13728,TX7890IJ,12/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+13729,NCK6686,04/12/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Saketh Nair
+13730,ILP9054,31/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13731,AZ7QW552,08/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Mia Robinson
+13732,TX4567OP,27/09/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+13733,TX9012EF,09/10/25,"Bucket of Bones, Coleslaw",20.51,William King
+13734,TX5678CD,18/08/25,"Friday's Combo, Giant Onion Rings",22.95,Isabella Martinez
+13735,TX6789MN,07/06/26,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+13736,CA8RPL21,20/06/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Amelia Brown
+13737,TX7890IJ,25/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+13738,NYC4821,02/10/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Rohan Gupta
+13739,TX6789MN,06/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Rohan Gupta
+13740,TX8901QR,04/03/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Deepa Rao
+13741,RGZ9000,20/02/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Naveen Chandra
+13742,TX1234AB,03/05/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13743,TX6789MN,23/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+13744,TX5678CD,24/06/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Isabella Martinez
+13745,TX5555AA,13/02/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13746,PAJ8123,02/03/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13747,TX1234AB,26/04/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+13748,TX9012EF,09/07/25,"Bucket of Bones, Coleslaw",20.51,William King
+13749,ILP9054,03/06/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+13750,TX4567OP,16/08/25,"Bucket of Bones, Coleslaw",20.51,Sophia Hall
+13751,TX1234AB,25/02/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13752,WA6NCK88,20/01/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+13753,TX8901QR,18/04/25,"Friday's Combo, Giant Onion Rings",22.95,Deepa Rao
+13754,PAJ8123,05/07/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+13755,WA6NCK88,06/01/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Jacob Anderson
+13756,TX1234AB,05/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13757,NYC4821,19/04/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+13758,TX6789MN,04/05/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Rohan Gupta
+13759,TX6789MN,16/05/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+13760,TX5555AA,20/02/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13761,TX5555AA,05/06/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13762,NCK6686,27/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Saketh Nair
+13763,ILP9054,12/08/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13764,TX5555AA,21/06/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+13765,TX1234AB,01/04/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13766,GAH3812,06/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Charlotte Wilson
+13767,TX1234AB,06/03/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Zoe Scott
+13768,TX5678CD,06/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Isabella Martinez
+13769,TX8901QR,14/07/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Deepa Rao
+13770,TX4567OP,25/12/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Sophia Hall
+13771,NCK6686,21/12/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Saketh Nair
+13772,TX5678CD,19/02/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Isabella Martinez
+13773,TX5555AA,23/06/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13774,TX5678CD,30/10/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Isabella Martinez
+13775,EVZ3667,09/02/26,"Bucket of Bones, Coleslaw",20.51,Legina Andrews
+13776,NYC4821,08/02/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Rohan Gupta
+13777,TX4567OP,11/09/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Sophia Hall
+13778,WA6NCK88,24/09/25,"Friday's Combo, Giant Onion Rings",22.95,Jacob Anderson
+13779,TX5555AA,31/01/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13780,TX3456GH,14/01/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Liam Thompson
+13781,TX1234AB,23/03/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+13782,NCK6686,13/11/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Saketh Nair
+13783,FLK92MTR,13/02/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,William King
+13784,TX6789MN,01/04/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+13785,TX9012EF,09/03/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+13786,FLK92MTR,19/04/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+13787,CA8RPL21,20/02/25,"Bucket of Bones, Coleslaw",20.51,Amelia Brown
+13788,NVX7720,16/12/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Olivia Lewis
+13789,NVX7720,19/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Olivia Lewis
+13790,EVZ3667,11/01/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Legina Andrews
+13791,TX5678CD,10/10/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Isabella Martinez
+13792,NVX7720,05/04/25,"Friday's Combo, Giant Onion Rings",22.95,Olivia Lewis
+13793,RGZ9000,17/05/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Naveen Chandra
+13794,EVZ3667,01/01/26,"Friday's Combo, Giant Onion Rings",22.95,Legina Andrews
+13795,TX9012EF,02/09/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+13796,FLK92MTR,07/01/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+13797,NVX7720,22/06/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Olivia Lewis
+13798,FLK92MTR,07/03/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+13799,ILP9054,24/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+13800,NCK6686,02/06/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Saketh Nair
+13801,TX5555AA,03/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13802,TX5678CD,16/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Isabella Martinez
+13803,TX4567OP,15/05/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Sophia Hall
+13804,EVZ3667,28/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Legina Andrews
+13805,TX1234AB,28/06/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13806,TX3456GH,13/01/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Liam Thompson
+13807,NYC4821,29/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+13808,TX7890IJ,07/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Mia Robinson
+13809,TX3456GH,02/11/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Liam Thompson
+13810,AZ7QW552,03/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Mia Robinson
+13811,TX3456GH,04/06/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+13812,TX6789MN,23/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Rohan Gupta
+13813,TX9012EF,14/01/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+13814,TX9012EF,05/04/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13815,TX5555AA,04/01/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Aisha Khan
+13816,CA8RPL21,30/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Amelia Brown
+13817,CA8RPL21,27/07/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+13818,TX5555AA,24/08/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13819,TX2345KL,10/06/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+13820,NVX7720,01/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Olivia Lewis
+13821,CA8RPL21,07/11/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Amelia Brown
+13822,TX1234AB,28/09/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13823,NYC4821,24/06/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+13824,TX2345KL,01/01/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+13825,TX5678CD,01/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Isabella Martinez
+13826,EVZ3667,28/07/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Legina Andrews
+13827,EVZ3667,19/01/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Legina Andrews
+13828,TX5555AA,19/02/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13829,ILP9054,28/08/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13830,WA6NCK88,28/02/26,"Friday's Combo, Giant Onion Rings",22.95,Jacob Anderson
+13831,OHB4509,07/01/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Zoe Scott
+13832,TX5678CD,04/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Isabella Martinez
+13833,TX6789MN,08/01/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Rohan Gupta
+13834,TX5555AA,06/05/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Aisha Khan
+13835,CA8RPL21,05/07/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Amelia Brown
+13836,TX9012EF,06/03/26,"Bucket of Bones, Coleslaw",20.51,William King
+13837,WA6NCK88,06/11/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Jacob Anderson
+13838,TX5555AA,18/03/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13839,WA6NCK88,27/01/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Jacob Anderson
+13840,FLK92MTR,28/08/25,"Bucket of Bones, Coleslaw",20.51,William King
+13841,TX5555AA,29/05/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+13842,TX5678CD,11/01/26,"Bucket of Bones, Coleslaw",20.51,Isabella Martinez
+13843,AZ7QW552,13/06/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Mia Robinson
+13844,TX2345KL,18/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13845,CA8RPL21,23/07/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Amelia Brown
+13846,OHB4509,31/07/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+13847,CA8RPL21,20/02/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Amelia Brown
+13848,TX6789MN,19/08/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+13849,RGZ9000,17/05/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Naveen Chandra
+13850,AZ7QW552,09/01/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+13851,TX3456GH,14/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Liam Thompson
+13852,WA6NCK88,09/06/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+13853,AZ7QW552,01/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Mia Robinson
+13854,ILP9054,13/08/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13855,TX6789MN,25/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Rohan Gupta
+13856,RGZ9000,10/06/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Naveen Chandra
+13857,TX5555AA,19/05/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13858,TX2345KL,02/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13859,TX6789MN,25/03/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+13860,ILP9054,02/10/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Noah Harris
+13861,NCK6686,28/09/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Saketh Nair
+13862,RGZ9000,31/03/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Naveen Chandra
+13863,TX9012EF,01/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+13864,TX8901QR,24/01/25,"Bucket of Bones, Coleslaw",20.51,Deepa Rao
+13865,TX1234AB,28/04/25,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+13866,TX1234AB,05/09/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+13867,CA8RPL21,15/02/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Amelia Brown
+13868,TX9012EF,01/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+13869,AZ7QW552,26/09/25,"Bucket of Bones, Coleslaw",20.51,Mia Robinson
+13870,TX5678CD,10/08/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Isabella Martinez
+13871,TX7890IJ,16/05/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Mia Robinson
+13872,TX2345KL,26/06/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Noah Harris
+13873,KEWC50,03/06/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Michael Jean
+13874,CA8RPL21,23/12/25,"Bucket of Bones, Coleslaw",20.51,Amelia Brown
+13875,WA6NCK88,31/03/26,"Friday's Combo, Giant Onion Rings",22.95,Jacob Anderson
+13876,KEWC50,01/03/25,"Bucket of Bones, Coleslaw",20.51,Michael Jean
+13877,ILP9054,03/04/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Noah Harris
+13878,RGZ9000,11/05/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Naveen Chandra
+13879,AZ7QW552,30/05/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Mia Robinson
+13880,TX5678CD,20/04/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Isabella Martinez
+13881,PAJ8123,10/06/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13882,TX2345KL,13/04/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13883,TX9012EF,28/05/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+13884,GAH3812,28/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Charlotte Wilson
+13885,TX3456GH,27/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Liam Thompson
+13886,TX5678CD,07/04/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Isabella Martinez
+13887,GAH3812,08/02/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Charlotte Wilson
+13888,TX1234AB,20/03/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13889,TX2345KL,22/03/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Noah Harris
+13890,NCK6686,23/08/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Saketh Nair
+13891,TX6789MN,25/08/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Rohan Gupta
+13892,EVZ3667,26/12/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Legina Andrews
+13893,WA6NCK88,22/12/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Jacob Anderson
+13894,WA6NCK88,15/06/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Jacob Anderson
+13895,NVX7720,30/11/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Olivia Lewis
+13896,GAH3812,05/07/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Charlotte Wilson
+13897,TX5678CD,26/07/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Isabella Martinez
+13898,TX8901QR,16/03/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Deepa Rao
+13899,NYC4821,12/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+13900,TX5678CD,11/05/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Isabella Martinez
+13901,TX6789MN,11/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Rohan Gupta
+13902,KEWC50,17/06/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+13903,NCK6686,12/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Saketh Nair
+13904,TX1234AB,15/01/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Zoe Scott
+13905,TX9012EF,13/01/26,"Bucket of Bones, Coleslaw",20.51,William King
+13906,TX9012EF,14/12/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+13907,TX5555AA,14/11/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13908,TX5555AA,23/05/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Aisha Khan
+13909,TX6789MN,20/11/25,"Friday's Combo, Giant Onion Rings",22.95,Rohan Gupta
+13910,TX3456GH,11/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Liam Thompson
+13911,TX1234AB,22/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+13912,WA6NCK88,17/02/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Jacob Anderson
+13913,KEWC50,28/06/26,"Friday's Combo, Giant Onion Rings",22.95,Michael Jean
+13914,EVZ3667,18/02/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Legina Andrews
+13915,TX3456GH,26/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Liam Thompson
+13916,TX9012EF,19/06/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+13917,TX5555AA,04/09/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13918,PAJ8123,18/10/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+13919,OHB4509,09/07/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Zoe Scott
+13920,NVX7720,27/06/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Olivia Lewis
+13921,TX4567OP,18/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Sophia Hall
+13922,TX9012EF,14/06/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+13923,TX5678CD,19/03/25,"Friday's Combo, Giant Onion Rings",22.95,Isabella Martinez
+13924,TX7890IJ,18/08/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+13925,TX1234AB,14/05/26,"Bucket of Bones, Coleslaw",20.51,Zoe Scott
+13926,TX7890IJ,21/01/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+13927,OHB4509,06/03/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13928,TX2345KL,29/07/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Noah Harris
+13929,NCK6686,23/04/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Saketh Nair
+13930,TX1234AB,13/12/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Zoe Scott
+13931,CA8RPL21,17/11/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Amelia Brown
+13932,TX1234AB,29/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+13933,TX5555AA,18/12/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Aisha Khan
+13934,NYC4821,31/12/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+13935,TX9012EF,01/04/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+13936,FLK92MTR,24/05/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,William King
+13937,RGZ9000,24/01/25,"Friday's Combo, Giant Onion Rings",22.95,Naveen Chandra
+13938,TX4567OP,08/02/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Sophia Hall
+13939,TX8901QR,28/04/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Deepa Rao
+13940,WA6NCK88,25/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Jacob Anderson
+13941,TX2345KL,21/12/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13942,FLK92MTR,10/02/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,William King
+13943,NVX7720,29/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Olivia Lewis
+13944,TX2345KL,11/11/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Noah Harris
+13945,TX1234AB,25/02/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13946,TX3456GH,28/02/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Liam Thompson
+13947,CA8RPL21,10/08/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+13948,KEWC50,22/03/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Michael Jean
+13949,NYC4821,02/06/25,"Bucket of Bones, Coleslaw",20.51,Rohan Gupta
+13950,ILP9054,28/10/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+13951,EVZ3667,20/03/26,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Legina Andrews
+13952,TX5555AA,08/01/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+13953,EVZ3667,12/05/26,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Legina Andrews
+13954,WA6NCK88,06/09/25,"Friday's Combo, Giant Onion Rings",22.95,Jacob Anderson
+13955,KEWC50,14/04/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Michael Jean
+13956,OHB4509,24/02/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+13957,ILP9054,15/03/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Noah Harris
+13958,TX3456GH,24/07/25,"Bucket of Bones, Coleslaw",20.51,Liam Thompson
+13959,KEWC50,08/10/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Michael Jean
+13960,TX5678CD,15/10/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Isabella Martinez
+13961,FLK92MTR,04/07/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+13962,PAJ8123,18/04/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Aisha Khan
+13963,NVX7720,28/07/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Olivia Lewis
+13964,TX9012EF,28/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+13965,GAH3812,21/10/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Charlotte Wilson
+13966,TX9012EF,15/06/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,William King
+13967,TX2345KL,24/01/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Noah Harris
+13968,KEWC50,18/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Michael Jean
+13969,AZ7QW552,13/12/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Mia Robinson
+13970,TX5555AA,10/09/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13971,AZ7QW552,28/01/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Mia Robinson
+13972,TX5555AA,20/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13973,TX2345KL,21/10/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13974,TX2345KL,08/05/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+13975,WA6NCK88,16/11/25,"Bucket of Bones, Coleslaw",20.51,Jacob Anderson
+13976,TX5555AA,26/01/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13977,TX5555AA,15/06/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Aisha Khan
+13978,TX4567OP,24/04/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Sophia Hall
+13979,TX2345KL,17/02/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Noah Harris
+13980,TX5555AA,29/06/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Aisha Khan
+13981,GAH3812,13/04/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Charlotte Wilson
+13982,TX9012EF,08/12/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+13983,TX9012EF,17/10/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,William King
+13984,TX2345KL,01/08/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+13985,TX5555AA,31/10/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+13986,NCK6686,11/04/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Saketh Nair
+13987,PAJ8123,09/03/25,"Friday's Combo, Giant Onion Rings",22.95,Aisha Khan
+13988,NYC4821,12/09/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Rohan Gupta
+13989,NYC4821,16/07/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Rohan Gupta
+13990,TX3456GH,19/03/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Liam Thompson
+13991,CA8RPL21,10/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Amelia Brown
+13992,CA8RPL21,01/07/25,"Bucket of Bones, Coleslaw",20.51,Amelia Brown
+13993,EVZ3667,30/12/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Legina Andrews
+13994,CA8RPL21,03/01/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Amelia Brown
+13995,TX3456GH,11/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Liam Thompson
+13996,NVX7720,18/06/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Olivia Lewis
+13997,TX5555AA,02/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Aisha Khan
+13998,AZ7QW552,19/01/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+13999,TX9012EF,10/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+14000,ILP9054,31/08/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Noah Harris
+14001,TX7890IJ,23/04/26,"BBQ Ribs, Coleslaw, Lemonade",23.75,Mia Robinson
+14002,RGZ9000,07/08/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Naveen Chandra
+14003,TX6789MN,21/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Rohan Gupta
+14004,OHB4509,18/03/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+14005,ILP9054,17/06/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Noah Harris
+14006,ILP9054,31/07/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Noah Harris
+14007,TX5555AA,13/06/25,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+14008,TX7890IJ,11/08/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Mia Robinson
+14009,ILP9054,23/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Noah Harris
+14010,TX9012EF,26/11/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+14011,TX5555AA,14/02/26,"Bucket of Bones, Coleslaw",20.51,Aisha Khan
+14012,GAH3812,30/03/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Charlotte Wilson
+14013,TX1234AB,11/03/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+14014,TX3456GH,23/09/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Liam Thompson
+14015,TX3456GH,01/03/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Liam Thompson
+14016,TX9012EF,15/01/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,William King
+14017,TX9012EF,04/04/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+14018,TX9012EF,16/10/25,"Cheeseburger Sliders, Seasoned Fries",8.63,William King
+14019,TX2345KL,14/03/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Noah Harris
+14020,TX5555AA,07/02/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Aisha Khan
+14021,TX5555AA,17/03/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Aisha Khan
+14022,CA8RPL21,02/01/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Amelia Brown
+14023,EVZ3667,07/11/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Legina Andrews
+14024,OHB4509,01/11/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Zoe Scott
+14025,WA6NCK88,15/01/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Jacob Anderson
+14026,TX8901QR,13/03/25,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Deepa Rao
+14027,TX1234AB,22/01/26,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Zoe Scott
+14028,RGZ9000,04/12/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Naveen Chandra
+14029,TX1234AB,07/05/25,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+14030,FLK92MTR,23/06/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,William King
+14031,TX6789MN,07/02/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Rohan Gupta
+14032,TX4567OP,07/07/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Sophia Hall
+14033,KEWC50,25/05/26,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Michael Jean
+14034,TX1234AB,27/10/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,Zoe Scott
+14035,TX5678CD,26/02/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Isabella Martinez
+14036,TX5678CD,02/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Isabella Martinez
+14037,NVX7720,10/10/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Olivia Lewis
+14038,TX5555AA,13/01/26,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Aisha Khan
+14039,TX9012EF,13/12/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,William King
+14040,OHB4509,25/02/26,"Friday's Combo, Giant Onion Rings",22.95,Zoe Scott
+14041,TX1234AB,21/01/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Zoe Scott
+14042,NVX7720,13/02/25,"Friday's Combo, Giant Onion Rings",22.95,Olivia Lewis
+14043,TX5555AA,19/02/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+14044,NYC4821,03/05/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Rohan Gupta
+14045,OHB4509,01/02/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+14046,NCK6686,11/04/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Saketh Nair
+14047,TX1234AB,03/02/26,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Zoe Scott
+14048,TX4567OP,13/10/25,"BBQ Ribs, Coleslaw, Lemonade",23.75,Sophia Hall
+14049,TX9012EF,05/02/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,William King
+14050,TX7890IJ,01/06/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Mia Robinson
+14051,TX3456GH,28/01/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Liam Thompson
+14052,EVZ3667,19/11/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,Legina Andrews
+14053,CA8RPL21,23/04/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Amelia Brown
+14054,TX6789MN,02/03/26,"Cheeseburger Sliders, Seasoned Fries",8.63,Rohan Gupta
+14055,TX3456GH,30/09/25,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Liam Thompson
+14056,TX2345KL,03/04/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Noah Harris
+14057,TX1234AB,08/04/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Zoe Scott
+14058,PAJ8123,12/05/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+14059,TX5555AA,07/09/25,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+14060,TX7890IJ,08/10/25,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Mia Robinson
+14061,NVX7720,06/03/26,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Olivia Lewis
+14062,TX9012EF,16/06/25,"Bucket of Bones, Coleslaw",20.51,William King
+14063,TX5678CD,07/08/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Isabella Martinez
+14064,TX1234AB,25/01/25,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Zoe Scott
+14065,TX4567OP,11/02/26,"Cheeseburger Classic, Seasoned Fries, Lemonade",14.48,Sophia Hall
+14066,EVZ3667,22/12/25,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Legina Andrews
+14067,TX5678CD,20/03/26,"Bacon Cheeseburger, Seasoned Fries, Diet Coke",16.49,Isabella Martinez
+14068,TX5555AA,28/03/26,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Aisha Khan
+14069,TX3456GH,15/05/25,"Cheeseburger Sliders, Seasoned Fries",8.63,Liam Thompson
+14070,FLK92MTR,17/03/25,"Chicken Sandwich, Green Bean Fries, Lemonade",14.20,William King
+14071,NVX7720,22/04/26,"Classic Burger, Seasoned Fries, Chocolate Milkshake",15.75,Olivia Lewis
+14072,TX9012EF,05/09/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,William King
+14073,TX9012EF,24/11/25,"Chicken Quesadilla (x2), Green Bean Fries",17.98,William King
+14074,NCK6686,02/01/25,"Veggie Burger, Sweet Potato Fries, Iced Tea",13.25,Saketh Nair
+14075,TX7890IJ,28/11/25,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Mia Robinson
+14076,TX5555AA,31/07/25,"Center Cut Sirloin (Mashed Potatoes, Medium), Broccoli",17.80,Aisha Khan
+14077,KEWC50,SYSDATE-5,"Green Bean Fries, Giant Onion Rings (x3), Chicken Quesadilla (x2), Cheeseburger Sliders",62.24,Michael Jean
+14078,EVZ3667,SYSDATE-4,"Bacon Cheeseburger (Lettuce, Tomatoes, Onions, Pickles, Challah Bun, Bacon, Seasoned Fries, Med Rare, Cheddar, No Side, Mayo), Ice Latte",18.95,Legina Andrews
+14079,NCK6686,SYSDATE-3,"Chicken Quesadilla, Seasoned Fries, Diet Coke",12.63,Saketh Nair
+14080,RGZ9000,SYSDATE-2,"BBQ Ribs (Coleslaw, Seasoned Fries), Mint chocochips Icecream",24.50,Naveen Chandra

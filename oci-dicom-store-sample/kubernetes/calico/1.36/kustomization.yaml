@@ -1,0 +1,9 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://raw.githubusercontent.com/projectcalico/calico/eb1cf57823a1dd8d25c48b82fd023ea9e3e17996/manifests/calico-policy-only.yaml
+components:
+  - ../policy-only

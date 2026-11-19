@@ -1,0 +1,325 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+title: "Secure Hadoop & Spark on OKE"
+description: "Deploys a security-hardened Oracle Kubernetes Engine (OKE) cluster for Apache Hadoop (HDFS) and Apache Spark. Storage is configurable - HDFS, OCI Object Storage, or both. This is the Stage 1 infrastructure layer."
+schemaVersion: 1.1.0
+version: "20240101"
+locale: "en"
+
+variableGroups:
+  - title: "Hidden / auto-populated"
+    visible: false
+    variables:
+      - tenancy_ocid
+      - compartment_ocid
+      - region
+
+  - title: "General"
+    variables:
+      - cluster_name
+      - admin_cidr
+      - ssh_public_key
+
+  - title: "OKE cluster"
+    variables:
+      - kubernetes_version
+      - cluster_endpoint_is_public
+
+  - title: "Worker node pool"
+    variables:
+      - node_count
+      - node_shape
+      - node_ocpus
+      - node_memory_gbs
+      - node_boot_volume_gbs
+
+  - title: "Storage backends"
+    variables:
+      - deploy_hdfs
+      - deploy_object_storage
+
+  - title: "HDFS sizing"
+    variables:
+      - hdfs_replication
+      - hdfs_datanode_count
+      - hdfs_namenode_storage_gbs
+      - hdfs_datanode_storage_gbs
+      - kerberos_realm
+      - storage_class
+
+  - title: "Spark"
+    variables:
+      - deploy_spark
+      - spark_operator_chart_version
+
+  - title: "Container images"
+    variables:
+      - image_source
+      - hadoop_image
+      - spark_image
+      - kdc_image
+
+  - title: "Networking"
+    variables:
+      - vcn_cidr
+      - endpoint_subnet_cidr
+      - nodes_subnet_cidr
+      - lb_subnet_cidr
+
+  - title: "Software versions"
+    variables:
+      - hadoop_version
+      - spark_version
+
+variables:
+
+  tenancy_ocid:
+    type: oci:identity:tenancy:id
+    title: "Tenancy"
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Compartment"
+    required: true
+  region:
+    type: oci:identity:region:name
+    title: "Region"
+    required: true
+
+  cluster_name:
+    type: string
+    title: "Cluster name"
+    description: "Prefix for every resource."
+    required: true
+    pattern: "^[a-z][a-z0-9-]{1,24}$"
+    default: "bigdata"
+  admin_cidr:
+    type: string
+    title: "Admin CIDR"
+    description: "The only network allowed to reach the Kubernetes API and open Bastion sessions. Use your own IP, e.g. 203.0.113.4/32. Must not be 0.0.0.0/0."
+    required: true
+  ssh_public_key:
+    type: oci:core:ssh:publickey
+    title: "SSH public key"
+    description: "Installed on worker nodes for break-glass access through the Bastion."
+    required: true
+
+  kubernetes_version:
+    type: string
+    title: "Kubernetes version"
+    description: "Full version only (vMAJOR.MINOR.PATCH), e.g. v1.35.2. v1.35.2 is the latest GA; v1.36.0 is preview-only. A partial version like v1.36 has no matching worker image."
+    default: "v1.35.2"
+    required: true
+    pattern: "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+  cluster_endpoint_is_public:
+    type: boolean
+    title: "Public (NSG-locked) API endpoint"
+    description: "On: API endpoint is public but restricted to the Admin CIDR (lets the Stage 2 workload layer deploy in one run). Off: fully private endpoint, reached via Bastion."
+    default: true
+
+  node_count:
+    type: integer
+    title: "Worker node count"
+    minimum: 2
+    maximum: 100
+    default: 3
+    required: true
+  node_shape:
+    type: oci:core:instanceshape:name
+    title: "Worker node shape"
+    required: true
+    default: "VM.Standard.E5.Flex"
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+  node_ocpus:
+    type: integer
+    title: "OCPUs per node"
+    minimum: 2
+    maximum: 128
+    default: 4
+  node_memory_gbs:
+    type: integer
+    title: "Memory (GB) per node"
+    minimum: 16
+    maximum: 2048
+    default: 64
+  node_boot_volume_gbs:
+    type: integer
+    title: "Boot volume (GB) per node"
+    minimum: 50
+    maximum: 32768
+    default: 100
+
+  deploy_hdfs:
+    type: boolean
+    title: "Deploy HDFS"
+    description: "Kerberos-secured HDFS (NameNode + DataNodes) running on the cluster."
+    default: true
+  deploy_object_storage:
+    type: boolean
+    title: "Deploy OCI Object Storage"
+    description: "Create a private bucket as a data lake, wired to Spark via Workload Identity."
+    default: true
+
+  hdfs_replication:
+    type: integer
+    title: "HDFS replication factor"
+    minimum: 1
+    maximum: 10
+    default: 3
+    visible: deploy_hdfs
+  hdfs_datanode_count:
+    type: integer
+    title: "HDFS DataNode count"
+    minimum: 1
+    maximum: 100
+    default: 3
+    visible: deploy_hdfs
+  hdfs_namenode_storage_gbs:
+    type: integer
+    title: "NameNode volume (GB)"
+    minimum: 50
+    maximum: 32768
+    default: 100
+    visible: deploy_hdfs
+  hdfs_datanode_storage_gbs:
+    type: integer
+    title: "DataNode volume (GB)"
+    minimum: 50
+    maximum: 32768
+    default: 200
+    visible: deploy_hdfs
+  kerberos_realm:
+    type: string
+    title: "Kerberos realm"
+    pattern: "^[A-Z][A-Z0-9.-]{2,48}$"
+    default: "HADOOP.INTERNAL"
+    visible: deploy_hdfs
+  storage_class:
+    type: string
+    title: "HDFS StorageClass"
+    description: "Kubernetes StorageClass for HDFS / KDC volumes (oci-bv = OCI Block Volume CSI)."
+    default: "oci-bv"
+    visible: deploy_hdfs
+
+  deploy_spark:
+    type: boolean
+    title: "Deploy Apache Spark (Spark Operator)"
+    default: true
+  spark_operator_chart_version:
+    type: string
+    title: "Spark Operator Helm chart version"
+    default: "1.4.6"
+    visible: deploy_spark
+
+  image_source:
+    type: enum
+    title: "Container image source"
+    description: "'upstream' = public Apache images (one-click). 'ocir' = your own hardened images in OCI Registry."
+    enum:
+      - "upstream"
+      - "ocir"
+    default: "upstream"
+    required: true
+  hadoop_image:
+    type: string
+    title: "Hadoop image"
+    description: "Fully-qualified (OKE CRI-O enforces short-name mode)."
+    default: "docker.io/apache/hadoop:3.3.6"
+  spark_image:
+    type: string
+    title: "Spark image"
+    description: "Fully-qualified (OKE CRI-O enforces short-name mode)."
+    default: "docker.io/apache/spark:3.5.3"
+  kdc_image:
+    type: string
+    title: "KDC base image"
+    default: "docker.io/library/oraclelinux:8"
+    visible: deploy_hdfs
+
+  vcn_cidr:
+    type: string
+    title: "VCN CIDR"
+    default: "10.20.0.0/16"
+    required: true
+  endpoint_subnet_cidr:
+    type: string
+    title: "API endpoint subnet CIDR"
+    default: "10.20.0.0/28"
+    required: true
+  nodes_subnet_cidr:
+    type: string
+    title: "Worker node subnet CIDR"
+    default: "10.20.1.0/24"
+    required: true
+  lb_subnet_cidr:
+    type: string
+    title: "Internal LB subnet CIDR"
+    description: "Private subnet for service load balancers (required by OKE; kept private)."
+    default: "10.20.2.0/24"
+    required: true
+
+  hadoop_version:
+    type: string
+    title: "Hadoop version"
+    default: "3.3.6"
+    required: true
+  spark_version:
+    type: string
+    title: "Spark version"
+    default: "3.5.3"
+    required: true
+
+outputs:
+  cluster_id:
+    type: string
+    title: "OKE cluster OCID"
+  bastion_id:
+    type: string
+    title: "Bastion OCID"
+  object_storage_bucket:
+    type: string
+    title: "Object Storage bucket"
+  ssh_to_operator:
+    type: copyableString
+    title: "SSH to operator host"
+  operator_private_ip:
+    type: string
+    title: "Operator private IP"
+  cluster_summary:
+    type: string
+    title: "Summary"
+  namespace:
+    type: string
+    title: "Platform namespace"
+  hdfs_url:
+    type: string
+    title: "HDFS URL (fs.defaultFS)"
+  kdc_host:
+    type: string
+    title: "Kerberos KDC host"
+  object_storage_path:
+    type: string
+    title: "Object Storage path for Spark"
+  spark_smoke_test:
+    type: copyableString
+    title: "Run SparkPi smoke test"
+
+outputGroups:
+  - title: "Cluster"
+    outputs:
+      - cluster_id
+      - bastion_id
+      - operator_private_ip
+      - ssh_to_operator
+      - cluster_summary
+  - title: "Platform"
+    outputs:
+      - namespace
+      - hdfs_url
+      - kdc_host
+      - object_storage_bucket
+      - object_storage_path
+      - spark_smoke_test
+
+primaryOutputButton: cluster_summary

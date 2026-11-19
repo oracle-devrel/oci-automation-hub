@@ -1,0 +1,137 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+###############################################################################
+# Copy this file to terraform.tfvars and edit the values for your tenancy.
+# Three showcase profiles are illustrated below — uncomment the one you want.
+###############################################################################
+
+# ---- Auth (CLI only — Resource Manager fills these in automatically) --------
+tenancy_ocid     = "ocid1.tenancy.oc1..xxxxxxxx"
+user_ocid        = "ocid1.user.oc1..xxxxxxxx"
+fingerprint      = "aa:bb:cc:dd:ee:ff:00:11:22:33:44:55:66:77:88:99"
+private_key_path = "~/.oci/oci_api_key.pem"
+region           = "eu-frankfurt-1"
+compartment_ocid = "ocid1.compartment.oc1..xxxxxxxx"
+
+resource_prefix = "bigdata"
+
+ssh_public_key             = "ssh-rsa AAAA... your-key"
+bds_cluster_admin_password = "ChangeMe-Strong-Pass-1!"
+
+###############################################################################
+# Profile 1 — MINIMAL: Data Flow only, no Hadoop cluster
+# Best for quickly trying Spark on OCI without paying for BDS nodes.
+###############################################################################
+# deploy_bds       = false
+# deploy_dataflow  = true
+# dataflow_create_pool = false
+#
+# dataflow_applications = [
+#   {
+#     name                = "pi-python"
+#     language            = "PYTHON"
+#     spark_version       = "3.5.0"
+#     num_executors       = 2
+#     driver_ocpus        = 1
+#     driver_memory_gbs   = 16
+#     executor_ocpus      = 1
+#     executor_memory_gbs = 16
+#     configuration = {
+#       "spark.sql.shuffle.partitions"    = "20"
+#       "spark.dynamicAllocation.enabled" = "true"
+#     }
+#   },
+# ]
+
+###############################################################################
+# Profile 2 — STANDARD: small Hadoop cluster + a couple of Spark apps + warm pool
+###############################################################################
+deploy_bds                   = true
+bds_cluster_version          = "ODH2_0"
+bds_cluster_profile          = "HADOOP_EXTENDED"
+bds_is_high_availability     = false
+bds_worker_count             = 3
+bds_worker_ocpus             = 8
+bds_worker_memory_gbs        = 128
+bds_master_ocpus             = 4
+bds_master_memory_gbs        = 64
+bds_utility_ocpus            = 4
+bds_utility_memory_gbs       = 64
+
+deploy_dataflow              = true
+dataflow_create_pool         = true
+dataflow_pool_min_executors  = 1
+dataflow_pool_max_executors  = 4
+
+dataflow_applications = [
+  {
+    name                = "pi-python-small"
+    language            = "PYTHON"
+    spark_version       = "3.5.0"
+    num_executors       = 2
+    driver_ocpus        = 1
+    driver_memory_gbs   = 16
+    executor_ocpus      = 1
+    executor_memory_gbs = 16
+    configuration = {
+      "spark.sql.shuffle.partitions" = "20"
+    }
+  },
+  {
+    name                = "pi-python-tuned"
+    language            = "PYTHON"
+    spark_version       = "3.5.0"
+    num_executors       = 4
+    driver_ocpus        = 2
+    driver_memory_gbs   = 32
+    executor_ocpus      = 4
+    executor_memory_gbs = 64
+    configuration = {
+      "spark.sql.shuffle.partitions"                = "200"
+      "spark.sql.adaptive.enabled"                  = "true"
+      "spark.sql.adaptive.coalescePartitions.enabled" = "true"
+      "spark.dynamicAllocation.enabled"             = "true"
+      "spark.dynamicAllocation.minExecutors"        = "2"
+      "spark.dynamicAllocation.maxExecutors"        = "10"
+      "spark.serializer"                            = "org.apache.spark.serializer.KryoSerializer"
+    }
+  },
+]
+
+###############################################################################
+# Profile 3 — PRODUCTION-ISH: HA Hadoop + compute-only workers + secure cluster
+###############################################################################
+# deploy_bds                       = true
+# bds_cluster_profile              = "HADOOP_EXTENDED"
+# bds_cluster_version              = "ODH2_0"
+# bds_is_high_availability         = true
+# bds_is_secure                    = true
+# bds_master_ocpus                 = 8
+# bds_master_memory_gbs            = 128
+# bds_utility_ocpus                = 8
+# bds_utility_memory_gbs           = 128
+# bds_worker_count                 = 5
+# bds_worker_shape                 = "VM.Standard.E4.Flex"
+# bds_worker_ocpus                 = 16
+# bds_worker_memory_gbs            = 256
+# bds_worker_block_volume_gbs      = 4000
+# bds_compute_only_worker_count    = 3
+# bds_compute_only_worker_ocpus    = 16
+# bds_compute_only_worker_memory_gbs = 256
+# bds_bootstrap_script_url         = "https://objectstorage.<region>.oraclecloud.com/n/<ns>/b/scripts/o/bootstrap.sh"
+#
+# deploy_dataflow            = true
+# dataflow_create_pool       = true
+# dataflow_pool_min_executors = 4
+# dataflow_pool_max_executors = 16
+# dataflow_pool_ocpus         = 8
+# dataflow_pool_memory_gbs    = 128
+
+###############################################################################
+# Reuse existing VCN instead of creating a new one
+###############################################################################
+# create_vcn                 = false
+# existing_vcn_id            = "ocid1.vcn.oc1..xxxxx"
+# existing_private_subnet_id = "ocid1.subnet.oc1..xxxxx"
+# existing_public_subnet_id  = "ocid1.subnet.oc1..xxxxx"

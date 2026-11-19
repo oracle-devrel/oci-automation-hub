@@ -1,0 +1,17 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+# Reference template only. iam.tf creates this automatically.
+# Replace the placeholders if an administrator must recreate it manually.
+
+# Dynamic group matching rule:
+# ALL {instance.compartment.id = '<APPLICATION_COMPARTMENT_OCID>'}
+
+Allow dynamic-group <RUNTIME_DYNAMIC_GROUP_NAME> to use genai-agent in compartment id <AI_COMPARTMENT_OCID>
+Allow dynamic-group <RUNTIME_DYNAMIC_GROUP_NAME> to use genai-agent-endpoint in compartment id <AI_COMPARTMENT_OCID>
+Allow dynamic-group <RUNTIME_DYNAMIC_GROUP_NAME> to manage genai-agent-session in compartment id <AI_COMPARTMENT_OCID>
+Allow dynamic-group <RUNTIME_DYNAMIC_GROUP_NAME> to manage genai-agent-tool in compartment id <AI_COMPARTMENT_OCID>
+Allow dynamic-group <RUNTIME_DYNAMIC_GROUP_NAME> to use ai-service-vision-family in tenancy
+Allow dynamic-group <RUNTIME_DYNAMIC_GROUP_NAME> to manage ai-service-speech-family in compartment id <APPLICATION_COMPARTMENT_OCID>
+Allow dynamic-group <RUNTIME_DYNAMIC_GROUP_NAME> to read buckets in compartment id <APPLICATION_COMPARTMENT_OCID>
+Allow dynamic-group <RUNTIME_DYNAMIC_GROUP_NAME> to manage objects in compartment id <APPLICATION_COMPARTMENT_OCID>

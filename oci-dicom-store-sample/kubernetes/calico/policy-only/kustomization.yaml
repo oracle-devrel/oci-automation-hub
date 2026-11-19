@@ -1,0 +1,52 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# OCI VCN-native pod networking remains the CNI. These are Oracle's required
+# policy-only changes to the upstream Calico manifest.
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: DaemonSet
+      name: calico-node
+      namespace: kube-system
+    patch: |-
+      - op: remove
+        path: /spec/template/spec/initContainers
+      - op: remove
+        path: /spec/template/spec/containers/0/envFrom
+      - op: remove
+        path: /spec/template/spec/containers/0/env/2
+      - op: remove
+        path: /spec/template/spec/containers/0/volumeMounts/7
+      - op: remove
+        path: /spec/template/spec/containers/0/volumeMounts/0
+      - op: remove
+        path: /spec/template/spec/volumes/9
+      - op: remove
+        path: /spec/template/spec/volumes/8
+      - op: remove
+        path: /spec/template/spec/volumes/7
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: FELIX_INTERFACEPREFIX
+          value: oci
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: NO_DEFAULT_POOLS
+          value: "true"
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: FELIX_CHAININSERTMODE
+          value: Append
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: FELIX_IPTABLESMANGLEALLOWACTION
+          value: Return

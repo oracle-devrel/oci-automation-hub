@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+set -euo pipefail
+
+config_file="/etc/oci-dicom/stack.json"
+printf 'Deployment: %s\n' "$(jq -r '.deployment_name' "${config_file}")"
+printf 'Region: %s\n' "$(jq -r '.region' "${config_file}")"
+printf 'Public API: %s\n' "$(jq -r '.api_endpoint' "${config_file}")"
+printf 'DICOMweb: %s\n' "$(jq -r '.dicomweb_endpoint' "${config_file}")"
+printf 'Private Orthanc: %s\n' "$(jq -r '.private_orthanc_endpoint' "${config_file}")"
+if [[ -n "$(jq -r '.private_ingest_endpoint // empty' "${config_file}")" ]]; then
+  printf 'FastConnect TLS ingest: %s\n' \
+    "$(jq -r '.private_ingest_endpoint' "${config_file}")"
+fi
+printf 'PostgreSQL: %s:%s\n' \
+  "$(jq -r '.postgres_host' "${config_file}")" \
+  "$(jq -r '.postgres_port' "${config_file}")"
+printf 'Object Storage: %s/%s\n' \
+  "$(jq -r '.object_storage_namespace' "${config_file}")" \
+  "$(jq -r '.object_storage_bucket' "${config_file}")"

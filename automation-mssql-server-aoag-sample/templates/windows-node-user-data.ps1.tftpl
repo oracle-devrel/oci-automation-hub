@@ -1,0 +1,246 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+$ErrorActionPreference = "Stop"
+
+$SetupDir = "C:\AOAGAutomation\Windows"
+$ScriptPath = Join-Path $SetupDir "02-configure-sql-node.ps1"
+$WsfcSetupDir = "C:\AOAGAutomation\WSFC"
+$WsfcScriptPath = Join-Path $WsfcSetupDir "03-configure-wsfc.ps1"
+$SampleScriptPath = Join-Path $WsfcSetupDir "04-prepare-sample-database.ps1"
+$AgScriptPath = Join-Path $WsfcSetupDir "05-configure-availability-group.ps1"
+$SafeFailoverScriptPath = Join-Path $WsfcSetupDir "06-safe-planned-failover.ps1"
+$ReconcileScriptPath = Join-Path $WsfcSetupDir "07-reconcile-availability-group.ps1"
+$LauncherPath = Join-Path $SetupDir "00-launch-sql-node-bootstrap.ps1"
+$WrapperLogPath = Join-Path $SetupDir "user-data-bootstrap.log"
+$InitialTaskName = "AOAG-Configure-WindowsNode-Initial"
+New-Item -ItemType Directory -Path $SetupDir -Force | Out-Null
+New-Item -ItemType Directory -Path $WsfcSetupDir -Force | Out-Null
+
+function Write-BootstrapLog {
+    param([string]$Message)
+    Add-Content -Path $WrapperLogPath -Value ("{0:s} {1}" -f (Get-Date), $Message)
+}
+
+trap {
+    try {
+        Write-BootstrapLog "ERROR: $($_.Exception.Message)"
+    }
+    catch {
+        # Preserve the original bootstrap error if logging itself is unavailable.
+    }
+    throw
+}
+
+Write-BootstrapLog "Starting SQL node user_data bootstrap for ${target_computer_name}"
+
+# Establish recovery access before downloading any automation artifacts. If a
+# PAR, DNS, or Object Storage request fails, the operator can still RDP in with
+# the local accounts and inspect the bootstrap logs.
+function Set-LocalBootstrapAccess {
+    Write-BootstrapLog "Configuring local bootstrap accounts"
+    $password = '${windows_admin_password}'
+    if ([string]::IsNullOrWhiteSpace($password)) {
+        throw "windows_admin_password was not rendered into SQL node user_data."
+    }
+
+    $adminResult = & net.exe user Administrator $password /logonpasswordchg:no /active:yes 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to configure local Administrator before downloading automation artifacts: $($adminResult -join ' ')"
+    }
+    Write-BootstrapLog "Reset local Administrator password and enabled account"
+
+    if ('${local_admin_user}' -and '${local_admin_user}' -ne 'Administrator') {
+        $userResult = & net.exe user '${local_admin_user}' $password /logonpasswordchg:no /active:yes 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            $userResult = & net.exe user '${local_admin_user}' $password /add /logonpasswordchg:no /active:yes 2>&1
+            if ($LASTEXITCODE -ne 0) {
+                throw "Failed to create local ${local_admin_user} before downloading automation artifacts: $($userResult -join ' ')"
+            }
+        }
+        Write-BootstrapLog "Reset local ${local_admin_user} password and enabled account"
+
+        foreach ($group in @('Administrators', 'Remote Desktop Users')) {
+            $memberPattern = "(?i)(^|\\)$([regex]::Escape('${local_admin_user}'))$"
+            $alreadyMember = $false
+            try {
+                $alreadyMember = @(
+                    Get-LocalGroupMember -Group $group -ErrorAction Stop |
+                        Where-Object { $_.Name -match $memberPattern }
+                ).Count -gt 0
+            }
+            catch {
+                Write-BootstrapLog "Could not pre-check ${local_admin_user} membership in $group; using net.exe result"
+            }
+
+            if ($alreadyMember) {
+                Write-BootstrapLog "${local_admin_user} is already a member of $group; continuing"
+                continue
+            }
+
+            $groupResult = & net.exe localgroup $group '${local_admin_user}' /add 2>&1
+            $groupExitCode = $LASTEXITCODE
+            $groupOutput = ($groupResult -join "`n")
+
+            if ($groupExitCode -eq 0) {
+                Write-BootstrapLog "Added ${local_admin_user} to $group"
+            }
+            elseif ($groupOutput -match '(?i)1378|already a member of the group') {
+                Write-BootstrapLog "${local_admin_user} is already a member of $group; continuing"
+            }
+            else {
+                throw "Failed to add ${local_admin_user} to $group before downloading automation artifacts. net.exe exit code $groupExitCode. Output: $groupOutput"
+            }
+        }
+    }
+
+    Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
+    Enable-NetFirewallRule -DisplayGroup "Remote Desktop" -ErrorAction SilentlyContinue | Out-Null
+    Write-BootstrapLog "Configured local Administrator and ${local_admin_user} credentials before automation downloads"
+}
+
+Set-LocalBootstrapAccess
+
+function Download-AutomationScript {
+    param([string]$Uri, [string]$Path)
+    if ([string]::IsNullOrWhiteSpace($Uri)) { return }
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+    for ($attempt = 1; $attempt -le 30; $attempt++) {
+        try {
+            Write-BootstrapLog "Downloading automation artifact attempt=$attempt path=$Path"
+            Invoke-WebRequest -UseBasicParsing -Uri $Uri -OutFile $Path -ErrorAction Stop
+            if (-not (Test-Path -LiteralPath $Path)) {
+                throw "Automation script download returned without creating $Path"
+            }
+
+            Write-BootstrapLog "Downloaded automation artifact path=$Path"
+            return
+        }
+        catch {
+            if ($attempt -ge 30) {
+                throw "Automation artifact download failed after $attempt attempts for $${Path}: $($_.Exception.Message)"
+            }
+
+            Write-BootstrapLog "Download warning path=$${Path} attempt=$attempt`: $($_.Exception.Message)"
+            Start-Sleep -Seconds 10
+        }
+    }
+}
+
+Download-AutomationScript -Uri '${sql_script_url}' -Path $ScriptPath
+& icacls.exe $ScriptPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+Write-BootstrapLog "Wrote $ScriptPath"
+
+Download-AutomationScript -Uri '${wsfc_script_url}' -Path $WsfcScriptPath
+& icacls.exe $WsfcScriptPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+Write-BootstrapLog "Wrote $WsfcScriptPath"
+
+if (-not [string]::IsNullOrWhiteSpace('${sample_script_url}')) {
+    Download-AutomationScript -Uri '${sample_script_url}' -Path $SampleScriptPath
+    & icacls.exe $SampleScriptPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+    Write-BootstrapLog "Wrote $SampleScriptPath"
+}
+
+if (-not [string]::IsNullOrWhiteSpace('${ag_script_url}')) {
+    Download-AutomationScript -Uri '${ag_script_url}' -Path $AgScriptPath
+    & icacls.exe $AgScriptPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+    Write-BootstrapLog "Wrote $AgScriptPath"
+}
+
+if (-not [string]::IsNullOrWhiteSpace('${safe_failover_script_url}')) {
+    Download-AutomationScript -Uri '${safe_failover_script_url}' -Path $SafeFailoverScriptPath
+    & icacls.exe $SafeFailoverScriptPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+    Write-BootstrapLog "Wrote $SafeFailoverScriptPath"
+}
+
+if (-not [string]::IsNullOrWhiteSpace('${reconcile_script_url}')) {
+    Download-AutomationScript -Uri '${reconcile_script_url}' -Path $ReconcileScriptPath
+    & icacls.exe $ReconcileScriptPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+    Write-BootstrapLog "Wrote $ReconcileScriptPath"
+}
+
+$LauncherBody = @'
+$ErrorActionPreference = "Stop"
+$SetupDir = "C:\AOAGAutomation\Windows"
+$ScriptPath = Join-Path $SetupDir "02-configure-sql-node.ps1"
+$WsfcSetupDir = "C:\AOAGAutomation\WSFC"
+$SampleScriptPath = Join-Path $WsfcSetupDir "04-prepare-sample-database.ps1"
+$AgScriptPath = Join-Path $WsfcSetupDir "05-configure-availability-group.ps1"
+$ReconcileScriptPath = Join-Path $WsfcSetupDir "07-reconcile-availability-group.ps1"
+$LauncherLogPath = Join-Path $SetupDir "launcher.log"
+$ConsoleLogPath = Join-Path $SetupDir "windows-bootstrap-console.log"
+$InitialTaskName = "AOAG-Configure-WindowsNode-Initial"
+function Write-LauncherLog {
+    param([string]$Message)
+    Add-Content -Path $LauncherLogPath -Value ("{0:s} {1}" -f (Get-Date), $Message)
+}
+try {
+    Write-LauncherLog "Starting SQL node configuration launcher for ${target_computer_name}"
+    $scriptArgs = @(
+        "-NoProfile",
+        "-ExecutionPolicy", "Bypass",
+        "-File", $ScriptPath,
+        "-DomainName", '${domain_name}',
+        "-DomainNetbiosName", '${domain_netbios_name}',
+        "-DomainAdminUser", '${domain_admin_user}',
+        "-DomainAdminPassword", '${domain_admin_password}',
+        "-SqlServiceAccountUser", '${sql_service_account_user}',
+        "-SqlServiceAccountPassword", '${sql_service_account_password}',
+        "-AutoInstallSqlServer", '${auto_install_sql_server}',
+        "-InstallSsms", '${install_ssms}',
+        "-SqlServerDownloadUrl", '${sql_server_download_url}',
+        "-SsmsDownloadUrl", '${ssms_download_url}',
+        "-AutoConfigureWsfc", '${auto_configure_wsfc}',
+        "-WsfcClusterName", '${wsfc_cluster_name}',
+        "-WsfcPrimaryNode", '${wsfc_primary_node}',
+        "-WsfcClusterNodes", '${wsfc_cluster_nodes}',
+        "-WsfcClusterStaticAddresses", '${wsfc_cluster_static_addresses}',
+        "-WsfcWitnessShare", '${wsfc_witness_share}',
+        "-SkipClusterValidation", '${skip_cluster_validation}',
+        "-AoagDatabaseName", '${aoag_database_name}',
+        "-AoagAvailabilityGroupName", '${aoag_availability_group_name}',
+        "-AoagListenerName", '${aoag_listener_name}',
+        "-AoagListenerPort", '${aoag_listener_port}',
+        "-AoagListenerIps", '${aoag_listener_ips}',
+        "-HadrEndpointName", '${hadr_endpoint_name}',
+        "-HadrEndpointPort", '${hadr_endpoint_port}',
+        "-SampleDatabaseDownloadUrl", '${sample_database_download_url}',
+        "-SampleScriptPath", $SampleScriptPath,
+        "-AgScriptPath", $AgScriptPath,
+        "-LocalAdminUser", '${local_admin_user}',
+        "-LocalAdminPassword", '${windows_admin_password}',
+        "-TargetComputerName", '${target_computer_name}',
+        "-DcHostName", "DC-VM",
+        "-DcPrivateIp", '${dc_private_ip}',
+        "-SqlDataDriveLetter", '${sql_data_drive_letter}',
+        "-ReconcileScriptPath", $ReconcileScriptPath
+    )
+
+    & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" @scriptArgs *> $ConsoleLogPath
+    $exitCode = $LASTEXITCODE
+    Write-LauncherLog "SQL node configuration script exit code: $exitCode"
+    if ($exitCode -ne 0) {
+        throw "SQL node bootstrap failed with exit code $exitCode. See $ConsoleLogPath."
+    }
+}
+catch {
+    Write-LauncherLog "ERROR: $($_.Exception.Message)"
+    throw
+}
+finally {
+    Unregister-ScheduledTask -TaskName $InitialTaskName -Confirm:$false -ErrorAction SilentlyContinue
+    Write-LauncherLog "Removed initial launcher task if it still existed"
+}
+'@
+
+Set-Content -Path $LauncherPath -Value $LauncherBody -Encoding UTF8 -Force
+& icacls.exe $LauncherPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+Write-BootstrapLog "Wrote $LauncherPath"
+
+$action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$LauncherPath`""
+$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1)
+Register-ScheduledTask -TaskName $InitialTaskName -Action $action -Trigger $trigger -User "SYSTEM" -RunLevel Highest -Force | Out-Null
+Write-BootstrapLog "Registered $InitialTaskName as SYSTEM"
+
+Start-ScheduledTask -TaskName $InitialTaskName
+Write-BootstrapLog "Started $InitialTaskName"

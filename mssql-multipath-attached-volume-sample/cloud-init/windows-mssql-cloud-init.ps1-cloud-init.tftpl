@@ -1,0 +1,611 @@
+#ps1_sysnative
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+$ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
+
+$saPasswordBytes = [System.Convert]::FromBase64String("${windows_mssql_sa_password_b64}")
+$saPassword = [System.Text.Encoding]::UTF8.GetString($saPasswordBytes)
+$instanceName = "${windows_sql_instance_name}"
+$features = "${windows_sql_features}"
+$sqlPort = ${windows_sql_tcp_port}
+$packageName = "${windows_choco_package_name}"
+$collation = "${windows_sql_collation}"
+$configPath = "C:\ProgramData\sql-setup.ini"
+$volumeCount = ${windows_volume_count}
+$volumeConfigJson = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${windows_volume_config_json_b64}"))
+
+function Invoke-IscsiCli {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$Arguments
+  )
+
+  $process = Start-Process -FilePath "$env:SystemRoot\System32\iscsicli.exe" -ArgumentList $Arguments -Wait -NoNewWindow -PassThru
+  if ($process.ExitCode -ne 0) {
+    Write-Warning "iscsicli.exe $($Arguments -join ' ') exited with code $($process.ExitCode)"
+  }
+}
+
+function Get-VolumeAttachmentsFromMetadata {
+  $metadataUrl = "http://169.254.169.254/opc/v2/volumeAttachments/"
+  try {
+    return Invoke-RestMethod -Headers @{ Authorization = "Bearer Oracle" } -Uri $metadataUrl -UseBasicParsing -TimeoutSec 20
+  }
+  catch {
+    return @()
+  }
+}
+
+function Connect-IscsiTargetsFromMetadata {
+  param(
+    [Parameter(Mandatory = $true)]
+    [array]$Attachments
+  )
+
+  foreach ($attachment in $Attachments) {
+    if ([string]::IsNullOrWhiteSpace($attachment.ipv4) -or [string]::IsNullOrWhiteSpace($attachment.iqn)) {
+      continue
+    }
+
+    $portal = [string]$attachment.ipv4
+    $port = if ($attachment.port) { [string]$attachment.port } else { "3260" }
+    $iqn = [string]$attachment.iqn
+
+    Invoke-IscsiCli -Arguments @("QAddTargetPortal", $portal)
+    Invoke-IscsiCli -Arguments @("QLoginTarget", $iqn)
+    Invoke-IscsiCli -Arguments @(
+      "PersistentLoginTarget",
+      $iqn,
+      "*",
+      $portal,
+      $port,
+      "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"
+    )
+  }
+}
+
+function Connect-DiscoveredOciIscsiTargets {
+  param(
+    [Parameter(Mandatory = $true)]
+    [int]$ExpectedVolumeCount
+  )
+
+  $connected = 0
+  $maxPortalHost = [Math]::Max($ExpectedVolumeCount + 4, 32)
+  Write-Host "Locating attached OCI iSCSI volumes. Expected volume count: $ExpectedVolumeCount."
+
+  foreach ($portalHost in 2..$maxPortalHost) {
+    $portalAddress = "169.254.2.$portalHost"
+    Write-Host "Searching iSCSI portal $portalAddress"
+
+    try {
+      $targetPortal = New-IscsiTargetPortal -TargetPortalAddress $portalAddress -TargetPortalPortNumber 3260 -ErrorAction Stop
+    }
+    catch {
+      $targetPortal = Get-IscsiTargetPortal -TargetPortalAddress $portalAddress -ErrorAction SilentlyContinue
+    }
+
+    if ($null -eq $targetPortal) {
+      continue
+    }
+
+    $targets = @($targetPortal | Get-IscsiTarget -ErrorAction SilentlyContinue | Where-Object {
+      $_.NodeAddress -like "iqn.2015-12.com.oracleiaas:*"
+    })
+
+    foreach ($target in $targets) {
+      Write-Host "Connecting iSCSI target $($target.NodeAddress) from portal $portalAddress"
+      try {
+        $target | Connect-IscsiTarget -IsPersistent $true -ErrorAction Stop | Out-Null
+        $connected++
+      }
+      catch {
+        Write-Warning "Could not connect iSCSI target $($target.NodeAddress): $($_.Exception.Message)"
+      }
+    }
+  }
+
+  return $connected
+}
+
+function Connect-OciIscsiVolumes {
+  Set-Service -Name msiscsi -StartupType Automatic
+  Start-Service -Name msiscsi
+
+  $attachments = @()
+  for ($attempt = 1; $attempt -le 20; $attempt++) {
+    $attachments = @(Get-VolumeAttachmentsFromMetadata)
+    if ($attachments.Count -gt 0) {
+      Write-Host "Found $($attachments.Count) OCI volume attachment metadata record(s)."
+      Connect-IscsiTargetsFromMetadata -Attachments $attachments
+      break
+    }
+
+    $targetCount = Connect-DiscoveredOciIscsiTargets -ExpectedVolumeCount $volumeCount
+    if ($targetCount -gt 0) {
+      Write-Host "Connected $targetCount discovered OCI iSCSI target(s)."
+      break
+    }
+
+    Write-Host "OCI iSCSI targets not available yet. Retry $attempt/20."
+    Start-Sleep -Seconds 30
+  }
+
+  Start-Sleep -Seconds 10
+  Update-HostStorageCache
+}
+
+function Get-VolumeConfig {
+  if ([string]::IsNullOrWhiteSpace($volumeConfigJson)) {
+    return @()
+  }
+
+  try {
+    $parsed = $volumeConfigJson | ConvertFrom-Json
+    if ($null -eq $parsed) {
+      return @()
+    }
+
+    if ($parsed -is [System.Array]) {
+      foreach ($item in $parsed) {
+        $item
+      }
+      return
+    }
+
+    $parsed
+  }
+  catch {
+    Write-Warning "Could not parse Windows volume config JSON: $($_.Exception.Message)"
+    return @()
+  }
+}
+
+function Get-FirstValue {
+  param(
+    $Value,
+    $Default = ""
+  )
+
+  if ($null -eq $Value) {
+    return $Default
+  }
+
+  if ($Value -is [System.Array]) {
+    if ($Value.Count -eq 0 -or $null -eq $Value[0]) {
+      return $Default
+    }
+
+    return $Value[0]
+  }
+
+  return $Value
+}
+
+function Get-StringValue {
+  param(
+    $Value,
+    [string]$Default = ""
+  )
+
+  $scalar = Get-FirstValue -Value $Value -Default $Default
+  if ($null -eq $scalar) {
+    return $Default
+  }
+
+  return [string]$scalar
+}
+
+function Get-IntValue {
+  param(
+    $Value,
+    [int]$Default = 0
+  )
+
+  $scalar = Get-FirstValue -Value $Value -Default $Default
+  try {
+    return [int]$scalar
+  }
+  catch {
+    return $Default
+  }
+}
+
+function Get-WindowsFileSystemType {
+  param(
+    [string]$FileSystemType
+  )
+
+  $normalized = $FileSystemType.Trim().ToLowerInvariant()
+  if ($normalized -eq "refs") {
+    return "ReFS"
+  }
+
+  # Linux-oriented values such as xfs/ext4 are treated as NTFS on Windows.
+  return "NTFS"
+}
+
+function Get-WindowsMountTarget {
+  param(
+    [string]$MountPoint
+  )
+
+  $value = $MountPoint.Trim()
+  if ([string]::IsNullOrWhiteSpace($value)) {
+    return [pscustomobject]@{ Kind = "Auto"; Value = $null }
+  }
+
+  if ($value -match "^[A-Za-z]:?\\?$") {
+    return [pscustomobject]@{ Kind = "DriveLetter"; Value = $value.Substring(0, 1).ToUpperInvariant() }
+  }
+
+  if ($value -match "^[A-Za-z]:\\") {
+    return [pscustomobject]@{ Kind = "Path"; Value = $value }
+  }
+
+  Write-Warning "Ignoring non-Windows mount_point '$value'. Use a drive letter like D: or an NTFS path like C:\Mounts\Data."
+  return [pscustomobject]@{ Kind = "Auto"; Value = $null }
+}
+
+function New-VolumeLabel {
+  param(
+    [string]$Prefix,
+    [string]$Name
+  )
+
+  $label = "$Prefix-$Name" -replace "[^A-Za-z0-9_-]", "-"
+  if ([string]::IsNullOrWhiteSpace($label)) {
+    $label = "oci-volume"
+  }
+
+  if ($label.Length -gt 32) {
+    $label = $label.Substring(0, 32)
+  }
+
+  return $label
+}
+
+function Enable-DiskForUse {
+  param(
+    [Parameter(Mandatory = $true)]
+    [int]$DiskNumber
+  )
+
+  $disk = Get-Disk -Number $DiskNumber -ErrorAction Stop
+  if ($disk.IsOffline) {
+    Set-Disk -Number $DiskNumber -IsOffline $false
+  }
+
+  $disk = Get-Disk -Number $DiskNumber -ErrorAction Stop
+  if ($disk.IsReadOnly) {
+    Set-Disk -Number $DiskNumber -IsReadOnly $false
+  }
+}
+
+function Wait-ForRawIscsiDisks {
+  param(
+    [Parameter(Mandatory = $true)]
+    [int]$ExpectedCount
+  )
+
+  for ($attempt = 1; $attempt -le 60; $attempt++) {
+    Update-HostStorageCache
+    $rawDisks = @(Get-Disk | Where-Object {
+      $_.BusType -eq "iSCSI" -and $_.PartitionStyle -eq "RAW"
+    } | Sort-Object -Property Size, Number)
+
+    if ($rawDisks.Count -ge $ExpectedCount) {
+      return $rawDisks
+    }
+
+    Write-Host "Waiting for raw OCI iSCSI disks. Found $($rawDisks.Count)/$ExpectedCount. Retry $attempt/60."
+    Start-Sleep -Seconds 10
+  }
+
+  return @(Get-Disk | Where-Object {
+    $_.BusType -eq "iSCSI" -and $_.PartitionStyle -eq "RAW"
+  } | Sort-Object -Property Size, Number)
+}
+
+function Take-AvailableIscsiDisks {
+  param(
+    [Parameter(Mandatory = $true)]
+    [int]$Count,
+
+    [int]$PreferredSizeGB = 0
+  )
+
+  $selectedDisks = @()
+  if ($script:AvailableIscsiDisks.Count -lt $Count) {
+    Write-Warning "Not enough raw iSCSI disks. Need $Count, found $($script:AvailableIscsiDisks.Count)."
+    return $selectedDisks
+  }
+
+  if ($PreferredSizeGB -gt 0) {
+    $matchingDisks = @($script:AvailableIscsiDisks | Where-Object {
+      [Math]::Abs(($_.Size / 1GB) - $PreferredSizeGB) -le 2
+    } | Sort-Object -Property Size, Number)
+
+    if ($matchingDisks.Count -ge $Count) {
+      $selectedDisks = @($matchingDisks | Select-Object -First $Count)
+      foreach ($disk in $selectedDisks) {
+        for ($index = 0; $index -lt $script:AvailableIscsiDisks.Count; $index++) {
+          if ($script:AvailableIscsiDisks[$index].Number -eq $disk.Number) {
+            $script:AvailableIscsiDisks.RemoveAt($index)
+            break
+          }
+        }
+      }
+
+      return $selectedDisks
+    }
+
+    Write-Warning "Could not find $Count raw iSCSI disk(s) close to $PreferredSizeGB GB. Falling back to sorted disk order."
+  }
+
+  for ($index = 0; $index -lt $Count; $index++) {
+    $selectedDisks += $script:AvailableIscsiDisks[0]
+    $script:AvailableIscsiDisks.RemoveAt(0)
+  }
+
+  return $selectedDisks
+}
+
+function New-StandaloneWindowsVolume {
+  param(
+    [Parameter(Mandatory = $true)]
+    [int]$DiskNumber,
+
+    [Parameter(Mandatory = $true)]
+    [string]$FileSystem,
+
+    [Parameter(Mandatory = $true)]
+    [string]$Label,
+
+    [string]$MountPoint
+  )
+
+  Enable-DiskForUse -DiskNumber $DiskNumber
+
+  $disk = Get-Disk -Number $DiskNumber -ErrorAction Stop
+  if ($disk.PartitionStyle -eq "RAW") {
+    Initialize-Disk -Number $DiskNumber -PartitionStyle GPT
+  }
+
+  $mountTarget = Get-WindowsMountTarget -MountPoint $MountPoint
+  if ($mountTarget.Kind -eq "DriveLetter") {
+    $partition = New-Partition -DiskNumber $DiskNumber -UseMaximumSize -DriveLetter $mountTarget.Value
+  }
+  elseif ($mountTarget.Kind -eq "Path") {
+    New-Item -Path $mountTarget.Value -ItemType Directory -Force | Out-Null
+    $partition = New-Partition -DiskNumber $DiskNumber -UseMaximumSize
+  }
+  else {
+    $partition = New-Partition -DiskNumber $DiskNumber -UseMaximumSize -AssignDriveLetter
+  }
+
+  $partition | Format-Volume -FileSystem $FileSystem -NewFileSystemLabel $Label -AllocationUnitSize 65536 -Confirm:$false | Out-Null
+
+  if ($mountTarget.Kind -eq "Path") {
+    Add-PartitionAccessPath -DiskNumber $DiskNumber -PartitionNumber $partition.PartitionNumber -AccessPath $mountTarget.Value
+  }
+}
+
+function Invoke-DiskPartScript {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$Lines
+  )
+
+  $scriptPath = Join-Path $env:TEMP "oci-raid0-$([guid]::NewGuid()).txt"
+  Set-Content -Path $scriptPath -Value ($Lines -join [Environment]::NewLine) -Encoding Ascii -Force
+
+  try {
+    $process = Start-Process -FilePath "$env:SystemRoot\System32\diskpart.exe" -ArgumentList "/s `"$scriptPath`"" -Wait -NoNewWindow -PassThru
+    if ($process.ExitCode -ne 0) {
+      throw "diskpart.exe failed with exit code $($process.ExitCode)."
+    }
+  }
+  finally {
+    Remove-Item -Path $scriptPath -Force -ErrorAction SilentlyContinue
+  }
+}
+
+function New-Raid0WindowsVolume {
+  param(
+    [Parameter(Mandatory = $true)]
+    [array]$Disks,
+
+    [Parameter(Mandatory = $true)]
+    [string]$GroupName,
+
+    [Parameter(Mandatory = $true)]
+    [string]$FileSystem,
+
+    [Parameter(Mandatory = $true)]
+    [string]$Label,
+
+    [string]$MountPoint
+  )
+
+  foreach ($disk in $Disks) {
+    Enable-DiskForUse -DiskNumber ([int]$disk.Number)
+  }
+
+  $diskNumbers = @($Disks | Sort-Object -Property Number | ForEach-Object { [int]$_.Number })
+  $mountTarget = Get-WindowsMountTarget -MountPoint $MountPoint
+  $diskPartFs = $FileSystem.ToLowerInvariant()
+  $diskPartLabel = $Label.Replace('"', "")
+  $commands = New-Object System.Collections.Generic.List[string]
+
+  foreach ($diskNumber in $diskNumbers) {
+    [void]$commands.Add("select disk $diskNumber")
+    [void]$commands.Add("online disk noerr")
+    [void]$commands.Add("attributes disk clear readonly noerr")
+    [void]$commands.Add("convert dynamic noerr")
+  }
+
+  [void]$commands.Add("create volume stripe disk=$($diskNumbers -join ',')")
+  [void]$commands.Add("format fs=$diskPartFs unit=64k label=`"$diskPartLabel`" quick")
+
+  if ($mountTarget.Kind -eq "DriveLetter") {
+    [void]$commands.Add("assign letter=$($mountTarget.Value)")
+  }
+  elseif ($mountTarget.Kind -eq "Path") {
+    New-Item -Path $mountTarget.Value -ItemType Directory -Force | Out-Null
+    [void]$commands.Add("assign mount=`"$($mountTarget.Value)`"")
+  }
+  else {
+    [void]$commands.Add("assign")
+  }
+
+  Write-Host "Creating RAID-0 dynamic striped volume '$GroupName' from disk(s): $($diskNumbers -join ', ')."
+  Invoke-DiskPartScript -Lines $commands.ToArray()
+  Update-HostStorageCache
+}
+
+function Configure-WindowsStorageAndRaid {
+  $configs = @(Get-VolumeConfig)
+  if ($configs.Count -eq 0) {
+    Write-Host "No Windows volume config provided."
+    return
+  }
+
+  $rawDisks = @(Wait-ForRawIscsiDisks -ExpectedCount $configs.Count)
+  if ($rawDisks.Count -eq 0) {
+    Write-Warning "No raw OCI iSCSI disks found. Skipping Windows storage configuration."
+    return
+  }
+
+  $script:AvailableIscsiDisks = New-Object System.Collections.Generic.List[object]
+  foreach ($disk in $rawDisks) {
+    [void]$script:AvailableIscsiDisks.Add($disk)
+  }
+
+  $groups = $configs | Group-Object -Property {
+    $raidGroup = Get-StringValue -Value $_.raid0_group
+    if ([string]::IsNullOrWhiteSpace($raidGroup)) {
+      "single::$(Get-StringValue -Value $_.key)"
+    }
+    else {
+      "raid::$raidGroup"
+    }
+  }
+
+  foreach ($group in $groups) {
+    $members = @($group.Group)
+    $firstMember = $members[0]
+    $raidGroup = (Get-StringValue -Value $firstMember.raid0_group).Trim()
+    $mountPoint = Get-StringValue -Value $firstMember.mount_point
+    $memberFileSystem = Get-StringValue -Value $firstMember.filesystem_type -Default "ntfs"
+    $fileSystem = Get-WindowsFileSystemType -FileSystemType $memberFileSystem
+    $preferredSizeGB = Get-IntValue -Value $firstMember.size_in_gbs -Default 0
+
+    if ([string]::IsNullOrWhiteSpace($raidGroup)) {
+      $disk = @(Take-AvailableIscsiDisks -Count 1 -PreferredSizeGB $preferredSizeGB)
+      if ($disk.Count -ne 1) {
+        continue
+      }
+
+      $memberKey = Get-StringValue -Value $firstMember.key
+      $label = New-VolumeLabel -Prefix "oci" -Name $memberKey
+      Write-Host "Creating standalone Windows volume for '$memberKey' on disk $($disk[0].Number)."
+      New-StandaloneWindowsVolume -DiskNumber ([int]$disk[0].Number) -FileSystem $fileSystem -Label $label -MountPoint $mountPoint
+    }
+    else {
+      if ($members.Count -ne 2) {
+        Write-Warning "Skipping RAID-0 group '$raidGroup': expected 2 members, found $($members.Count)."
+        continue
+      }
+
+      $disks = @(Take-AvailableIscsiDisks -Count $members.Count -PreferredSizeGB $preferredSizeGB)
+      if ($disks.Count -ne $members.Count) {
+        continue
+      }
+
+      $label = New-VolumeLabel -Prefix "raid0" -Name $raidGroup
+      New-Raid0WindowsVolume -Disks $disks -GroupName $raidGroup -FileSystem $fileSystem -Label $label -MountPoint $mountPoint
+    }
+  }
+}
+
+function Install-Chocolatey {
+  if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
+    Set-ExecutionPolicy Bypass -Scope Process -Force
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Invoke-Expression ((New-Object Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
+  }
+}
+
+function Set-SqlServerTcpPort {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SqlInstanceName,
+
+    [Parameter(Mandatory = $true)]
+    [int]$TcpPort
+  )
+
+  $instanceMapPath = "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL"
+  if (-not (Test-Path $instanceMapPath)) {
+    throw "SQL Server instance registry map not found at $instanceMapPath"
+  }
+
+  $instanceId = (Get-ItemProperty -Path $instanceMapPath).$SqlInstanceName
+  if ([string]::IsNullOrWhiteSpace($instanceId)) {
+    throw "SQL Server instance '$SqlInstanceName' not found in registry."
+  }
+
+  $tcpPath = "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\$instanceId\MSSQLServer\SuperSocketNetLib\Tcp"
+  $ipAllPath = "$tcpPath\IPAll"
+
+  Set-ItemProperty -Path $tcpPath -Name Enabled -Value 1
+  Set-ItemProperty -Path $ipAllPath -Name TcpDynamicPorts -Value ""
+  Set-ItemProperty -Path $ipAllPath -Name TcpPort -Value ([string]$TcpPort)
+
+  $serviceName = if ($SqlInstanceName -eq "MSSQLSERVER") { "MSSQLSERVER" } else { "MSSQL`$$SqlInstanceName" }
+  Restart-Service -Name $serviceName -Force
+}
+
+Connect-OciIscsiVolumes
+Configure-WindowsStorageAndRaid
+Install-Chocolatey
+
+$sqlConfig = @"
+[OPTIONS]
+ACTION="Install"
+IACCEPTSQLSERVERLICENSETERMS="True"
+FEATURES="$features"
+INSTANCENAME="$instanceName"
+SECURITYMODE="SQL"
+SAPWD="$saPassword"
+SQLSVCACCOUNT="NT AUTHORITY\SYSTEM"
+SQLSYSADMINACCOUNTS="Administrators"
+TCPENABLED="1"
+SQLCOLLATION="$collation"
+UPDATEENABLED="False"
+"@
+
+New-Item -Path (Split-Path -Path $configPath -Parent) -ItemType Directory -Force | Out-Null
+Set-Content -Path $configPath -Value $sqlConfig -Encoding Ascii -Force
+
+& choco upgrade $packageName -y --no-progress --params "'/ConfigurationFile:$configPath'"
+$exitCode = $LASTEXITCODE
+
+if ($exitCode -ne 0 -and $exitCode -ne 3010 -and $exitCode -ne 1641) {
+  throw "Chocolatey SQL installation failed with exit code $exitCode."
+}
+
+Set-SqlServerTcpPort -SqlInstanceName $instanceName -TcpPort $sqlPort
+
+%{ if windows_open_firewall ~}
+$ruleName = "SQL Server $instanceName TCP $sqlPort"
+if (-not (Get-NetFirewallRule -DisplayName $ruleName -ErrorAction SilentlyContinue)) {
+  New-NetFirewallRule -DisplayName $ruleName -Direction Inbound -Action Allow -Protocol TCP -LocalPort $sqlPort | Out-Null
+}
+%{ endif ~}
+
+Write-Host "Microsoft SQL Server installation completed."

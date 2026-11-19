@@ -1,0 +1,112 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+$ErrorActionPreference = "Stop"
+
+$SetupDir = "C:\AOAGAutomation\DC"
+$ScriptPath = Join-Path $SetupDir "01-configure-domain-controller.ps1"
+$LauncherPath = Join-Path $SetupDir "00-launch-domain-controller-bootstrap.ps1"
+$WrapperLogPath = Join-Path $SetupDir "user-data-bootstrap.log"
+$InitialTaskName = "AOAG-Configure-DomainController-Initial"
+New-Item -ItemType Directory -Path $SetupDir -Force | Out-Null
+
+function Write-BootstrapLog {
+    param([string]$Message)
+    Add-Content -Path $WrapperLogPath -Value ("{0:s} {1}" -f (Get-Date), $Message)
+}
+
+Write-BootstrapLog "Starting DC user_data bootstrap"
+
+$ScriptBodyGzipBase64 = @'
+${script_body_gzip_base64}
+'@
+
+$compressedBytes = [Convert]::FromBase64String($ScriptBodyGzipBase64.Trim())
+$memoryStream = [IO.MemoryStream]::new($compressedBytes)
+$gzipStream = [IO.Compression.GzipStream]::new($memoryStream, [IO.Compression.CompressionMode]::Decompress)
+$reader = [IO.StreamReader]::new($gzipStream, [Text.Encoding]::UTF8)
+try {
+    $ScriptBody = $reader.ReadToEnd()
+}
+finally {
+    $reader.Close()
+    $gzipStream.Close()
+    $memoryStream.Close()
+}
+
+Set-Content -Path $ScriptPath -Value $ScriptBody -Encoding UTF8 -Force
+& icacls.exe $ScriptPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+Write-BootstrapLog "Wrote $ScriptPath"
+
+$LauncherBody = @'
+$ErrorActionPreference = "Stop"
+
+$SetupDir = "C:\AOAGAutomation\DC"
+$ScriptPath = Join-Path $SetupDir "01-configure-domain-controller.ps1"
+$LauncherLogPath = Join-Path $SetupDir "launcher.log"
+$ConsoleLogPath = Join-Path $SetupDir "configure-dc-console.log"
+$InitialTaskName = "AOAG-Configure-DomainController-Initial"
+
+function Write-LauncherLog {
+    param([string]$Message)
+    New-Item -ItemType Directory -Path $SetupDir -Force | Out-Null
+    Add-Content -Path $LauncherLogPath -Value ("{0:s} {1}" -f (Get-Date), $Message)
+}
+
+try {
+    Write-LauncherLog "Starting DC configuration launcher"
+
+    $powershellPath = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+    $scriptArgs = @(
+        "-NoProfile",
+        "-ExecutionPolicy", "Bypass",
+        "-File", $ScriptPath,
+        "-DomainName", '${domain_name}',
+        "-NetbiosName", '${domain_netbios_name}',
+        "-DomainAdminUser", '${domain_admin_user}',
+        "-SqlServiceAccountUser", '${sql_service_account_user}',
+        "-LocalAdminUser", '${local_admin_user}',
+        "-TargetComputerName", '${target_computer_name}',
+        "-DcPrivateIp", '${dc_private_ip}',
+        "-WitnessPath", '${witness_path}',
+        "-WitnessShareName", '${witness_share_name}',
+        "-DomainAdminPasswordPlain", '${domain_admin_password}',
+        "-SqlServiceAccountPasswordPlain", '${sql_service_account_password}',
+        "-LocalAdminPasswordPlain", '${windows_admin_password}',
+        "-NonInteractive"
+    )
+
+    Write-LauncherLog "Invoking $ScriptPath"
+    & $powershellPath @scriptArgs *> $ConsoleLogPath
+    $exitCode = $LASTEXITCODE
+    Write-LauncherLog "DC configuration script exit code: $exitCode"
+
+    if ($exitCode -ne 0) {
+        throw "DC configuration script failed with exit code $exitCode. See $ConsoleLogPath and C:\AOAGAutomation\DC\configure-dc.log."
+    }
+}
+catch {
+    Write-LauncherLog "ERROR: $($_.Exception.Message)"
+    throw
+}
+finally {
+    try {
+        Unregister-ScheduledTask -TaskName $InitialTaskName -Confirm:$false -ErrorAction SilentlyContinue
+        Write-LauncherLog "Removed initial launcher task if it still existed"
+    }
+    catch {
+        Write-LauncherLog "Initial launcher task cleanup warning: $($_.Exception.Message)"
+    }
+}
+'@
+
+Set-Content -Path $LauncherPath -Value $LauncherBody -Encoding UTF8 -Force
+& icacls.exe $LauncherPath /inheritance:r /grant:r "SYSTEM:(F)" "Administrators:(F)" | Out-Null
+Write-BootstrapLog "Wrote $LauncherPath"
+
+$action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$LauncherPath`""
+$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1)
+Register-ScheduledTask -TaskName $InitialTaskName -Action $action -Trigger $trigger -User "SYSTEM" -RunLevel Highest -Force | Out-Null
+Write-BootstrapLog "Registered $InitialTaskName as SYSTEM"
+
+Start-ScheduledTask -TaskName $InitialTaskName
+Write-BootstrapLog "Started $InitialTaskName"

@@ -1,0 +1,403 @@
+#cloud-config
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+package_update: true
+package_upgrade: false
+timezone: ${linux_timezone}
+
+write_files:
+  - path: /usr/local/bin/install-mssql.sh
+    owner: root:root
+    permissions: "0750"
+    content: |
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      SA_PASSWORD="$(printf '%s' '${linux_mssql_sa_password_b64}' | base64 -d)"
+      MSSQL_PID='${linux_mssql_pid}'
+      SQL_PORT='${linux_sql_tcp_port}'
+      MSSQL_DEFAULT_DATA_DIR='${linux_mssql_default_data_dir}'
+      MSSQL_DEFAULT_LOG_DIR='${linux_mssql_default_log_dir}'
+      MSSQL_DEFAULT_BACKUP_DIR='${linux_mssql_default_backup_dir}'
+      VOLUME_MOUNT_OWNER='${linux_volume_mount_owner}'
+      VOLUME_MOUNT_GROUP='${linux_volume_mount_group}'
+      VOLUME_MOUNT_MODE='${linux_volume_mount_mode}'
+      VOLUME_CONFIG_JSON="$(printf '%s' '${linux_volume_config_json_b64}' | base64 -d)"
+
+      . /etc/os-release
+
+      if [[ -z "$${SA_PASSWORD}" ]]; then
+        echo "SA password cannot be empty for Linux SQL setup." >&2
+        exit 1
+      fi
+
+      normalize_device_path() {
+        local input="$1"
+
+        if [[ "$${input}" == /dev/* ]]; then
+          echo "$${input}"
+          return 0
+        fi
+
+        if [[ "$${input}" == oracleoci/* ]]; then
+          echo "/dev/$${input}"
+          return 0
+        fi
+
+        if [[ "$${input}" == oraclevd* ]]; then
+          echo "/dev/oracleoci/$${input}"
+          return 0
+        fi
+
+        echo "/dev/$${input}"
+      }
+
+      wait_for_device() {
+        local device_path="$1"
+
+        for _ in $(seq 1 90); do
+          if [[ -b "$${device_path}" ]]; then
+            return 0
+          fi
+          sleep 2
+        done
+
+        echo "Timed out waiting for block device: $${device_path}" >&2
+        return 1
+      }
+
+      ensure_fs_and_mount() {
+        local block_device="$1"
+        local fs_type="$2"
+        local mount_point="$3"
+
+        if [[ -z "$${mount_point}" ]]; then
+          return 0
+        fi
+
+        if ! blkid "$${block_device}" >/dev/null 2>&1; then
+          mkfs -t "$${fs_type}" "$${block_device}"
+        fi
+
+        mkdir -p "$${mount_point}"
+
+        local uuid
+        uuid="$(blkid -s UUID -o value "$${block_device}")"
+
+        if ! grep -q "UUID=$${uuid} " /etc/fstab; then
+          echo "UUID=$${uuid} $${mount_point} $${fs_type} defaults,_netdev,nofail 0 2" >> /etc/fstab
+        fi
+
+        mount "$${mount_point}" || mount -a
+
+        if getent passwd "$${VOLUME_MOUNT_OWNER}" >/dev/null 2>&1 && getent group "$${VOLUME_MOUNT_GROUP}" >/dev/null 2>&1; then
+          chown "$${VOLUME_MOUNT_OWNER}:$${VOLUME_MOUNT_GROUP}" "$${mount_point}"
+        else
+          echo "WARNING: Skipping chown for $${mount_point}; user/group $${VOLUME_MOUNT_OWNER}:$${VOLUME_MOUNT_GROUP} does not exist." >&2
+        fi
+
+        chmod "$${VOLUME_MOUNT_MODE}" "$${mount_point}"
+      }
+
+      mdadm_conf_path() {
+        if [[ -d /etc/mdadm ]]; then
+          echo "/etc/mdadm/mdadm.conf"
+        else
+          echo "/etc/mdadm.conf"
+        fi
+      }
+
+      install_iscsi_deps_ubuntu() {
+        apt-get install -y e2fsprogs jq mdadm open-iscsi xfsprogs
+        systemctl enable --now iscsid
+      }
+
+      install_iscsi_deps_rhel_family() {
+        dnf install -y e2fsprogs iscsi-initiator-utils jq mdadm xfsprogs
+        systemctl enable --now iscsid
+      }
+
+      ensure_mssql_directory() {
+        local dir_path="$1"
+
+        if [[ -z "$${dir_path}" ]]; then
+          return 0
+        fi
+
+        mkdir -p "$${dir_path}"
+
+        if getent passwd "$${VOLUME_MOUNT_OWNER}" >/dev/null 2>&1 && getent group "$${VOLUME_MOUNT_GROUP}" >/dev/null 2>&1; then
+          chown "$${VOLUME_MOUNT_OWNER}:$${VOLUME_MOUNT_GROUP}" "$${dir_path}"
+        else
+          echo "WARNING: Skipping chown for $${dir_path}; user/group $${VOLUME_MOUNT_OWNER}:$${VOLUME_MOUNT_GROUP} does not exist." >&2
+        fi
+
+        chmod "$${VOLUME_MOUNT_MODE}" "$${dir_path}"
+      }
+
+      configure_mssql_file_locations() {
+        echo "Configuring SQL Server file locations:"
+        echo "  data:   $${MSSQL_DEFAULT_DATA_DIR}"
+        echo "  log:    $${MSSQL_DEFAULT_LOG_DIR}"
+        echo "  backup: $${MSSQL_DEFAULT_BACKUP_DIR}"
+
+        ensure_mssql_directory "$${MSSQL_DEFAULT_DATA_DIR}"
+        ensure_mssql_directory "$${MSSQL_DEFAULT_LOG_DIR}"
+        ensure_mssql_directory "$${MSSQL_DEFAULT_BACKUP_DIR}"
+
+        /opt/mssql/bin/mssql-conf set filelocation.defaultdatadir "$${MSSQL_DEFAULT_DATA_DIR}"
+        /opt/mssql/bin/mssql-conf set filelocation.defaultlogdir "$${MSSQL_DEFAULT_LOG_DIR}"
+        /opt/mssql/bin/mssql-conf set filelocation.defaultbackupdir "$${MSSQL_DEFAULT_BACKUP_DIR}"
+
+        echo "SQL Server file location settings after mssql-conf set:"
+        /opt/mssql/bin/mssql-conf get filelocation.defaultdatadir
+        /opt/mssql/bin/mssql-conf get filelocation.defaultlogdir
+        /opt/mssql/bin/mssql-conf get filelocation.defaultbackupdir
+      }
+
+      install_mssql_ubuntu() {
+        apt-get update
+        apt-get install -y curl gnupg2 ca-certificates software-properties-common apt-transport-https
+
+        curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+        curl -fsSL "https://packages.microsoft.com/config/ubuntu/$${VERSION_ID}/mssql-server-2022.list" > /etc/apt/sources.list.d/mssql-server.list
+
+        apt-get update
+        ACCEPT_EULA=Y apt-get install -y mssql-server
+
+        MSSQL_SA_PASSWORD="$${SA_PASSWORD}" MSSQL_PID="$${MSSQL_PID}" /opt/mssql/bin/mssql-conf -n setup accept-eula
+        /opt/mssql/bin/mssql-conf set network.tcpport "$${SQL_PORT}"
+        /opt/mssql/bin/mssql-conf set sqlagent.enabled ${linux_enable_mssql_agent}
+%{ if linux_mssql_configure_memory ~}
+        /opt/mssql/bin/mssql-conf set memory.memorylimitmb "${linux_mssql_memory_limit_mb}"
+%{ endif ~}
+        systemctl enable --now mssql-server
+
+%{ if linux_install_mssql_tools ~}
+        curl -fsSL "https://packages.microsoft.com/config/ubuntu/$${VERSION_ID}/prod.list" > /etc/apt/sources.list.d/msprod.list
+        apt-get update
+        ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
+        printf '%s\n' 'export PATH="$PATH:/opt/mssql-tools18/bin"' > /etc/profile.d/mssql-tools.sh
+%{ endif ~}
+
+        install_iscsi_deps_ubuntu
+      }
+
+      install_mssql_rhel_family() {
+        local major
+        major="$${VERSION_ID%%.*}"
+
+        if [[ "$${major}" != "8" && "$${major}" != "9" ]]; then
+          echo "Unsupported RHEL-family version: $${VERSION_ID}" >&2
+          exit 1
+        fi
+
+        dnf install -y curl
+        curl -fsSL "https://packages.microsoft.com/config/rhel/$${major}/mssql-server-2022.repo" > /etc/yum.repos.d/mssql-server.repo
+        dnf install -y mssql-server
+
+        MSSQL_SA_PASSWORD="$${SA_PASSWORD}" MSSQL_PID="$${MSSQL_PID}" /opt/mssql/bin/mssql-conf -n setup accept-eula
+        /opt/mssql/bin/mssql-conf set network.tcpport "$${SQL_PORT}"
+        /opt/mssql/bin/mssql-conf set sqlagent.enabled ${linux_enable_mssql_agent}
+%{ if linux_mssql_configure_memory ~}
+        /opt/mssql/bin/mssql-conf set memory.memorylimitmb "${linux_mssql_memory_limit_mb}"
+%{ endif ~}
+        systemctl enable --now mssql-server
+
+%{ if linux_install_mssql_tools ~}
+        curl -fsSL "https://packages.microsoft.com/config/rhel/$${major}/prod.repo" > /etc/yum.repos.d/msprod.repo
+        ACCEPT_EULA=Y dnf install -y mssql-tools18 unixODBC-devel
+        printf '%s\n' 'export PATH="$PATH:/opt/mssql-tools18/bin"' > /etc/profile.d/mssql-tools.sh
+%{ endif ~}
+
+        install_iscsi_deps_rhel_family
+      }
+
+      login_iscsi_from_metadata() {
+        local metadata_url="http://169.254.169.254/opc/v2/volumeAttachments/"
+        local payload
+
+        if ! payload="$(curl -fsSL -H 'Authorization: Bearer Oracle' "$${metadata_url}" 2>/dev/null)"; then
+          return 1
+        fi
+
+        if ! jq -e 'type == "array" and length > 0' >/dev/null 2>&1 <<<"$${payload}"; then
+          return 1
+        fi
+
+        while IFS= read -r item; do
+          local ipv4
+          local port
+          local iqn
+          local chap_user
+          local chap_secret
+
+          ipv4="$(jq -r '.ipv4 // empty' <<<"$${item}")"
+          port="$(jq -r '.port // 3260' <<<"$${item}")"
+          iqn="$(jq -r '.iqn // empty' <<<"$${item}")"
+          chap_user="$(jq -r '.chapUsername // empty' <<<"$${item}")"
+          chap_secret="$(jq -r '.chapSecret // empty' <<<"$${item}")"
+
+          if [[ -z "$${ipv4}" || -z "$${iqn}" ]]; then
+            continue
+          fi
+
+          iscsiadm -m node -o new -T "$${iqn}" -p "$${ipv4}:$${port}" >/dev/null 2>&1 || true
+
+          if [[ -n "$${chap_user}" && -n "$${chap_secret}" ]]; then
+            iscsiadm -m node -T "$${iqn}" -p "$${ipv4}:$${port}" --op update -n node.session.auth.authmethod -v CHAP || true
+            iscsiadm -m node -T "$${iqn}" -p "$${ipv4}:$${port}" --op update -n node.session.auth.username -v "$${chap_user}" || true
+            iscsiadm -m node -T "$${iqn}" -p "$${ipv4}:$${port}" --op update -n node.session.auth.password -v "$${chap_secret}" || true
+          fi
+
+          iscsiadm -m node -T "$${iqn}" -p "$${ipv4}:$${port}" --login || true
+        done < <(jq -c '.[]' <<<"$${payload}")
+
+        return 0
+      }
+
+      login_iscsi_fallback_discovery() {
+        local portal
+
+        # Legacy portal used by some images.
+        for portal in "169.254.0.2:3260"; do
+          iscsiadm -m discoverydb -t sendtargets -p "$${portal}" --discover >/dev/null 2>&1 || true
+        done
+
+        # Common OCI iSCSI target range.
+        for octet in $(seq 2 32); do
+          portal="169.254.2.$${octet}:3260"
+          iscsiadm -m discoverydb -t sendtargets -p "$${portal}" --discover >/dev/null 2>&1 || true
+        done
+
+        iscsiadm -m node --loginall=automatic >/dev/null 2>&1 || true
+        iscsiadm -m node -L all >/dev/null 2>&1 || true
+      }
+
+      attach_iscsi_devices() {
+        if ! login_iscsi_from_metadata; then
+          login_iscsi_fallback_discovery
+        fi
+      }
+
+      configure_storage_and_raid() {
+        local runtime_json
+        runtime_json="$${VOLUME_CONFIG_JSON}"
+
+        if [[ -z "$${runtime_json}" ]] || ! jq -e 'type == "array"' >/dev/null 2>&1 <<<"$${runtime_json}"; then
+          return 0
+        fi
+
+        if [[ "$(jq 'length' <<<"$${runtime_json}")" -eq 0 ]]; then
+          return 0
+        fi
+
+        rm -f /tmp/oci-raid-group-*.list
+
+        while IFS= read -r encoded; do
+          local item
+          local device_name
+          local raid0_group
+          local mount_point
+          local filesystem_type
+          local device_path
+
+          item="$(printf '%s' "$${encoded}" | base64 -d)"
+          device_name="$(jq -r '.device_name' <<<"$${item}")"
+          raid0_group="$(jq -r '.raid0_group // empty' <<<"$${item}")"
+          mount_point="$(jq -r '.mount_point // empty' <<<"$${item}")"
+          filesystem_type="$(jq -r '.filesystem_type // "xfs"' <<<"$${item}")"
+
+          device_path="$(normalize_device_path "$${device_name}")"
+          wait_for_device "$${device_path}"
+
+          if [[ -n "$${raid0_group}" ]]; then
+            printf '%s|%s|%s\n' "$${device_path}" "$${mount_point}" "$${filesystem_type}" >> "/tmp/oci-raid-group-$${raid0_group}.list"
+          else
+            ensure_fs_and_mount "$${device_path}" "$${filesystem_type}" "$${mount_point}"
+          fi
+        done < <(jq -r '.[] | @base64' <<<"$${runtime_json}")
+
+        shopt -s nullglob
+        for group_file in /tmp/oci-raid-group-*.list; do
+          local raid_group
+          local md_device
+          local conf_path
+          local line_one
+          local line_two
+          local dev_one
+          local dev_two
+          local mount_point
+          local filesystem_type
+
+          raid_group="$(basename "$${group_file}" .list)"
+          raid_group="$${raid_group#oci-raid-group-}"
+
+          mapfile -t group_lines < "$${group_file}"
+          if [[ "$${#group_lines[@]}" -ne 2 ]]; then
+            echo "Skipping RAID-0 group $${raid_group}: expected 2 members, found $${#group_lines[@]}" >&2
+            continue
+          fi
+
+          line_one="$${group_lines[0]}"
+          line_two="$${group_lines[1]}"
+
+          dev_one="$${line_one%%|*}"
+          line_one="$${line_one#*|}"
+          mount_point="$${line_one%%|*}"
+          filesystem_type="$${line_one##*|}"
+
+          dev_two="$${line_two%%|*}"
+          md_device="/dev/md/$${raid_group}"
+          conf_path="$(mdadm_conf_path)"
+
+          if [[ ! -b "$${md_device}" ]]; then
+            mdadm --create "$${md_device}" --level=0 --raid-devices=2 "$${dev_one}" "$${dev_two}" --force
+            mkdir -p "$(dirname "$${conf_path}")"
+            mdadm --detail --scan >> "$${conf_path}"
+          fi
+
+          udevadm settle || true
+
+          if ! blkid "$${md_device}" >/dev/null 2>&1; then
+            mkfs -t "$${filesystem_type}" "$${md_device}"
+          fi
+
+          ensure_fs_and_mount "$${md_device}" "$${filesystem_type}" "$${mount_point}"
+        done
+        shopt -u nullglob
+      }
+
+      case "$${ID}" in
+        ubuntu)
+          install_mssql_ubuntu
+          ;;
+        rhel|ol|rocky|almalinux|centos)
+          install_mssql_rhel_family
+          ;;
+        *)
+          echo "Unsupported distribution for this template: $${ID}" >&2
+          exit 1
+          ;;
+      esac
+
+      attach_iscsi_devices
+      configure_storage_and_raid
+      configure_mssql_file_locations
+
+%{ if linux_open_firewall ~}
+      if command -v firewall-cmd >/dev/null 2>&1; then
+        firewall-cmd --permanent --add-port="$${SQL_PORT}/tcp" || true
+        firewall-cmd --reload || true
+      elif command -v ufw >/dev/null 2>&1; then
+        ufw allow "$${SQL_PORT}/tcp" || true
+      fi
+%{ endif ~}
+
+      systemctl restart mssql-server
+      echo "Microsoft SQL Server installation completed."
+
+runcmd:
+  - [bash, -lc, "/usr/local/bin/install-mssql.sh > /var/log/install-mssql.log 2>&1"]

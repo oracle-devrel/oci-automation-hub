@@ -1,0 +1,537 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+title: "Spark + Hadoop on OCI (Data Flow + Big Data Service)"
+description: |
+  Deploys a configurable Spark + Hadoop platform on OCI:
+    * Optional VCN with private + public subnets
+    * Optional OCI Big Data Service (managed Hadoop) cluster
+    * Optional OCI Data Flow (managed Spark) applications + warm pool
+    * Object Storage buckets and IAM wiring required for Data Flow
+schemaVersion: 1.1.0
+version: "1.0.0"
+locale: "en"
+
+variableGroups:
+  - title: "Placement"
+    variables:
+      - tenancy_ocid
+      - region
+      - compartment_ocid
+      - resource_prefix
+
+  - title: "Hidden CLI-only auth"
+    visible: false
+    variables:
+      - user_ocid
+      - fingerprint
+      - private_key_path
+
+  - title: "Networking"
+    variables:
+      - create_vcn
+      - vcn_cidr_block
+      - vcn_dns_label
+      - private_subnet_cidr
+      - public_subnet_cidr
+      - existing_vcn_id
+      - existing_private_subnet_id
+      - existing_public_subnet_id
+
+  - title: "Big Data Service (Hadoop)"
+    variables:
+      - deploy_bds
+      - bds_display_name
+      - bds_cluster_version
+      - bds_cluster_profile
+      - bds_is_high_availability
+      - bds_is_secure
+      - bds_cluster_admin_password
+      - ssh_public_key
+      - bds_bootstrap_script_url
+      - bds_oracle_network_cidr
+      - bds_network_compartment_ocid
+
+  - title: "BDS — Master nodes"
+    variables:
+      - bds_master_shape
+      - bds_master_ocpus
+      - bds_master_memory_gbs
+      - bds_master_block_volume_gbs
+
+  - title: "BDS — Utility nodes"
+    variables:
+      - bds_utility_shape
+      - bds_utility_ocpus
+      - bds_utility_memory_gbs
+      - bds_utility_block_volume_gbs
+
+  - title: "BDS — Worker nodes"
+    variables:
+      - bds_worker_shape
+      - bds_worker_ocpus
+      - bds_worker_memory_gbs
+      - bds_worker_count
+      - bds_worker_block_volume_gbs
+
+  - title: "BDS — Compute-only worker nodes (optional, for elastic Spark)"
+    variables:
+      - bds_compute_only_worker_count
+      - bds_compute_only_worker_shape
+      - bds_compute_only_worker_ocpus
+      - bds_compute_only_worker_memory_gbs
+
+  - title: "IAM / Policies"
+    variables:
+      - create_iam_resources
+
+  - title: "Data Flow (Spark)"
+    variables:
+      - deploy_dataflow
+      - dataflow_create_logs_bucket
+      - dataflow_create_warehouse_bucket
+      - dataflow_create_scripts_bucket
+      - dataflow_upload_sample_scripts
+
+  - title: "Data Flow — Warm pool"
+    variables:
+      - dataflow_create_pool
+      - dataflow_pool_shape
+      - dataflow_pool_ocpus
+      - dataflow_pool_memory_gbs
+      - dataflow_pool_min_executors
+      - dataflow_pool_max_executors
+
+  - title: "Operator VM + Bastion"
+    variables:
+      - deploy_operator
+      - create_bastion
+      - operator_shape
+      - operator_ocpus
+      - operator_memory_gbs
+      - operator_boot_volume_gbs
+      - bastion_client_cidr_allow_list
+      - bastion_max_session_ttl_seconds
+
+  - title: "Tagging"
+    variables:
+      - freeform_tags
+
+variables:
+  ###########################################################################
+  # Placement
+  ###########################################################################
+  tenancy_ocid:
+    type: oci:identity:tenancy:id
+    title: Tenancy
+    required: true
+    visible: false
+
+  region:
+    type: oci:identity:region:name
+    title: Region
+    required: true
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: Compartment
+    required: true
+
+  resource_prefix:
+    type: string
+    title: Resource name prefix
+    description: Prepended to all resources. Lower-case letters, digits, hyphens.
+    default: bigdata
+    required: true
+    pattern: "^[a-z][a-z0-9-]{1,18}$"
+
+  user_ocid: { type: string, visible: false }
+  fingerprint: { type: string, visible: false }
+  private_key_path: { type: string, visible: false }
+
+  ###########################################################################
+  # Networking
+  ###########################################################################
+  create_vcn:
+    type: boolean
+    title: Create a new VCN
+    description: If unchecked, you must supply existing VCN + subnet OCIDs.
+    default: true
+    required: true
+
+  vcn_cidr_block:
+    type: string
+    title: VCN CIDR block
+    default: "10.0.0.0/16"
+    visible: create_vcn
+
+  vcn_dns_label:
+    type: string
+    title: VCN DNS label
+    default: bdvcn
+    visible: create_vcn
+
+  private_subnet_cidr:
+    type: string
+    title: Private subnet CIDR
+    default: "10.0.1.0/24"
+    visible: create_vcn
+
+  public_subnet_cidr:
+    type: string
+    title: Public subnet CIDR
+    default: "10.0.0.0/24"
+    visible: create_vcn
+
+  existing_vcn_id:
+    type: oci:core:vcn:id
+    title: Existing VCN
+    description: OCID of the VCN to reuse.
+    required: true
+    visible:
+      not:
+        - create_vcn
+    dependsOn:
+      compartmentId: compartment_ocid
+
+  existing_private_subnet_id:
+    type: oci:core:subnet:id
+    title: Existing private subnet
+    required: true
+    visible:
+      not:
+        - create_vcn
+    dependsOn:
+      compartmentId: compartment_ocid
+      vcnId: existing_vcn_id
+      hidePublicSubnet: true
+
+  existing_public_subnet_id:
+    type: oci:core:subnet:id
+    title: Existing public subnet (optional)
+    required: false
+    visible:
+      not:
+        - create_vcn
+    dependsOn:
+      compartmentId: compartment_ocid
+      vcnId: existing_vcn_id
+      hidePrivateSubnet: true
+
+  ###########################################################################
+  # BDS
+  ###########################################################################
+  deploy_bds:
+    type: boolean
+    title: Deploy Big Data Service (Hadoop)
+    default: true
+    required: true
+
+  bds_oracle_network_cidr:
+    type: string
+    title: BDS Oracle-managed network CIDR
+    description: |
+      CIDR for the Oracle-managed network BDS creates for the cluster. Must NOT
+      overlap your VCN/subnet. Default 172.16.0.0/16 is safe for the default
+      VCN (10.0.0.0/16); change only if your network already uses 172.16.0.0/16.
+    default: "172.16.0.0/16"
+    required: false
+    visible: deploy_bds
+
+  bds_display_name:
+    type: string
+    title: Cluster display name
+    description: Leave empty to use <prefix>-hadoop.
+    visible: deploy_bds
+
+  bds_cluster_version:
+    type: enum
+    title: Cluster version
+    enum:
+      - ODH2_0
+      - ODH1
+      - ODH0_9
+      - CDH6
+      - CDH5
+    default: ODH2_0
+    visible: deploy_bds
+
+  bds_cluster_profile:
+    type: enum
+    title: Cluster profile
+    description: |
+      HADOOP / HADOOP_EXTENDED ship full Hadoop. SPARK is Spark-only.
+      HIVE, HBASE, TRINO, KAFKA, DATAFLOW, DATA_SCIENCE, AIRFLOW are specialised.
+    enum:
+      - HADOOP
+      - HADOOP_EXTENDED
+      - SPARK
+      - HIVE
+      - HBASE
+      - TRINO
+      - KAFKA
+      - DATAFLOW
+      - DATA_SCIENCE
+      - AIRFLOW
+    default: HADOOP_EXTENDED
+    visible: deploy_bds
+
+  bds_is_high_availability:
+    type: boolean
+    title: High availability (2 master + 2 utility nodes)
+    default: false
+    visible: deploy_bds
+
+  bds_is_secure:
+    type: boolean
+    title: Secure cluster (Kerberos + Ranger)
+    default: false
+    visible: deploy_bds
+
+  bds_cluster_admin_password:
+    type: password
+    title: Cluster admin password
+    description: Min 8 chars. Used for Ambari / Cloudera Manager.
+    required: true
+    visible: deploy_bds
+    confirmation: true
+
+  ssh_public_key:
+    type: string
+    title: SSH public key
+    description: Used to log in to BDS nodes.
+    required: true
+    visible: deploy_bds
+
+  bds_bootstrap_script_url:
+    type: string
+    title: Bootstrap script URL (Object Storage)
+    description: |
+      Optional. Object Storage URL of a shell script that BDS runs on every
+      node at cluster creation — the hook for customising core-site.xml,
+      hdfs-site.xml, yarn-site.xml, spark-defaults.conf, etc.
+    visible: deploy_bds
+
+  # Master
+  bds_master_shape:
+    type: oci:core:instanceshape:name
+    title: Master shape
+    default: VM.Standard.E4.Flex
+    visible: deploy_bds
+    dependsOn:
+      compartmentId: compartment_ocid
+
+  bds_master_ocpus: { type: number, title: Master OCPUs, default: 4, minimum: 1, maximum: 64, visible: deploy_bds }
+  bds_master_memory_gbs: { type: number, title: Master memory (GB), default: 64, minimum: 8, maximum: 1024, visible: deploy_bds }
+  bds_master_block_volume_gbs: { type: number, title: Master block volume (GB), default: 500, minimum: 150, maximum: 32768, visible: deploy_bds }
+
+  # Utility
+  bds_utility_shape:
+    type: oci:core:instanceshape:name
+    title: Utility shape
+    default: VM.Standard.E4.Flex
+    visible: deploy_bds
+    dependsOn:
+      compartmentId: compartment_ocid
+
+  bds_utility_ocpus: { type: number, title: Utility OCPUs, default: 4, minimum: 1, maximum: 64, visible: deploy_bds }
+  bds_utility_memory_gbs: { type: number, title: Utility memory (GB), default: 64, minimum: 8, maximum: 1024, visible: deploy_bds }
+  bds_utility_block_volume_gbs: { type: number, title: Utility block volume (GB), default: 500, minimum: 150, maximum: 32768, visible: deploy_bds }
+
+  # Worker
+  bds_worker_shape:
+    type: oci:core:instanceshape:name
+    title: Worker shape
+    default: VM.Standard.E4.Flex
+    visible: deploy_bds
+    dependsOn:
+      compartmentId: compartment_ocid
+
+  bds_worker_ocpus: { type: number, title: Worker OCPUs, default: 8, minimum: 1, maximum: 128, visible: deploy_bds }
+  bds_worker_memory_gbs: { type: number, title: Worker memory (GB), default: 128, minimum: 16, maximum: 2048, visible: deploy_bds }
+  bds_worker_count: { type: number, title: Worker count, default: 3, minimum: 3, maximum: 100, visible: deploy_bds }
+  bds_worker_block_volume_gbs: { type: number, title: Worker block volume (GB), default: 1000, minimum: 150, maximum: 32768, visible: deploy_bds }
+
+  # Compute-only workers
+  bds_compute_only_worker_count: { type: number, title: Compute-only worker count, default: 0, minimum: 0, maximum: 100, visible: deploy_bds }
+  bds_compute_only_worker_shape:
+    type: oci:core:instanceshape:name
+    title: Compute-only worker shape
+    default: VM.Standard.E4.Flex
+    visible:
+      and:
+        - deploy_bds
+        - gt:
+            - bds_compute_only_worker_count
+            - 0
+    dependsOn:
+      compartmentId: compartment_ocid
+
+  bds_compute_only_worker_ocpus: { type: number, title: Compute-only worker OCPUs, default: 8, minimum: 1, maximum: 128, visible: deploy_bds }
+  bds_compute_only_worker_memory_gbs: { type: number, title: Compute-only worker memory (GB), default: 128, minimum: 16, maximum: 2048, visible: deploy_bds }
+
+  ###########################################################################
+  # Data Flow
+  ###########################################################################
+  deploy_dataflow:
+    type: boolean
+    title: Deploy Data Flow (Spark) applications
+    default: true
+    required: true
+
+  create_iam_resources:
+    type: boolean
+    title: Create tenancy-level IAM policies
+    description: |
+      Creates the dynamic group + policy for Data Flow and the bdsprod service
+      policy that lets BDS attach clusters to the subnet/VCN. Requires IAM admin
+      rights on the tenancy. Untick if you cannot create tenancy-level IAM
+      resources — you'll need to pre-create them out of band (see README).
+    default: true
+    visible:
+      or:
+        - deploy_dataflow
+        - deploy_bds
+
+  bds_network_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: BDS network compartment (optional)
+    description: |
+      Compartment that holds the VCN/subnet the cluster attaches to. Leave empty
+      to use the deployment compartment. Set only when reusing an existing
+      VCN/subnet that lives in a different compartment.
+    required: false
+    visible:
+      and:
+        - deploy_bds
+        - create_iam_resources
+        - not:
+            - create_vcn
+
+  dataflow_create_logs_bucket: { type: boolean, title: Create logs bucket, default: true, visible: deploy_dataflow }
+  dataflow_create_warehouse_bucket: { type: boolean, title: Create warehouse bucket, default: true, visible: deploy_dataflow }
+  dataflow_create_scripts_bucket: { type: boolean, title: Create scripts bucket, default: true, visible: deploy_dataflow }
+  dataflow_upload_sample_scripts: { type: boolean, title: Upload bundled sample Spark scripts, default: true, visible: deploy_dataflow }
+
+  dataflow_create_pool:
+    type: boolean
+    title: Create a Data Flow warm pool
+    description: Pre-warmed executors → near-zero application start-up latency.
+    default: false
+    visible: deploy_dataflow
+
+  dataflow_pool_shape:
+    type: oci:core:instanceshape:name
+    title: Pool shape
+    default: VM.Standard.E4.Flex
+    visible:
+      and:
+        - deploy_dataflow
+        - dataflow_create_pool
+    dependsOn:
+      compartmentId: compartment_ocid
+
+  dataflow_pool_ocpus: { type: number, title: Pool OCPUs, default: 4, minimum: 1, maximum: 64, visible: dataflow_create_pool }
+  dataflow_pool_memory_gbs: { type: number, title: Pool memory (GB), default: 32, minimum: 8, maximum: 1024, visible: dataflow_create_pool }
+  dataflow_pool_min_executors: { type: number, title: Pool min executors, default: 1, minimum: 1, maximum: 100, visible: dataflow_create_pool }
+  dataflow_pool_max_executors: { type: number, title: Pool max executors, default: 4, minimum: 1, maximum: 100, visible: dataflow_create_pool }
+
+  ###########################################################################
+  # Operator VM + Bastion
+  ###########################################################################
+  deploy_operator:
+    type: boolean
+    title: Deploy operator VM behind OCI Bastion
+    description: |
+      A private jump host with the use-case scripts staged on it and
+      instance-principal auth, reachable only through the OCI Bastion service.
+      Open a session, SSH in, and run the use cases from there.
+    default: false
+    required: true
+
+  create_bastion:
+    type: boolean
+    title: Create an OCI Bastion
+    description: Untick to reuse an existing bastion that targets the private subnet.
+    default: true
+    visible: deploy_operator
+
+  operator_shape:
+    type: oci:core:instanceshape:name
+    title: Operator shape
+    default: VM.Standard.E4.Flex
+    visible: deploy_operator
+    dependsOn:
+      compartmentId: compartment_ocid
+
+  operator_ocpus: { type: number, title: Operator OCPUs, default: 2, minimum: 1, maximum: 64, visible: deploy_operator }
+  operator_memory_gbs: { type: number, title: Operator memory (GB), default: 16, minimum: 8, maximum: 1024, visible: deploy_operator }
+  operator_boot_volume_gbs: { type: number, title: Operator boot volume (GB), default: 50, minimum: 50, maximum: 32768, visible: deploy_operator }
+
+  bastion_client_cidr_allow_list:
+    type: string
+    title: Bastion client allow-list (/32 only)
+    description: |
+      Comma-separated single-host /32 CIDRs allowed to open bastion sessions
+      (e.g. "203.0.113.4/32" or "203.0.113.4/32,198.51.100.7/32"). No default —
+      open ranges like 0.0.0.0/0 or /24 are rejected; list your specific client
+      IP(s). Find yours with: curl ifconfig.me
+    required: true
+    pattern: "^(([0-9]{1,3}\\.){3}[0-9]{1,3}/32)(,\\s*([0-9]{1,3}\\.){3}[0-9]{1,3}/32)*$"
+    visible:
+      and:
+        - deploy_operator
+        - create_bastion
+
+  bastion_max_session_ttl_seconds:
+    type: number
+    title: Bastion max session TTL (seconds)
+    default: 10800
+    minimum: 1800
+    maximum: 10800
+    visible:
+      and:
+        - deploy_operator
+        - create_bastion
+
+  ###########################################################################
+  # Tagging
+  ###########################################################################
+  freeform_tags:
+    type: oci:identity:tag:value
+    title: Free-form tags
+    required: false
+
+outputs:
+  bds_cluster_id:
+    title: BDS cluster OCID
+    type: link
+  bds_master_node_ips:
+    title: BDS master node private IPs
+  bds_utility_node_ips:
+    title: BDS utility node private IPs (Ambari / Cloudera Manager / Hue)
+  dataflow_application_ids:
+    title: Data Flow application OCIDs
+  dataflow_pool_id:
+    title: Data Flow pool OCID
+    type: link
+  scripts_bucket_uri:
+    title: Scripts bucket URI
+  logs_bucket_name:
+    title: Logs bucket name
+  warehouse_bucket_name:
+    title: Warehouse bucket name
+  operator_instance_id:
+    title: Operator VM OCID
+    type: link
+  operator_private_ip:
+    title: Operator VM private IP
+  bastion_id:
+    title: Bastion OCID
+    type: link
+  bastion_name:
+    title: Bastion name
+  operator_bastion_session_hint:
+    title: Open a bastion session (copy-paste command)
+
+primaryOutputButton: bds_cluster_id
