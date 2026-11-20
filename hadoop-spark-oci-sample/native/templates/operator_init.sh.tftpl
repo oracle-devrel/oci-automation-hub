@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-
+###############################################################################
 # Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
-###############################################################################
 # Operator VM cloud-init. Installs tooling, writes a deployment descriptor the
 # use-case scripts use to self-check, and stages the use-case assets from the
 # Object Storage scripts bucket via instance-principal auth.
@@ -16,6 +15,17 @@ echo "operator-init starting at $(date -u)"
 
 USE_CASES_DIR=/home/opc/use-cases
 mkdir -p "$USE_CASES_DIR"
+
+# Dedicated key for operator -> BDS SSH. It is unrelated to the user's Bastion
+# login key and never needs agent forwarding from a workstation.
+%{ if bds_ssh_private_key != "" ~}
+install -d -m 700 -o opc -g opc /home/opc/.ssh
+cat > /home/opc/.ssh/bds_operator <<'BDS_SSH_PRIVATE_KEY'
+${bds_ssh_private_key}
+BDS_SSH_PRIVATE_KEY
+chown opc:opc /home/opc/.ssh/bds_operator
+chmod 600 /home/opc/.ssh/bds_operator
+%{ endif ~}
 
 # ---------------------------------------------------------------------------
 # 1. Tooling: jq + OCI CLI, installed SYSTEM-WIDE so both this script and the

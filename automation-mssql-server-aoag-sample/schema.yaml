@@ -1,0 +1,189 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+title: SQL Server Always On Availability Groups on OCI
+description: Terraform deployment of a Windows domain controller, two SQL Server nodes, WSFC, file-share witness, and a native multi-subnet AOAG listener.
+informationalText: This POC deploys public subnets and public RDP. Restrict access and use a production password and secret-management policy before production use.
+schemaVersion: 1.1.0
+version: "1.0.0"
+locale: en
+
+variableGroups:
+  - title: Target OCI environment
+    variables:
+      - region
+      - compartment_id
+      - windows_image_ocid
+      - execution_environment
+  - title: Network and remote access
+    variables:
+      - vcn_name
+      - vcn_cidr
+      - dc_subnet_cidr
+      - sql1_subnet_cidr
+      - sql2_subnet_cidr
+      - dc_rdp_source_cidr
+      - sql_rdp_source_cidr
+  - title: Domain and service accounts
+    variables:
+      - domain_name
+      - domain_netbios_name
+      - domain_admin_user
+      - domain_admin_password
+      - sql_service_account_user
+      - sql_service_account_password
+      - local_admin_user
+      - windows_admin_password
+  - title: Compute and storage
+    variables:
+      - shape
+      - ocpus
+      - memory_in_gbs
+      - sql_ocpus
+      - sql_memory_in_gbs
+      - boot_volume_size_in_gbs
+      - sql_data_volume_size_in_gbs
+  - title: SQL Server Always On configuration
+    variables:
+      - wsfc_cluster_name
+      - aoag_database_name
+      - aoag_availability_group_name
+      - aoag_listener_name
+      - aoag_listener_port
+  - title: Automation controls
+    variables:
+      - auto_configure_domain_controller
+      - auto_configure_windows_nodes
+      - auto_install_sql_server
+      - install_ssms
+      - auto_configure_wsfc
+      - skip_cluster_validation
+
+variables:
+  region:
+    type: oci:identity:region:name
+    title: Region
+    required: true
+  compartment_id:
+    type: oci:identity:compartment:id
+    title: Deployment compartment
+    required: true
+  windows_image_ocid:
+    type: oci:core:image:id
+    title: Windows Server image
+    required: true
+    dependsOn:
+      compartmentId: ${compartment_id}
+  execution_environment:
+    type: enum
+    title: Execution environment
+    description: Select resource_manager for an OCI Resource Manager stack. Select local only for a workstation deployment using ~/.oci/config.
+    enum:
+      - resource_manager
+      - local
+    default: resource_manager
+    required: true
+  vcn_name:
+    type: string
+    title: VCN name
+  vcn_cidr:
+    type: string
+    title: VCN CIDR
+  dc_subnet_cidr:
+    type: string
+    title: Domain controller subnet CIDR
+  sql1_subnet_cidr:
+    type: string
+    title: SQL1 subnet CIDR
+  sql2_subnet_cidr:
+    type: string
+    title: SQL2 subnet CIDR
+  dc_rdp_source_cidr:
+    type: string
+    title: DC RDP source CIDR
+  sql_rdp_source_cidr:
+    type: string
+    title: SQL RDP source CIDR
+  domain_name:
+    type: string
+    title: Active Directory DNS domain
+  domain_netbios_name:
+    type: string
+    title: Active Directory NetBIOS name
+  domain_admin_user:
+    type: string
+    title: Domain administrator username
+  domain_admin_password:
+    type: password
+    title: Domain administrator password
+    required: true
+    confirmation: false
+  sql_service_account_user:
+    type: string
+    title: SQL Server service account username
+  sql_service_account_password:
+    type: password
+    title: SQL Server service account password
+    description: Optional. Leave blank to reuse the domain administrator password for this POC.
+    confirmation: false
+  local_admin_user:
+    type: string
+    title: Local Windows administrator username
+  windows_admin_password:
+    type: password
+    title: Local Windows administrator password
+    description: Optional. Leave blank to reuse the domain administrator password for this POC.
+    confirmation: false
+  shape:
+    type: string
+    title: Compute shape
+  ocpus:
+    type: number
+    title: DC OCPUs
+  memory_in_gbs:
+    type: number
+    title: DC memory in GB
+  sql_ocpus:
+    type: number
+    title: SQL node OCPUs
+  sql_memory_in_gbs:
+    type: number
+    title: SQL node memory in GB
+  boot_volume_size_in_gbs:
+    type: number
+    title: Boot volume size in GB
+  sql_data_volume_size_in_gbs:
+    type: number
+    title: SQL data volume size in GB
+  wsfc_cluster_name:
+    type: string
+    title: WSFC cluster name
+  aoag_database_name:
+    type: string
+    title: Sample database name
+  aoag_availability_group_name:
+    type: string
+    title: Availability group name
+  aoag_listener_name:
+    type: string
+    title: Native listener DNS name
+  aoag_listener_port:
+    type: number
+    title: Listener TCP port
+  auto_configure_domain_controller:
+    type: boolean
+    title: Automatically configure the domain controller
+  auto_configure_windows_nodes:
+    type: boolean
+    title: Automatically configure the SQL nodes
+  auto_install_sql_server:
+    type: boolean
+    title: Automatically install SQL Server
+  install_ssms:
+    type: boolean
+    title: Automatically install SSMS
+  auto_configure_wsfc:
+    type: boolean
+    title: Automatically configure WSFC and AOAG
+  skip_cluster_validation:
+    type: boolean
+    title: Skip full WSFC validation

@@ -78,7 +78,7 @@ wired to whichever backends are present.
 | **No static cloud credentials** | OKE **Workload Identity** (enhanced cluster) gives Spark pods short-lived, scoped OCI tokens for Object Storage — no keys. |
 | **Kerberos** | When HDFS is deployed, an in-cluster KDC secures HDFS RPC (privacy), data transfer and web UIs; block-access tokens enabled. |
 | **No exposed big-data services** | Every Service is `ClusterIP`/headless — **never** LoadBalancer/NodePort. Spark runs on Kubernetes, **not** YARN and **not** a Spark standalone master, so the classic unauth-RCE vectors (YARN ResourceManager REST; Spark master REST :6066) don't exist. |
-| **Egress lockdown** | A default-deny-egress NetworkPolicy + allowlist (DNS, in-cluster/VCN, OCI Service Network :443) blocks the internet egress a compromised pod would use for C2 / exfiltration / crypto-mining. |
+| **Egress lockdown** | A default-deny-egress NetworkPolicy + allowlist (DNS, in-cluster/VCN, OKE identity metadata, region-specific OCI Service Network :443) blocks the internet egress a compromised pod would use for C2 / exfiltration / crypto-mining. |
 | **Pod Security / RBAC** | Namespace Pod Security Admission (`baseline` enforced); Spark uses a tightly-scoped Role, not cluster-admin. |
 | **Encryption** | etcd encrypted at rest by OKE; Object Storage encrypted at rest; in-cluster TLS / Kerberos privacy. |
 | **Hardened images** | `image_source = ocir` lets you run your own scanned/signed images instead of upstream public ones. |
@@ -140,8 +140,11 @@ HDFS+Spark, Object-Storage+Spark) generate data and print evidence. See
 [use-cases/](use-cases/). They are written to the operator at
 `/home/opc/use-cases` on first boot:
 ```bash
-cd ~/use-cases && NS=<cluster_name> ./01-spark-only/run.sh
+cd ~/use-cases && ./01-spark-only/run.sh
 ```
+
+The operator bootstrap writes the deployed namespace, region, and compartment
+to `deployment.env`; set `NS=...` only when intentionally overriding it.
 
 ---
 

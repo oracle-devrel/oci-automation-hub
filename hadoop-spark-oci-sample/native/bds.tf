@@ -1,5 +1,6 @@
 # Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
 ###############################################################################
 # OCI Big Data Service (managed Hadoop) cluster
 ###############################################################################
@@ -12,7 +13,10 @@ resource "oci_bds_bds_instance" "this" {
   cluster_version        = var.bds_cluster_version
   cluster_profile        = var.bds_cluster_profile
   cluster_admin_password = base64encode(var.bds_cluster_admin_password)
-  cluster_public_key     = var.ssh_public_key
+  # The operator runs the BDS use cases, so give it a purpose-specific key
+  # instead of requiring the user's workstation key through agent forwarding.
+  # BDS-only deployments retain the user-supplied key for direct administration.
+  cluster_public_key = var.deploy_operator ? tls_private_key.operator_bds[0].public_key_openssh : var.ssh_public_key
 
   is_high_availability = var.bds_is_high_availability
   is_secure            = var.bds_is_secure
@@ -109,6 +113,9 @@ resource "oci_bds_bds_instance" "this" {
     ignore_changes = [
       # BDS may inject extra services post-create depending on cluster profile.
       cluster_version,
+      # BDS exposes the cluster SSH key only at creation. Preserve existing
+      # clusters when adopting the operator key; fresh clusters receive it.
+      cluster_public_key,
     ]
 
     precondition {

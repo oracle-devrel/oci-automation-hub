@@ -178,8 +178,12 @@ locals {
           { ipBlock = { cidr = "10.96.0.0/16" } },
           { ipBlock = { cidr = var.vcn_cidr } },
         ] },
-        # OCI Service Network (Object Storage + Workload Identity) over HTTPS
-        { to = [{ ipBlock = { cidr = local.service_cidr } }], ports = [{ port = 443, protocol = "TCP" }] },
+        # OKE Workload Identity's node-local proxymux/metadata endpoint
+        { to = [{ ipBlock = { cidr = "169.254.169.254/32" } }], ports = [{ port = 80, protocol = "TCP" }] },
+        # OCI Service Network (Object Storage + Workload Identity) over HTTPS.
+        # The service gateway uses an OCI CIDR label, while Kubernetes ipBlock
+        # requires the corresponding numeric, region-specific OSN CIDRs.
+        { to = [for cidr in local.regional_osn_cidrs : { ipBlock = { cidr = cidr } }], ports = [{ port = 443, protocol = "TCP" }] },
       ]
     }
   }
@@ -483,8 +487,8 @@ locals {
 
   # ---- Spark Operator via helm (run on the operator) ----------------------
   spark_helm = var.deploy_spark ? join(" ", [
-    "helm repo add spark-operator https://kubeflow.github.io/spark-operator;",
-    "helm repo update;",
+    "helm repo add spark-operator https://kubeflow.github.io/spark-operator --force-update &&",
+    "helm repo update &&",
     "helm upgrade --install spark-operator spark-operator/spark-operator",
     "--version ${var.spark_operator_chart_version}",
     "--namespace ${local.namespace}",
@@ -496,23 +500,23 @@ locals {
   ]) : "echo 'Spark not enabled; skipping spark-operator'"
 
   # ---- Use-case demos written to /home/opc/use-cases ----------------------
-  # Each repo file -> a base64'd write command, run by the bootstrap script (as
-  # root, in the late scripts-user stage AFTER the opc user exists), so the demos
-  # land in opc's home with no SSH key and no inbound reachability needed.
+  # Bundle and compress the files before embedding them in cloud-init. Encoding
+  # each file in a separate shell command pushed the operator's OCI metadata over
+  # the 32 KB LaunchInstance limit.
   use_case_manifest = {
-    "/home/opc/use-cases/README.md"                = "use-cases/README.md"
-    "/home/opc/use-cases/lib/common.sh"            = "use-cases/lib/common.sh"
-    "/home/opc/use-cases/01-spark-only/run.sh"     = "use-cases/01-spark-only/run.sh"
-    "/home/opc/use-cases/01-spark-only/job.py"     = "use-cases/01-spark-only/job.py"
-    "/home/opc/use-cases/02-hdfs-spark/run.sh"     = "use-cases/02-hdfs-spark/run.sh"
-    "/home/opc/use-cases/02-hdfs-spark/job.py"     = "use-cases/02-hdfs-spark/job.py"
-    "/home/opc/use-cases/03-objstore-spark/run.sh" = "use-cases/03-objstore-spark/run.sh"
-    "/home/opc/use-cases/03-objstore-spark/job.py" = "use-cases/03-objstore-spark/job.py"
+    "README.md"                = "use-cases/README.md"
+    "lib/common.sh"            = "use-cases/lib/common.sh"
+    "01-spark-only/run.sh"     = "use-cases/01-spark-only/run.sh"
+    "01-spark-only/job.py"     = "use-cases/01-spark-only/job.py"
+    "02-hdfs-spark/run.sh"     = "use-cases/02-hdfs-spark/run.sh"
+    "02-hdfs-spark/job.py"     = "use-cases/02-hdfs-spark/job.py"
+    "03-objstore-spark/run.sh" = "use-cases/03-objstore-spark/run.sh"
+    "03-objstore-spark/job.py" = "use-cases/03-objstore-spark/job.py"
   }
-  use_case_writes = join("\n", [
+  use_case_bundle = base64gzip(jsonencode({
     for dest, src in local.use_case_manifest :
-    "mkdir -p '${dirname(dest)}'; echo '${base64encode(file("${path.module}/${src}"))}' | base64 -d > '${dest}'"
-  ])
+    dest => file("${path.module}/${src}")
+  }))
 
   # ---- Operator bootstrap cloud-init --------------------------------------
   operator_bootstrap = <<-EOT
@@ -523,9 +527,30 @@ locals {
     log() { echo "[platform-bootstrap] $*"; }
 
     log "installing use-case demos to /home/opc/use-cases"
-    ${local.use_case_writes}
+    echo '${local.use_case_bundle}' | base64 -d | gzip -d | python3 -c '
+    import json
+    import pathlib
+    import sys
+
+    root = pathlib.Path("/home/opc/use-cases")
+    for relative_path, content in json.load(sys.stdin).items():
+        path = root / relative_path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+    '
     chmod +x /home/opc/use-cases/lib/common.sh /home/opc/use-cases/*/run.sh
     chown -R opc:opc /home/opc/use-cases
+
+    # Give every use case the actual deployment context. This removes the
+    # hard-coded `bigdata` namespace assumption when cluster_name is customized.
+    cat > /home/opc/use-cases/deployment.env <<'DEPLOYMENT_EOF'
+    export NS="$${NS:-${local.namespace}}"
+    export CLUSTER_NAME="$${CLUSTER_NAME:-${var.cluster_name}}"
+    export COMPARTMENT_OCID="$${COMPARTMENT_OCID:-${var.compartment_ocid}}"
+    export REGION="$${REGION:-${var.region}}"
+    DEPLOYMENT_EOF
+    chown opc:opc /home/opc/use-cases/deployment.env
+    chmod 600 /home/opc/use-cases/deployment.env
 
     # Make instance-principal auth the default in every interactive shell, so the
     # kubeconfig exec plugin (oci ce cluster generate-token) never falls back to
@@ -539,13 +564,26 @@ locals {
     # dependency cycle on module.oke outputs.
     log "discovering cluster and generating kubeconfig"
     mkdir -p /home/opc/.kube
-    for i in $(seq 1 60); do
-      CID=$(oci ce cluster list --compartment-id '${var.compartment_ocid}' --name '${var.cluster_name}' --lifecycle-state ACTIVE --query 'data[0].id' --raw-output 2>/dev/null)
-      if [ -n "$CID" ] && oci ce cluster create-kubeconfig --cluster-id "$CID" --file "$KUBECONFIG" --region '${var.region}' --token-version 2.0.0 --kube-endpoint PRIVATE_ENDPOINT --overwrite 2>/dev/null; then
-        log "kubeconfig ready (cluster $CID)"; break
+    KUBECONFIG_READY=false
+    for i in $(seq 1 180); do
+      CID=$(oci ce cluster list --compartment-id '${var.compartment_ocid}' --name '${var.cluster_name}' --lifecycle-state ACTIVE --query 'data[0].id' --raw-output 2>/tmp/oke-cluster-list.err || true)
+      if [ -n "$CID" ] && [ "$CID" != "null" ]; then
+        if oci ce cluster create-kubeconfig --cluster-id "$CID" --file "$KUBECONFIG" --region '${var.region}' --token-version 2.0.0 --kube-endpoint PRIVATE_ENDPOINT --overwrite >/tmp/oke-kubeconfig.out 2>/tmp/oke-kubeconfig.err; then
+          KUBECONFIG_READY=true
+          log "kubeconfig ready (cluster $CID)"
+          break
+        fi
+        log "kubeconfig download failed ($i): $(tail -1 /tmp/oke-kubeconfig.err)"
+      else
+        log "cluster discovery failed ($i): $(tail -1 /tmp/oke-cluster-list.err)"
       fi
-      log "waiting for cluster/kubeconfig ($i)"; sleep 10
+      sleep 10
     done
+    if [ "$KUBECONFIG_READY" != true ] || [ ! -s "$KUBECONFIG" ]; then
+      log "ERROR: kubeconfig generation failed after 30 minutes"
+      cat /tmp/oke-cluster-list.err /tmp/oke-kubeconfig.err 2>/dev/null || true
+      exit 1
+    fi
     # Bake the auth mode into the token exec so kubectl works regardless of
     # whether OCI_CLI_AUTH is set in the caller's shell (the generated exec block
     # otherwise relies on that env var).
@@ -553,21 +591,29 @@ locals {
     chown -R opc:opc /home/opc/.kube
 
     log "waiting for at least one Ready node"
+    NODE_READY=false
     for i in $(seq 1 120); do
-      if kubectl get nodes --no-headers 2>/dev/null | grep -q ' Ready '; then
-        log "node Ready"; break
+      if kubectl get nodes --no-headers 2>/tmp/kubectl-nodes.err | grep -q ' Ready '; then
+        NODE_READY=true
+        log "node Ready"
+        break
       fi
       sleep 10
     done
+    if [ "$NODE_READY" != true ]; then
+      log "ERROR: Kubernetes API or workers did not become ready after 20 minutes"
+      cat /tmp/kubectl-nodes.err 2>/dev/null || true
+      exit 1
+    fi
 
     log "applying platform manifests"
     cat > /tmp/platform.yaml <<'PLATFORM_EOF'
     ${local.platform_yaml}
     PLATFORM_EOF
-    kubectl apply -f /tmp/platform.yaml
+    kubectl apply -f /tmp/platform.yaml || exit 1
 
     log "installing Spark Operator (if enabled)"
-    ${local.spark_helm}
+    ${local.spark_helm} || exit 1
 
     log "done"
   EOT

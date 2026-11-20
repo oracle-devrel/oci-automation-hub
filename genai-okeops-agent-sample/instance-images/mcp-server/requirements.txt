@@ -1,0 +1,7 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+oci>=2.160.0
+mcp>=1.10.0
+starlette>=0.47.0
+uvicorn[standard]>=0.34.0
+python-dotenv>=1.0.1

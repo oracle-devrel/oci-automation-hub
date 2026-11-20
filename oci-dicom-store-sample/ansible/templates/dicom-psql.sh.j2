@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+set -euo pipefail
+
+config_file="/etc/oci-dicom/stack.json"
+export PGHOST="$(jq -r '.postgres_host' "${config_file}")"
+export PGPORT="$(jq -r '.postgres_port' "${config_file}")"
+export PGDATABASE="$(jq -r '.postgres_database' "${config_file}")"
+export PGUSER="$(jq -r '.postgres_username' "${config_file}")"
+export PGPASSWORD="$(jq -r '.postgres_password' "${config_file}")"
+export PGSSLMODE="require"
+
+exec psql "$@"

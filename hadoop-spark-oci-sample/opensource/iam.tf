@@ -33,3 +33,24 @@ resource "oci_identity_policy" "workload" {
     "Allow any-user to manage objects in compartment id ${var.compartment_ocid} where all {request.principal.type = 'workload', request.principal.cluster_id = '${module.oke.cluster_id}', request.principal.namespace = '${local.namespace}', target.bucket.name = '${local.bucket_name}'}",
   ]
 }
+
+###############################################################################
+# Operator access to the Kubernetes API
+#
+# The OKE module's operator policy grants `manage clusters`, which is enough to
+# list the cluster but not to download kubeconfig content. The latter requires
+# the broader `cluster-family` resource type. Without this policy the operator
+# silently falls back to kubectl's localhost:8080 default during cloud-init.
+###############################################################################
+
+resource "oci_identity_policy" "operator_cluster_family" {
+  provider = oci.home
+
+  compartment_id = var.compartment_ocid
+  name           = "${var.cluster_name}-operator-cluster-family-policy"
+  description    = "Allow the OKE operator instance principal to download and use the cluster kubeconfig"
+
+  statements = [
+    "Allow dynamic-group oke-operator-${module.oke.state_id} to manage cluster-family in compartment id ${var.compartment_ocid}",
+  ]
+}

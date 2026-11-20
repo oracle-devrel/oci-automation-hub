@@ -56,7 +56,8 @@ resource "null_resource" "empty_bucket_on_destroy" {
       oci os object list-object-versions -bn "$B" -ns "$N" --region "$R" --all --output json 2>/dev/null \
       | python3 -c 'import sys, json, subprocess, os
 B, N, R = os.environ["B"], os.environ["N"], os.environ["R"]
-items = (json.load(sys.stdin).get("data", {}) or {}).get("items", []) or []
+data = json.load(sys.stdin).get("data", []) or []
+items = data.get("items", []) if isinstance(data, dict) else data
 for it in items:
     subprocess.run(["oci", "os", "object", "delete", "-bn", B, "-ns", N, "--region", R,
                     "--name", it["name"], "--version-id", it["version-id"], "--force"], check=False)

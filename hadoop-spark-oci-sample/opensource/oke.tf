@@ -110,17 +110,19 @@ module "oke" {
   create_bastion  = false
   create_operator = true
 
-  operator_nsg_ids                   = [oci_core_network_security_group.nodes.id]
-  operator_install_kubectl_from_repo = true
-  operator_install_helm              = true
-  operator_await_cloudinit           = false # module await needs its own bastion; we use the OCI Bastion service
-  operator_cloud_init                = local.operator_cloud_init
+  operator_nsg_ids                        = [oci_core_network_security_group.nodes.id]
+  operator_install_kubectl_from_repo      = true
+  operator_install_helm                   = true
+  operator_await_cloudinit                = false # module await needs its own bastion; we use the OCI Bastion service
+  operator_cloud_init                     = local.operator_cloud_init
+  operator_legacy_imds_endpoints_disabled = true
 
   # ---- IAM ---------------------------------------------------------------
   # Workload Identity (Spark -> Object Storage) is wired in iam.tf. The module
-  # creates ONLY the operator's dynamic group + "manage clusters" policy, which
-  # OKE maps to cluster-admin so the operator can install the platform. All
-  # other module IAM stays off. Writes go to the home region via oci.home.
+  # creates the operator's dynamic group + its base "manage clusters" policy.
+  # iam.tf supplements that group with the cluster-family permission required
+  # to download kubeconfig content. All other module IAM stays off. Writes go
+  # to the home region via oci.home.
   # Note: the *_policy toggles are strings ("never"/"auto"/"always"), not bools.
   create_iam_resources         = true
   create_iam_operator_policy   = "always"
@@ -131,6 +133,16 @@ module "oke" {
   create_iam_defined_tags      = false
 
   # ---- Worker node pool --------------------------------------------------
+  # OKE forwards this metadata entry to Compute when it launches managed
+  # nodes. The tenancy enforces IMDSv2-only instances, so leaving the OKE
+  # default (false) makes the node-pool work request fail at LaunchInstance.
+  worker_node_metadata = {
+    areLegacyImdsEndpointsDisabled = "true"
+  }
+
+  # Covers instance-pool/individual-instance modes if the pool mode changes.
+  worker_legacy_imds_endpoints_disabled = true
+
   worker_pools = {
     "${var.cluster_name}-pool" = {
       description        = "hadoop-spark worker pool"

@@ -33,6 +33,11 @@ locals {
   # ---- Networking ----------------------------------------------------------
   service_cidr = data.oci_core_services.all_services.services[0]["cidr_block"]
   service_id   = data.oci_core_services.all_services.services[0]["id"]
+  regional_osn_cidrs = flatten([
+    for region in jsondecode(data.http.oci_public_ip_ranges.response_body).regions : [
+      for entry in region.cidrs : entry.cidr if contains(entry.tags, "OSN")
+    ] if region.region == var.region
+  ])
 
   # ---- Object Storage ------------------------------------------------------
   bucket_name  = "${var.cluster_name}-data"

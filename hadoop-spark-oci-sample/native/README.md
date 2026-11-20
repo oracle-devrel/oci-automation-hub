@@ -55,7 +55,7 @@ use case isn't supported. Start with [`use-cases/README.md`](use-cases/README.md
 |----------|-----------|
 | [01 — Serverless ETL](use-cases/01-serverless-etl/) | Cheapest Spark on OCI: CSV → Parquet via Data Flow, no cluster |
 | [02 — Hadoop cluster analytics](use-cases/02-hadoop-cluster-analytics/) | `spark-submit` on YARN + HDFS on a managed BDS cluster |
-| [03 — Warm-pool low latency](use-cases/03-warm-pool-low-latency/) | Repeated/scheduled jobs that start in seconds via a warm pool |
+| [03 — Warm-pool low latency](use-cases/03-warm-pool-low-latency/) | Repeated/scheduled jobs with reduced provisioning latency via a warm pool |
 | [04 — Secure HA production](use-cases/04-secure-ha-production/) | Kerberos + Ranger, HA, elastic compute-only workers, bootstrap tuning |
 
 ---
@@ -76,13 +76,19 @@ What it gives you:
   the operator self-pulls; nothing is pushed from the apply host.
 - **Instance-principal auth** — a dynamic group + policy let the VM submit Data
   Flow runs and use Object Storage with no API keys on the host.
+- A purpose-specific SSH key for operator-to-BDS access, so the Hadoop use cases
+  run entirely from the operator without forwarding your workstation agent.
+
+The generated operator-to-BDS private key is sensitive Terraform state. OCI
+Resource Manager protects managed state at rest; if you run Terraform locally,
+secure the state backend accordingly.
 - A ready-made connect command in the `operator_bastion_session_hint` output.
 
 Connect:
 
 ```bash
 terraform output -raw operator_bastion_session_hint   # prints the session command
-# run it, wait for SUCCEEDED, then SSH via the bastion (use -A for BDS use cases)
+# run it, wait for SUCCEEDED, then SSH via the bastion
 ```
 
 If you can't create tenancy-level IAM (`create_iam_resources = false`),
@@ -193,8 +199,8 @@ OCI. Each entry exposes:
   `spark.dynamicAllocation.enabled`, …). This is the per-application Spark
   config knob.
 
-Optional **warm pool** (`dataflow_create_pool`) keeps a small set of
-executors warm so Data Flow runs start in seconds instead of ~1 minute.
+An optional **warm pool** (`dataflow_create_pool`) reserves Data Flow capacity
+to reduce and stabilize application startup latency.
 
 ### Object Storage
 

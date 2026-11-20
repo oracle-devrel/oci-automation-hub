@@ -14,52 +14,37 @@ interactive cluster, or workloads that don't fit the serverless Data Flow model.
 | Deploy Big Data Service (Hadoop) | **on** |
 | Cluster profile | HADOOP_EXTENDED (default) |
 | Deploy operator VM behind OCI Bastion | on |
-| SSH public key | your key (for the operator **and** BDS nodes) |
+| SSH public key | your key for reaching the operator through Bastion |
 
 > BDS provisioning takes **~30 minutes** and the worker nodes bill continuously.
 > Destroy the stack when you're done.
 
 ## Run it (from the operator VM)
 
-`spark-submit` has to run **on a BDS node**, and SSH from the operator to BDS
-uses **your** private key (we never put private keys on the operator). So you
-must reach the operator with **agent forwarding**. In short:
-
-```bash
-# on your LAPTOP, before connecting:
-ssh-add ~/.ssh/id_rsa        # load the key into your agent (not just -i !)
-ssh-add -l                   # confirm it's listed
-
-# connect to the operator WITH -A (see ../README.md §2 for the full command)
-ssh -A -o ProxyCommand="..." -i ~/.ssh/id_rsa opc@<OPERATOR_PRIVATE_IP>
-
-# on the OPERATOR, confirm the key came across:
-ssh-add -l                   # should list the same key
-```
-
-The full step-by-step (and why `-i` alone isn't enough) is in
-[../README.md](../README.md) §2a–2c. Then:
+`spark-submit` has to run **on a BDS node**, but `submit.sh` itself runs on the
+operator. Terraform installs a dedicated operator-to-BDS key at
+`~/.ssh/bds_operator`, so the use case does not depend on your laptop or SSH
+agent forwarding:
 
 ```bash
 cd use-cases/02-hadoop-cluster-analytics
-./submit.sh
+./run.sh
 ```
 
-`submit.sh` self-checks that BDS is deployed, resolves the cluster's utility/
-master node private IPs for you, and prints the exact `scp` / `ssh` /
-`spark-submit` commands to copy the job over and run it on the cluster. It runs:
+Stacks created before the dedicated key was introduced can set `BDS_SSH_KEY`
+to an authorized private key on the operator. Forwarded agents are accepted
+only as a backward-compatible fallback.
+
+`run.sh` self-checks BDS, resolves the cluster's utility/master IPs, copies the
+job and sample data, runs `spark-submit`, waits for YARN to finish, and reads the
+CSV report back from HDFS. It runs:
 
 ```bash
 spark-submit --master yarn --deploy-mode cluster \
   --num-executors 3 --executor-cores 4 --executor-memory 8g \
-  /home/opc/sales_report.py \
-  hdfs:///user/opc/sales/sales.csv hdfs:///user/opc/sales_report
-```
-
-Read the result back from HDFS:
-
-```bash
-ssh opc@<node-ip> 'hdfs dfs -cat /user/opc/sales_report/part-*.csv'
+  /tmp/sales_report.py \
+  hdfs:///user/<submit-user>/sales/sales.csv \
+  hdfs:///user/<submit-user>/sales_report
 ```
 
 ### Secure (Kerberos) clusters
@@ -74,11 +59,10 @@ org.apache.hadoop.security.AccessControlException:
   Client cannot authenticate via:[TOKEN, KERBEROS]
 ```
 
-`submit.sh` detects this (`BDS_SECURE=true` in `deployment.env`) and instead
-prints a **Kerberos-aware** version of the steps: get a ticket first (`kinit` —
-quickest as the `hdfs` superuser using its keytab, or create a principal for your
-own user with `kadmin` on the master node), then run the job. Follow what the
-script prints. To use the plain flow shown above, redeploy with Secure = off.
+`run.sh` detects this and uses the built-in `ambari-qa` smoke-test OS user and
+`smokeuser.headless.keytab`. This is important: BDS explicitly lists `hdfs`,
+`yarn`, and `mapred` as banned YARN submission users, so running the application
+as `hdfs` fails before the ApplicationMaster starts.
 
 Web UIs (Ambari, Hue, Spark History, YARN RM on port 8088) are served from the
 utility node — tunnel to them over SSH from the operator.
@@ -105,7 +89,7 @@ scripts-bucket URI to make that easy.
 
 ## If it can't run
 
-If BDS isn't deployed, `submit.sh` stops with:
+If BDS isn't deployed, `run.sh` stops with:
 
 ```
 This use case can't run on the current deployment.
