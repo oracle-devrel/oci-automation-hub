@@ -232,8 +232,6 @@ class CleanerRun:
             "cleaner_ui.execute_supervisor",
             "--heartbeat-path",
             str(heartbeat_path),
-            "--parent-pid",
-            str(os.getpid()),
             "--child-cwd",
             str(CLEANER_ROOT),
             "--",

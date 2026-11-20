@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+set -euo pipefail
+
+config_file="/etc/oci-dicom/stack.json"
+
+private_endpoint="$(jq -r '.private_orthanc_endpoint' "${config_file}")"
+private_ingest_endpoint="$(jq -r '.private_ingest_endpoint // empty' "${config_file}")"
+orthanc_user="$(jq -r '.orthanc_username' "${config_file}")"
+orthanc_password="$(jq -r '.orthanc_password' "${config_file}")"
+postgres_host="$(jq -r '.postgres_host' "${config_file}")"
+
+curl_tls_options=()
+if [[ -n "${private_ingest_endpoint}" ]] &&
+   [[ -f /etc/oci-dicom/private-ingest-ca.pem ]]; then
+  private_endpoint="${private_ingest_endpoint}"
+  curl_tls_options+=(--cacert /etc/oci-dicom/private-ingest-ca.pem)
+fi
+
+private_base="${private_endpoint%/orthanc}"
+token_json="$(
+  curl \
+    --fail \
+    --silent \
+    --show-error \
+    "${curl_tls_options[@]}" \
+    -X POST \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    --data-urlencode 'client_id=orthanc' \
+    --data-urlencode 'grant_type=password' \
+    --data-urlencode "username=${orthanc_user}" \
+    --data-urlencode "password=${orthanc_password}" \
+    "${private_base}/keycloak/realms/orthanc/protocol/openid-connect/token"
+)"
+access_token="$(jq -r '.access_token // empty' <<<"${token_json}")"
+[[ -n "${access_token}" ]] || {
+  printf 'Unable to obtain the Orthanc administrator OIDC token.\n' >&2
+  exit 1
+}
+
+orthanc_curl() {
+  curl -H "Authorization: Bearer ${access_token}" "$@"
+}
+
+printf 'Deployment: %s\n' "$(jq -r '.deployment_name' "${config_file}")"
+printf 'Orthanc private endpoint: '
+orthanc_curl --fail --silent --show-error \
+  "${curl_tls_options[@]}" \
+  --connect-timeout 5 \
+  "${private_endpoint}/system" |
+  jq -r '"OK (version \(.Version), database \(.DatabaseVersion))"'
+
+printf 'DICOMweb QIDO-RS: '
+orthanc_curl --fail --silent --show-error \
+  "${curl_tls_options[@]}" \
+  --connect-timeout 5 \
+  "${private_endpoint}/dicom-web/studies?limit=1" >/dev/null
+printf 'OK\n'
+
+printf 'PostgreSQL %s:5432: ' "${postgres_host}"
+if nc -z -w 5 "${postgres_host}" 5432; then
+  printf 'OK\n'
+else
+  printf 'FAILED\n' >&2
+  exit 1
+fi

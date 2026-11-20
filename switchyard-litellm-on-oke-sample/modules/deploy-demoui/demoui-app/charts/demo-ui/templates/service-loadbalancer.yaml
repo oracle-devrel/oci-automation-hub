@@ -1,0 +1,23 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+{{- if .Values.loadbalancer.enabled }}
+{{- $_ := required "Set loadbalancer.annotations.oci.oraclecloud.com/oci-network-security-groups to the load balancer NSG OCID." (index .Values.loadbalancer.annotations "oci.oraclecloud.com/oci-network-security-groups") }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "demo-ui.loadbalancerFullname" . }}
+  labels:
+    {{- include "demo-ui.labels" . | nindent 4 }}
+    app.kubernetes.io/component: loadbalancer
+  annotations:
+    {{- toYaml .Values.loadbalancer.annotations | nindent 4 }}
+spec:
+  type: LoadBalancer
+  selector:
+    {{- include "demo-ui.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.loadbalancer.port }}
+      targetPort: http
+{{- end }}

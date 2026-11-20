@@ -20,16 +20,6 @@ import time
 from pathlib import Path
 
 
-def _parent_is_alive(parent_pid: int) -> bool:
-    if parent_pid <= 0:
-        return False
-    try:
-        os.kill(parent_pid, 0)
-    except OSError:
-        return False
-    return True
-
-
 def _interrupt_process_group(process: subprocess.Popen[str], grace_seconds: float) -> None:
     if process.poll() is not None:
         return
@@ -54,10 +44,10 @@ def _interrupt_process_group(process: subprocess.Popen[str], grace_seconds: floa
 def supervise(
     command: list[str],
     heartbeat_path: Path,
-    parent_pid: int,
     stale_seconds: float,
     grace_seconds: float,
     child_cwd: Path | None = None,
+    monitor_ui_pipe: bool = False,
 ) -> int:
     options: dict[str, object] = {
         "stdout": None,
@@ -71,19 +61,27 @@ def supervise(
     else:
         options["start_new_session"] = True
     child = subprocess.Popen(command, **options)  # type: ignore[arg-type]
+    parent_pipe_closed = threading.Event()
 
     def forward_ui_decision() -> None:
-        """Forward the UI-owned pipe once; EOF safely aborts a waiting cleaner."""
+        """Forward one UI decision; EOF means the UI/server process has gone away."""
         try:
             line = sys.stdin.readline()
-            decision = line if line else "ABORT\n"
-            if child.poll() is None and child.stdin is not None:
-                child.stdin.write(decision)
-                child.stdin.flush()
-        except OSError:
+        except (OSError, ValueError):
+            parent_pipe_closed.set()
             return
+        if not line:
+            parent_pipe_closed.set()
+            return
+        if child.poll() is None and child.stdin is not None:
+            try:
+                child.stdin.write(line)
+                child.stdin.flush()
+            except OSError:
+                return
 
-    threading.Thread(target=forward_ui_decision, daemon=True).start()
+    if monitor_ui_pipe:
+        threading.Thread(target=forward_ui_decision, daemon=True).start()
     interruption_requested = False
 
     def request_interruption(_signal_number: int, _frame: object) -> None:
@@ -97,16 +95,13 @@ def supervise(
             heartbeat_age = time.time() - heartbeat_path.stat().st_mtime
         except OSError:
             heartbeat_age = float("inf")
-        if (
-            interruption_requested
-            or heartbeat_age > stale_seconds
-            or not _parent_is_alive(parent_pid)
-        ):
-            reason = (
-                "cancellation requested"
-                if interruption_requested
-                else "UI heartbeat or parent process ended"
-            )
+        if interruption_requested or heartbeat_age > stale_seconds or parent_pipe_closed.is_set():
+            if interruption_requested:
+                reason = "cancellation requested"
+            elif parent_pipe_closed.is_set():
+                reason = "UI confirmation pipe closed"
+            else:
+                reason = "UI heartbeat expired"
             print(
                 f"Execute supervisor: {reason}; interrupting cleaner.",
                 flush=True,
@@ -120,7 +115,6 @@ def supervise(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Supervise an OCI cleaner execute process.")
     parser.add_argument("--heartbeat-path", required=True)
-    parser.add_argument("--parent-pid", required=True, type=int)
     parser.add_argument("--stale-seconds", type=float, default=15.0)
     parser.add_argument("--grace-seconds", type=float, default=10.0)
     parser.add_argument("--child-cwd", help="Working directory for the cleaner process.")
@@ -132,10 +126,10 @@ def main() -> int:
     return supervise(
         command,
         Path(args.heartbeat_path),
-        args.parent_pid,
         args.stale_seconds,
         args.grace_seconds,
         Path(args.child_cwd) if args.child_cwd else None,
+        monitor_ui_pipe=True,
     )
 
 

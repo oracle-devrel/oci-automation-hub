@@ -17,7 +17,6 @@ def test_stale_heartbeat_interrupts_harmless_child(tmp_path: Path) -> None:
     exit_code = supervise(
         [sys.executable, "-c", "import time; time.sleep(30)"],
         heartbeat,
-        parent_pid=__import__("os").getpid(),
         stale_seconds=0.01,
         grace_seconds=0.1,
     )
@@ -35,6 +34,18 @@ def test_cancelled_execute_run_interrupts_supervised_harmless_child(tmp_path: Pa
     run.process.wait(timeout=5)
 
     assert run.status().value == "cancelled"
+
+
+def test_closed_ui_pipe_interrupts_supervised_harmless_child(tmp_path: Path) -> None:
+    run = CleanerRun.start_execute(
+        [sys.executable, "-c", "import time; time.sleep(30)"],
+        tmp_path,
+    )
+    assert run.process.stdin is not None
+    run.process.stdin.close()
+    run.process.wait(timeout=5)
+
+    assert run.status().value == "failed"
 
 
 def test_supervisor_forwards_ui_confirmation_to_harmless_child(tmp_path: Path) -> None:
@@ -72,7 +83,6 @@ def test_supervisor_uses_configured_cleaner_working_directory(tmp_path: Path) ->
             f"from pathlib import Path; Path({str(output)!r}).write_text(str(Path.cwd()))",
         ],
         heartbeat,
-        parent_pid=__import__("os").getpid(),
         stale_seconds=1,
         grace_seconds=0.1,
         child_cwd=tmp_path,

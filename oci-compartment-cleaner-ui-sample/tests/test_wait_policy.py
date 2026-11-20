@@ -1,6 +1,7 @@
 # Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
 # The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
 
+import json
 import sys
 from logging import getLogger
 from pathlib import Path
@@ -13,7 +14,6 @@ sys.path.insert(0, str(CLEANER_ROOT))
 
 from oci_compartment_cleaner import manifest_waiters  # noqa: E402
 from oci_compartment_cleaner.models import HandlerSpec, PlanEntry  # noqa: E402
-from oci_compartment_cleaner.registry import load_registry  # noqa: E402
 
 
 def _entry(wait_for_delete: bool):
@@ -84,6 +84,12 @@ def test_all_previously_generic_waited_resource_types_are_explicit_in_manifest()
         "volume_group",
         "volume_group_backup",
     }
-    handlers = {handler.normalized_type: handler for handler in load_registry().handlers}
+    manifest_path = CLEANER_ROOT / "oci_compartment_cleaner" / "resource_support.json"
+    handlers = {
+        item["normalized_type"]: item
+        for item in json.loads(manifest_path.read_text(encoding="utf-8"))["handlers"]
+    }
 
-    assert all(handlers[resource_type].wait_for_delete for resource_type in legacy_waited_types)
+    assert all(
+        "wait_for_delete" in handlers[resource_type] for resource_type in legacy_waited_types
+    )

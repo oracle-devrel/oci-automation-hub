@@ -1,0 +1,32 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+{{- if .Values.loadbalancer.enabled }}
+Additional {{ if eq (index .Values.loadbalancer.annotations "service.beta.kubernetes.io/oci-load-balancer-internal") "true" }}private{{ else }}public{{ end }} load balancer:
+  {{ include "demo-ui.loadbalancerFullname" . }}:{{ .Values.loadbalancer.port }}
+
+IP allocation can take several minutes. Helm waits for readiness, then Terraform
+queries OCI and prints the assigned browser URL in the demoui_access output.
+An existing untagged LB needs the OCI freeform tag
+demoui_release={{ .Release.Namespace }}/{{ .Release.Name }} added once.
+{{- if eq (index .Values.loadbalancer.annotations "service.beta.kubernetes.io/oci-load-balancer-internal") "true" }}
+Connect from a machine with network access to the private load balancer.
+{{- end }}
+
+To view the address from the operator:
+  kubectl -n {{ .Release.Namespace }} get service {{ include "demo-ui.loadbalancerFullname" . }}
+
+Changing public/private mode requires disabling the additional Service and
+applying first, then re-enabling it with the new mode and applying again.
+{{- else }}
+The additional load balancer is disabled.
+{{- end }}
+
+The existing ClusterIP Service remains available for port-forward access:
+  kubectl -n {{ .Release.Namespace }} port-forward service/{{ include "demo-ui.fullname" . }} 8080:{{ .Values.service.port }}
+
+Visit http://localhost:8080
+
+LiteLLM: {{ .Values.litellm.baseUrl }}
+The existing Secret {{ .Values.litellm.existingSecret }} must be in {{ .Release.Namespace }}.
+This demo has no user login.
