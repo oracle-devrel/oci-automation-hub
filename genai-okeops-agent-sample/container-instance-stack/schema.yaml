@@ -1,0 +1,188 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+title: OCI Container Instance Stack
+description: Create an OCI Container Instance with configurable image, shape, network, environment variables, and health check settings.
+informationalText: |
+  This schema is intended for Oracle Cloud Infrastructure Resource Manager.
+  The region, compartment, image, shape, subnet, and environment variables are surfaced in the Console for easy stack creation.
+schemaVersion: 1.1.0
+version: "20190304"
+locale: "en"
+
+variableGroups:
+  - title: Network Client Access
+    variables:
+      - ${app_client_cidrs}
+
+  - title: Core
+    variables:
+      - ${app_name_prefix}
+      - ${compartment_ocid}
+      - ${availability_domain}
+      - ${region}
+      - ${tenancy_ocid}
+
+  - title: Identity Integrated Application
+    variables:
+      - ${identity_domain_ocid}
+
+  - title: Common Compute and Network Configuration
+    variables:
+      - ${shape}
+      - ${ocpus}
+      - ${memory_in_gbs}
+      - ${vcnCompartment}
+      - ${vcn_id}
+
+  - title: Load Balancer Configuration
+    variables:
+      - ${lb_subnet_id}
+
+  - title: MCP Container Configuration
+    variables:
+      - ${mcp_container_image_url}
+      - ${app_subnet_id}
+      - ${rag_agent_endpoint_id}
+
+  - title: Application Container Configuration
+    variables:
+      - ${app_image_url}
+      - ${app_subnet_id}
+
+variables:
+  tenancy_ocid:
+    type: string
+    title: Tenancy OCID
+    description: OCI tenancy OCID (used only for provider configuration if needed).
+    visible: false
+    required: true
+  
+  identity_domain_ocid:
+    type: oci:identity:domains:id
+    title: Identity Domain to create the integrated application.
+    description: OCI Identity Domain OCID, for example ocid1.identity.oc1..aaaaaaaamjlz5jgh7uspm7h6cppdgrmlj76r7232737dsom4flwq2m4w723a.
+    required: true
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+
+  region:
+    type: oci:identity:region:name
+    title: Region
+    description: OCI region identifier, for example us-ashburn-1.
+    visible: false
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: Compartment
+    description: Compartment OCID in which to create the container instance.
+    required: true
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+
+  availability_domain:
+    type: oci:identity:availabilitydomain:name
+    title: Availability Domain
+    description: Availability domain where the container instances will run.
+    required: true
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+
+  app_name_prefix:
+    type: string
+    title: Display Name Prefix
+    description: Prefix for the display names of the created resources.
+    required: true
+    minLength: 1
+
+  mcp_container_image_url:
+    type: string
+    title: Container Image URL for MCP Server
+    description: Container image URL, for example iad.ocir.io/namespace/repo:tag or docker.io/library/nginx:latest.
+    required: true
+  
+  app_image_url:
+    type: string
+    title: Container Image URL for Application Container
+    description: Container image URL, for example iad.ocir.io/namespace/repo:tag or docker.io/library/nginx:latest.
+    required: true
+  
+  rag_agent_endpoint_id:
+    type: string
+    title: RAG Agent Endpoint ID (Optional)
+    description: RAG Agent Endpoint ID to connect the MCP server to (optional).
+    required: false
+    default: ""
+
+  shape:
+    title: "Shape"
+    description: "Select the container instance shape."
+    type: enum
+    enum:
+      - CI.Standard.A1.Flex
+      - CI.Standard.E4.Flex
+      - CI.Standard.x86.Generic
+      - CI.Standard.Ampere.Generic
+    default: CI.Standard.A1.Flex
+    required: true
+
+  ocpus:
+    type: number
+    title: OCPUs
+    description: Number of OCPUs to allocate to the container instance.
+    required: true
+    default: 1
+
+  memory_in_gbs:
+    type: number
+    title: Memory (GB)
+    description: Amount of memory in GB to allocate to the container instance.
+    required: true
+    default: 6
+
+  vcnCompartment:
+    type: oci:identity:compartment:id
+    title: VCN Compartment
+    description: Compartment for the VCN to deploy the container instances. Select from the drop-down.
+    required: true
+
+  vcn_id:
+    type: oci:core:vcn:id
+    title: VCN Name
+    description: VCN to deploy the container instances. Select from the drop-down.
+    dependsOn:
+      compartmentId: ${vcnCompartment}
+
+  lb_subnet_id:
+    type: oci:core:subnet:id
+    title: Subnet ID
+    description: Subnet for the load balancer.
+    required: true
+    dependsOn:
+      compartmentId: ${vcnCompartment}
+      vcnId: ${vcn_id}
+
+  app_subnet_id:
+    type: oci:core:subnet:id
+    title: Subnet ID
+    description: Subnet for the application and MCP container instance. Select from the drop-down.
+    required: true
+    dependsOn:
+      compartmentId: ${vcnCompartment}
+      vcnId: ${vcn_id}
+
+  assign_public_ip:
+    type: boolean
+    title: Assign Public IP
+    description: Whether to assign a public IP to the Application container instance VNIC.
+    required: true
+    default: false
+    visible: false
+
+  app_client_cidrs:
+    type: array
+    title: Application HTTPS Client CIDRs
+    description: Trusted IPv4 CIDRs. Use the current client public IP with a /32 prefix for workstation access.
+    items:
+      type: string
+    uniqueItems: true
+    default: []

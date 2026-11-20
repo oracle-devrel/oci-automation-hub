@@ -1,0 +1,115 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+{{- if eq .Values.models.efficient .Values.models.capable -}}
+{{- fail "models.efficient and models.capable must be different LiteLLM aliases." -}}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "demo-ui.fullname" . }}
+  labels:
+    {{- include "demo-ui.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      {{- include "demo-ui.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "demo-ui.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: demo-ui
+          image: {{ include "demo-ui.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: LITELLM_BASE_URL
+              value: {{ .Values.litellm.baseUrl | quote }}
+            - name: LITELLM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "litellm.existingSecret is required." .Values.litellm.existingSecret | quote }}
+                  key: {{ required "litellm.secretKey is required." .Values.litellm.secretKey | quote }}
+            - name: EFFICIENT_MODEL
+              value: {{ .Values.models.efficient | quote }}
+            - name: CAPABLE_MODEL
+              value: {{ .Values.models.capable | quote }}
+            - name: JUDGE_MODEL
+              value: {{ .Values.models.judge | quote }}
+            - name: ROUTING_THRESHOLD
+              value: {{ .Values.routing.threshold | quote }}
+            - name: MAX_OUTPUT_TOKENS
+              value: {{ .Values.routing.maxOutputTokens | quote }}
+            - name: UPSTREAM_TIMEOUT_SECONDS
+              value: {{ .Values.routing.upstreamTimeoutSeconds | quote }}
+            - name: DISABLE_THINKING
+              value: {{ .Values.routing.disableThinking | quote }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          startupProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            periodSeconds: 2
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 20
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 64Mi

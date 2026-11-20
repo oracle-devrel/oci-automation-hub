@@ -1,0 +1,175 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+fullnameOverride: litellm
+
+ingress:
+  enabled: false
+
+masterKey:
+  secretName: litellm-secrets
+  secretKey: LITELLM_MASTER_KEY
+
+database:
+  writer:
+    host: litellm-postgresql
+    port: 5432
+    dbname: litellm
+    passwordSecret:
+      name: litellm-db
+      usernameKey: username
+      passwordKey: password
+  connectionPool:
+    enabled: false
+
+# Redis is optional for this fixed-replica demo. Without it, rate-limit
+# counters, cached authorization and scheduled-job locks are not shared.
+# Configure coordination Redis before relying on distributed limits or scaling.
+redis:
+  host: ""
+
+migrationJob:
+  enabled: true
+  # Terraform applies this Job separately and waits before applying workloads.
+  hooks:
+    helm:
+      enabled: false
+    argocd:
+      enabled: false
+  activeDeadlineSeconds: 1800
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      memory: 2Gi
+
+lensWorker:
+  enabled: false
+
+gateway:
+  enabled: true
+  replicaCount: 1
+  numWorkers: 1
+  image:
+    repository: ghcr.io/berriai/litellm-gateway
+    tag: v1.106.0
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 4000
+  envSecrets:
+    - litellm-secrets
+  extraEnv:
+    - name: LITELLM_MODE
+      value: PRODUCTION
+  hpa:
+    enabled: false
+  collector:
+    enabled: false
+  strategy:
+    type: Recreate
+  resources:
+    requests:
+      cpu: "1"
+      memory: 4Gi
+    limits:
+      memory: 4Gi
+  startupProbe:
+    httpGet:
+      path: /health/readiness
+      port: http
+    periodSeconds: 10
+    timeoutSeconds: 10
+    failureThreshold: 60
+  readinessProbe:
+    httpGet:
+      path: /health/readiness
+      port: http
+    periodSeconds: 10
+    timeoutSeconds: 10
+  livenessProbe:
+    httpGet:
+      path: /health/liveliness
+      port: http
+    periodSeconds: 15
+    timeoutSeconds: 10
+    failureThreshold: 6
+  config:
+    create: true
+    # The chart mounts this configuration in both gateway and backend.
+    proxy_config:
+      model_list:
+        - model_name: nvidia-nemotron-3-5-lightning-30b-a3b
+          litellm_params:
+            model: nvidia_nim/nvidia/nemotron-3.5-lightning-30b-a3b
+            api_base: https://integrate.api.nvidia.com/v1
+            api_key: os.environ/NVIDIA_API_KEY
+        - model_name: nemotron-3.5-super-vl-120b-a12b
+          litellm_params:
+            model: nvidia_nim/nvidia/nemotron-3.5-super-vl-120b-a12b
+            api_base: https://integrate.api.nvidia.com/v1
+            api_key: os.environ/NVIDIA_API_KEY
+      general_settings:
+        master_key: os.environ/LITELLM_MASTER_KEY
+        store_model_in_db: false
+        database_connection_pool_limit: 10
+        proxy_batch_write_at: 60
+      litellm_settings:
+        cache: false
+        set_verbose: false
+        json_logs: true
+        request_timeout: 600
+
+backend:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ghcr.io/berriai/litellm-backend
+    tag: v1.106.0
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 4001
+  envSecrets:
+    - litellm-secrets
+  extraEnv:
+    - name: LITELLM_MODE
+      value: PRODUCTION
+  hpa:
+    enabled: false
+  strategy:
+    type: Recreate
+  resources:
+    requests:
+      cpu: "1"
+      memory: 4Gi
+    limits:
+      memory: 4Gi
+  startupProbe:
+    httpGet:
+      path: /health/readiness
+      port: http
+    periodSeconds: 10
+    timeoutSeconds: 10
+    failureThreshold: 60
+  readinessProbe:
+    httpGet:
+      path: /health/readiness
+      port: http
+    periodSeconds: 10
+    timeoutSeconds: 10
+  livenessProbe:
+    httpGet:
+      path: /health/liveliness
+      port: http
+    periodSeconds: 15
+    timeoutSeconds: 10
+    failureThreshold: 6
+
+ui:
+  enabled: false
+  service:
+    # Optional future exposure; no Service is created while the UI is disabled.
+    # Enabling the UI also requires routing browser API requests to the backend.
+    type: LoadBalancer

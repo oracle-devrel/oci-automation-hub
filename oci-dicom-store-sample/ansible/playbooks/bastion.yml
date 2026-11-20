@@ -1,0 +1,260 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+---
+- name: Configure the DICOM operator bastion
+  hosts: bastion
+  become: true
+  gather_facts: false
+
+  pre_tasks:
+    - name: Wait for SSH and Python
+      ansible.builtin.wait_for_connection:
+        delay: 5
+        sleep: 10
+        timeout: 600
+
+    - name: Wait for cloud-init to finish
+      ansible.builtin.raw: cloud-init status --wait
+      changed_when: false
+
+    - name: Gather system facts
+      ansible.builtin.setup:
+
+    - name: Validate required deployment variables
+      ansible.builtin.assert:
+        that:
+          - deployment_name | length > 0
+          - region | length > 0
+          - private_orthanc_endpoint | length > 0
+          - oke_cluster_id | length > 0
+          - oke_kubernetes_version | length > 0
+          - postgres_host | length > 0
+          - orthanc_password | length > 0
+          - postgres_password | length > 0
+        quiet: true
+      no_log: true
+
+  tasks:
+    - name: Install operator packages
+      ansible.builtin.dnf:
+        name:
+          - bind-utils
+          - git
+          - jq
+          - nmap-ncat
+          - postgresql
+          - python3-pip
+          - tar
+          - tmux
+          - unzip
+        state: present
+
+    - name: Create operator directories
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+      loop:
+        - path: /etc/oci-dicom
+          mode: "0700"
+        - path: /etc/motd.d
+          mode: "0755"
+        - path: /opt/oci-dicom
+          mode: "0755"
+
+    - name: Create the operator Python environment
+      ansible.builtin.command:
+        cmd: python3 -m venv /opt/oci-dicom/venv
+        creates: /opt/oci-dicom/venv/bin/python
+
+    - name: Install the OCI CLI
+      ansible.builtin.pip:
+        executable: /opt/oci-dicom/venv/bin/pip
+        name:
+          - oci-cli
+        state: present
+
+    - name: Verify the OCI CLI installation
+      ansible.builtin.command:
+        argv:
+          - /opt/oci-dicom/venv/bin/oci
+          - --version
+      changed_when: false
+
+    - name: Link OCI CLI into the system path
+      ansible.builtin.file:
+        src: /opt/oci-dicom/venv/bin/oci
+        dest: /usr/local/bin/oci
+        state: link
+
+    - name: Install the instance-principal OCI CLI wrapper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/oci-instance-principal
+        owner: root
+        group: root
+        mode: "0755"
+        content: |
+          #!/usr/bin/env bash
+          exec /opt/oci-dicom/venv/bin/oci --auth instance_principal "$@"
+
+    - name: Install the Kubernetes client
+      ansible.builtin.get_url:
+        url: "https://dl.k8s.io/release/{{ oke_kubernetes_version }}/bin/linux/{{ bastion_kubectl_arch }}/kubectl"
+        dest: /usr/local/bin/kubectl
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Create the opc Kubernetes configuration directory
+      ansible.builtin.file:
+        path: /home/opc/.kube
+        state: directory
+        owner: opc
+        group: opc
+        mode: "0700"
+
+    - name: Create private OKE kubeconfig with the bastion instance principal
+      ansible.builtin.command:
+        argv:
+          - /opt/oci-dicom/venv/bin/oci
+          - --auth
+          - instance_principal
+          - --region
+          - "{{ region }}"
+          - ce
+          - cluster
+          - create-kubeconfig
+          - --cluster-id
+          - "{{ oke_cluster_id }}"
+          - --file
+          - /home/opc/.kube/config
+          - --kube-endpoint
+          - PRIVATE_ENDPOINT
+          - --token-version
+          - "2.0.0"
+          - --overwrite
+      environment:
+        OCI_CLI_SUPPRESS_FILE_PERMISSIONS_WARNING: "True"
+      register: kubeconfig_result
+      changed_when: true
+      retries: 24
+      delay: 15
+      until: kubeconfig_result.rc == 0
+
+    - name: Protect the private OKE kubeconfig
+      ansible.builtin.file:
+        path: /home/opc/.kube/config
+        owner: opc
+        group: opc
+        mode: "0600"
+
+    - name: Force kubeconfig token generation to use the instance principal
+      ansible.builtin.replace:
+        path: /home/opc/.kube/config
+        regexp: '(^\s*command:\s+)(?:/usr/local/bin/)?oci\s*$'
+        replace: '\1/usr/local/bin/oci-instance-principal'
+      no_log: true
+
+    - name: Wait for private OKE administrator access
+      ansible.builtin.command:
+        argv:
+          - /usr/local/bin/kubectl
+          - get
+          - nodes
+      become_user: opc
+      environment:
+        HOME: /home/opc
+        KUBECONFIG: /home/opc/.kube/config
+      register: oke_nodes
+      changed_when: false
+      retries: 30
+      delay: 20
+      until: oke_nodes.rc == 0
+
+    - name: Store stack connection data
+      ansible.builtin.template:
+        src: ../templates/stack.json.j2
+        dest: /etc/oci-dicom/stack.json
+        owner: root
+        group: root
+        mode: "0600"
+      no_log: true
+
+    - name: Store the FastConnect private-ingest trust certificate
+      ansible.builtin.copy:
+        content: "{{ private_ingest_certificate }}"
+        dest: /etc/oci-dicom/private-ingest-ca.pem
+        owner: root
+        group: root
+        mode: "0644"
+      when: private_ingest_certificate | length > 0
+
+    - name: Remove an obsolete private-ingest trust certificate
+      ansible.builtin.file:
+        path: /etc/oci-dicom/private-ingest-ca.pem
+        state: absent
+      when: private_ingest_certificate | length == 0
+
+    - name: Install stack operator commands
+      ansible.builtin.template:
+        src: "../templates/{{ item.template }}"
+        dest: "/usr/local/sbin/{{ item.command }}"
+        owner: root
+        group: root
+        mode: "0750"
+      loop:
+        - template: dicom-status.sh.j2
+          command: dicom-status
+        - template: dicom-psql.sh.j2
+          command: dicom-psql
+        - template: dicom-env.sh.j2
+          command: dicom-env
+
+    - name: Harden SSH daemon
+      ansible.builtin.copy:
+        dest: /etc/ssh/sshd_config.d/60-oci-dicom-bastion.conf
+        owner: root
+        group: root
+        mode: "0600"
+        content: |
+          PasswordAuthentication no
+          KbdInteractiveAuthentication no
+          PermitRootLogin no
+          PermitEmptyPasswords no
+          X11Forwarding no
+          AllowTcpForwarding local
+          AllowAgentForwarding no
+          AllowUsers opc
+      notify: Reload sshd
+
+    - name: Validate effective SSH daemon configuration
+      ansible.builtin.command: /usr/sbin/sshd -t
+      changed_when: false
+
+    - name: Enable audit service
+      ansible.builtin.service:
+        name: auditd
+        state: started
+        enabled: true
+
+    - name: Install operator command help
+      ansible.builtin.copy:
+        dest: /etc/motd.d/oci-dicom-operator
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          DICOM operator commands:
+            sudo /usr/local/sbin/dicom-status  Test private Orthanc, DICOMweb, and PostgreSQL
+            sudo /usr/local/sbin/dicom-env     Show non-secret stack endpoints
+            sudo /usr/local/sbin/dicom-psql    Open the managed PostgreSQL database
+            kubectl get pods -A  Inspect the private OKE cluster
+
+  handlers:
+    - name: Reload sshd
+      ansible.builtin.service:
+        name: sshd
+        state: reloaded

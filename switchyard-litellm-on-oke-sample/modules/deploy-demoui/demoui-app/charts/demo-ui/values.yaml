@@ -1,0 +1,57 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+replicaCount: 1
+
+routing:
+  threshold: 0.5
+  maxOutputTokens: 4096
+  upstreamTimeoutSeconds: 90
+  disableThinking: true
+
+service:
+  port: 8080
+  annotations: {}
+
+# Additional OCI Service. The original ClusterIP Service remains on port 8080.
+loadbalancer:
+  enabled: true
+  port: 80
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+    service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+    service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100"
+    # Terraform overrides these from is_demoui_lb_public and the NSG input.
+    service.beta.kubernetes.io/oci-load-balancer-internal: "false"
+    oci.oraclecloud.com/oci-network-security-groups: ""
+# Terraform adds initial tag annotations, preserving cluster tag defaults and
+# setting demoui_release=<namespace>/<release> for the native OCI address lookup.
+# OCI cannot change an existing LB between public and private in place.
+# Disable and apply first, then re-enable with the desired mode and apply again.
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    memory: 512Mi
+
+terminationGracePeriodSeconds: 200
+
+image:
+  digest: ""
+  pullPolicy: IfNotPresent
+imagePullSecrets:
+- name: ocir-pull-secret
+
+
+litellm:
+  baseUrl: http://litellm-gateway.litellm.svc.cluster.local:4000/v1
+  existingSecret: litellm-secrets
+  secretKey: LITELLM_MASTER_KEY
+
+models:
+  efficient: nvidia-nemotron-3-5-lightning-30b-a3b
+  capable: nemotron-3.5-super-vl-120b-a12b
+  judge: nemotron-3.5-super-vl-120b-a12b
