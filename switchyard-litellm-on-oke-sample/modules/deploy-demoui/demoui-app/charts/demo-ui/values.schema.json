@@ -1,0 +1,179 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": [
+    "image",
+    "litellm",
+    "models",
+    "routing",
+    "service"
+  ],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "nameOverride": {
+      "type": "string"
+    },
+    "fullnameOverride": {
+      "type": "string"
+    },
+    "image": {
+      "type": "object",
+      "required": [
+        "repository",
+        "tag",
+        "digest",
+        "pullPolicy"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^(sha256:[a-f0-9]{64})?$"
+        },
+        "pullPolicy": {
+          "enum": [
+            "Always",
+            "IfNotPresent",
+            "Never"
+          ]
+        }
+      }
+    },
+    "litellm": {
+      "type": "object",
+      "required": [
+        "baseUrl",
+        "existingSecret",
+        "secretKey"
+      ],
+      "properties": {
+        "baseUrl": {
+          "type": "string",
+          "pattern": "^https?://[^\\s]+/v1/?$"
+        },
+        "existingSecret": {
+          "type": "string",
+          "minLength": 1
+        },
+        "secretKey": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "models": {
+      "type": "object",
+      "required": [
+        "efficient",
+        "capable",
+        "judge"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "efficient": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "capable": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "judge": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "required": [
+        "threshold",
+        "maxOutputTokens",
+        "upstreamTimeoutSeconds",
+        "disableThinking"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "maxOutputTokens": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 4096
+        },
+        "upstreamTimeoutSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 180
+        },
+        "disableThinking": {
+          "type": "boolean"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "required": [
+        "port"
+      ],
+      "properties": {
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "annotations": {
+          "type": "object"
+        }
+      }
+    },
+    "loadbalancer": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "port",
+        "annotations"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "annotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "properties": {
+            "service.beta.kubernetes.io/oci-load-balancer-internal": {
+              "type": "string",
+              "enum": ["true", "false"]
+            }
+          }
+        }
+      }
+    },
+    "terminationGracePeriodSeconds": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

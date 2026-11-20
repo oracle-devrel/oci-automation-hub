@@ -1,0 +1,13 @@
+{
+  "requiredTopLevelKeys": [
+    "Name",
+    "DicomAet",
+    "RegisteredUsers",
+    "DicomWeb",
+    "PostgreSQL",
+    "AwsS3Storage"
+  ],
+  "storagePlugin": "AwsS3Storage",
+  "metadataPlugin": "PostgreSQL",
+  "imageStorage": "OCI Object Storage"
+}
