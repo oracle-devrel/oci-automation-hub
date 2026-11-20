@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 output "id" {
   description = "OCID of the public regional load balancer."
   value       = oci_load_balancer_load_balancer.this.id

@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 output "access_token" {
   description = "OAuth 2.0 bearer access token for the matching OIC region."
   value       = local.token_response.access_token

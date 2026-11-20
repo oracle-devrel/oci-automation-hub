@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 locals {
   secondary_normalized_client_allowed_scope_fqs = [
     for scope in var.client_allowed_scope_fqs :

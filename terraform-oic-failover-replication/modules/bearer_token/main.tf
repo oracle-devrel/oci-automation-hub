@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 data "http" "oauth_token" {
   url    = "${trimsuffix(var.idcs_endpoint, "/")}/oauth2/v1/token"
   method = "POST"

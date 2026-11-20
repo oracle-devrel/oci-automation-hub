@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 tenancy_ocid     = "//TODO//"
 user_ocid        = "//TODO//"
 fingerprint      = "//TODO//"

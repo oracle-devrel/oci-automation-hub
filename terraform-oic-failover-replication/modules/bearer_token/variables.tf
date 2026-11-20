@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 variable "idcs_endpoint" {
   description = "Identity Domains endpoint URL for the region's OAuth client."
   type        = string

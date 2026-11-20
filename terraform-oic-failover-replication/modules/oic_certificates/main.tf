@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 resource "oci_certificates_management_certificate" "listener" {
   compartment_id = var.compartment_id
   name           = "${var.name_prefix}-listener-cert"

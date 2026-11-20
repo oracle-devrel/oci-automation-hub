@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 output "primary_oic_instance_id" {
   description = "OCID of the primary Oracle Integration instance."
   value       = module.primary_oic_instance.id

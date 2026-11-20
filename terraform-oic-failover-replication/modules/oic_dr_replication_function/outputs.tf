@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 output "application_id" {
   description = "OCID of the OCI Functions application."
   value       = oci_functions_application.this.id

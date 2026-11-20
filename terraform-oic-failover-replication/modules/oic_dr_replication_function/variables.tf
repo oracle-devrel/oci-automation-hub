@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 variable "compartment_id" {
   description = "OCID of the compartment in which to create the Function resources."
   type        = string

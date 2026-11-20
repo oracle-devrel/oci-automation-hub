@@ -1,3 +1,4 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
 
 module "dns_failover_steering_policy" {
   source = "./modules/dns_failover_steering_policy"

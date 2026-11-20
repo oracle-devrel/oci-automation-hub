@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 output "id" {
   description = "OIC instance OCID."
   value       = oci_integration_integration_instance.this.id

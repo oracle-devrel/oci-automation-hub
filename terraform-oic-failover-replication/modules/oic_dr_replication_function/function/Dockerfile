@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 FROM fnproject/python:3.11-dev AS build-stage
 WORKDIR /function
 ENV PATH=/python/bin:$PATH

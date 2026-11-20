@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 locals {
   application_name      = substr("${var.name_prefix}-oic-dr-functions", 0, 255)
   function_name         = substr("${var.name_prefix}-oic-dr-replication", 0, 255)

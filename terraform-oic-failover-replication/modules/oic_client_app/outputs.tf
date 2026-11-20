@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 output "id" {
   description = "Identity Domains application ID."
   value       = oci_identity_domains_app.this.id

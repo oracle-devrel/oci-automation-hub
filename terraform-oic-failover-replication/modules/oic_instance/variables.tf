@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 variable "compartment_id" {
   description = "Compartment OCID where the OIC instance will be created."
   type        = string

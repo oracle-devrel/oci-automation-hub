@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 variable "tenancy_ocid" {
   description = "OCI tenancy OCID."
   type        = string

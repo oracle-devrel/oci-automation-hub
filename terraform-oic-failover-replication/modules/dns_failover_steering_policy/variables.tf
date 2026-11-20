@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 variable "compartment_id" {
   description = "OCI compartment in which to create the health check and DNS steering policy."
   type        = string

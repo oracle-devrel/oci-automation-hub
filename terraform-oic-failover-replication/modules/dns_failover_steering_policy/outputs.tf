@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 output "id" {
   description = "OCID of the DNS failover steering policy."
   value       = oci_dns_steering_policy.this.id

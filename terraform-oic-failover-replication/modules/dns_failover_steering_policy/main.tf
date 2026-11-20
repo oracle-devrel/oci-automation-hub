@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 resource "oci_health_checks_http_monitor" "this" {
   compartment_id      = var.compartment_id
   display_name        = "${var.display_name}-health-check"

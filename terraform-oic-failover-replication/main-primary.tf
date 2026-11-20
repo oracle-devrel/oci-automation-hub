@@ -1,3 +1,5 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+
 data "oci_identity_domain" "this" {
   domain_id = var.identity_domain_id
 }
