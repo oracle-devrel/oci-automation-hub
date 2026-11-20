@@ -1,0 +1,188 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+title: OKEOps Agent Stack
+description: Deploy OKE, an unschedulable demo pod, and an OCI Monitoring alarm.
+locale: en
+schemaVersion: 1.1.0
+
+variableGroups:
+  - title: Network Client Access
+    variables:
+      - ${kubernetes_api_client_cidrs}
+      - ${mcp_subnet_id}
+
+  - title: OCI Provider Configuration
+    variables:
+      - ${region}
+      - ${tenancy_ocid}
+      - ${compartment_ocid}
+
+  - title: Stack Metadata
+    variables:
+      - ${display_name_prefix}
+      - ${component_description}
+
+  - title: OKE Cluster Configuration
+    variables:
+      - ${availability_domain}
+      - ${kubernetes_version}
+      - ${node_shape}
+      - ${node_image_id}
+      - ${node_count}
+      - ${vcnCompartment}
+      - ${vcn_id}
+      - ${oke_endpoint_subnet_id}
+      - ${oke_worker_subnet_id}
+      - ${oke_public_endpoint}
+      - ${kubernetes_cli_auth}
+      - ${ssh_public_keys}
+
+
+  - title: Tagging (Optional)
+    variables:
+      - ${tag_value}
+
+variables:
+  region:
+    type: oci:identity:region:name
+    title: Region
+    description: OCI region where resources will be created.
+    required: true
+    visible: false
+
+  tenancy_ocid:
+    type: string
+    title: Tenancy OCID
+    description: OCI tenancy OCID. Can be supplied via TF_VAR_tenancy_ocid or environment.
+    required: true
+    visible: false
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: Compartment OCID
+    description: OCI compartment OCID where resources will be created. Select from the drop-down.
+    required: true
+    dependsOn:
+      compartmentId: ${tenancy_ocid}
+
+  display_name_prefix:
+    type: string
+    title: Display name prefix
+    description: Prefix for all the components deployed by the stack.
+    required: true
+    pattern: "^[a-z_-]+$"
+
+  component_description:
+    type: text
+    title: Component description
+    description: Description for the components deployed by the stack.
+    required: true
+  
+  availability_domain:
+    type: oci:identity:availabilitydomain:name
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+    title: Worker Availability Domain
+    required: true
+
+  kubernetes_version:
+    type: string
+    title: Kubernetes Version
+    description: Supply a version currently supported by OKE in this region, including the v prefix.
+    required: true
+
+  node_image_id:
+    type: string
+    title: OKE Worker Image OCID
+    description: Use an OKE image compatible with the selected Kubernetes version and shape, not a generic Oracle Linux image.
+    required: true
+
+  node_shape:
+    type: enum
+    title: Worker Shape
+    default: VM.Standard.E4.Flex
+    required: true
+    enum:
+      - VM.Standard.E5.Flex
+      - VM.Standard.E4.Flex
+
+  node_count:
+    type: integer
+    title: Worker Node Count
+    minimum: 1
+    default: 1
+    required: true
+
+  oke_public_endpoint:
+    type: boolean
+    title: Public Kubernetes API Endpoint
+    description: Requires a public endpoint subnet. Private endpoints require Resource Manager private endpoint access or a runner inside the VCN.
+    default: true
+
+  kubernetes_cli_auth:
+    type: enum
+    title: Kubernetes OCI CLI Authentication
+    default: resource_principal
+    enum:
+      - resource_principal
+      - api_key
+      - instance_principal
+      - security_token
+
+  vcnCompartment:
+    type: oci:identity:compartment:id
+    title: VCN Compartment
+    description: Compartment for the VCN. Select from the drop-down.
+    required: true
+
+  vcn_id:
+    type: oci:core:vcn:id
+    title: VCN Name
+    required: true
+    description: Existing VCN configured for OKE endpoint and worker traffic.
+    dependsOn:
+      compartmentId: ${vcnCompartment}
+
+  oke_endpoint_subnet_id:
+    type: oci:core:subnet:id
+    title: Kubernetes API Endpoint Subnet
+    description: Public subnet when public API endpoint is enabled; allow TCP 6443 from the deployment runner and MCP server.
+    required: true
+    dependsOn:
+      compartmentId: ${vcnCompartment}
+      vcnId: ${vcn_id}
+
+  oke_worker_subnet_id:
+    type: oci:core:subnet:id
+    title: OKE Worker Subnet
+    description: Worker subnet with OKE security rules and outbound access to OCI services and container registries.
+    required: true
+    dependsOn:
+      compartmentId: ${vcnCompartment}
+      vcnId: ${vcn_id}
+
+  ssh_public_keys:
+    type: oci:core:ssh:publickey
+    title: Worker SSH Public Key (Optional)
+    required: false
+
+  tag_value:
+    type: oci:identity:tag:value
+    title: Tags
+    description: Defined and freeform tags for the stack resources.
+    required: false
+  kubernetes_api_client_cidrs:
+    type: array
+    title: Kubernetes API Client CIDRs
+    description: Trusted IPv4 CIDRs. Use the current client public IP with a /32 prefix for workstation access.
+    items:
+      type: string
+    uniqueItems: true
+    default: []
+
+  mcp_subnet_id:
+    type: string
+    title: MCP Subnet OCID (Optional)
+    description: Defaults to the worker subnet. Set to the container application subnet when different.
+    required: false

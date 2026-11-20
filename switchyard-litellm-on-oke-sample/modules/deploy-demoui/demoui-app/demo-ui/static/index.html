@@ -1,0 +1,45 @@
+<!-- Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved. -->
+<!-- The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/ -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Switchyard · Model routing demo</title>
+  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><div class="brand"><span class="mark">S</span><span>SWITCHYARD <small>ROUTING LAB</small></span></div><span id="status" class="status" role="status">Connecting to LiteLLM…</span></header>
+    <section class="intro"><p class="eyebrow">TWO MODELS. ONE DECISION.</p><h1>The right model<br>for the next request.</h1><p class="lead">A judge estimates whether Lightning can handle your task. Switchyard selects an answer model, and LiteLLM makes both calls.</p></section>
+    <section class="model-grid" aria-label="Configured model roles">
+      <article><span class="tag">EFFICIENT</span><h2>Lightning</h2><p id="efficient" class="alias">Loading model…</p></article>
+      <article><span class="tag purple">CAPABLE + JUDGE</span><h2>Super VL</h2><p id="capable" class="alias">Loading model…</p><p id="judge" class="caption"></p></article>
+    </section>
+    <section class="workspace">
+      <div class="prompt-column">
+        <form id="route-form" class="panel">
+          <div class="panel-title"><h2>Try a task</h2><span class="caption">Text-only demo</span></div>
+          <label for="prompt">Your prompt</label>
+          <textarea id="prompt" maxlength="12000" rows="7" placeholder="Describe a task for the model…" required></textarea>
+          <div class="examples"><button type="button" data-example="Rewrite this politely: Send me the report today.">Short rewrite</button><button type="button" data-example="Design a distributed job scheduler that guarantees at-least-once delivery. Explain duplicate handling, lease expiry, worker crashes, and the trade-offs between availability and consistency.">System design</button></div>
+          <div class="form-bottom"><label class="tokens" for="tokens">Answer token limit <input id="tokens" type="number" min="64" max="4096" step="1" value="4096"></label><button id="submit" class="primary" disabled>Route & answer <span aria-hidden="true">↗</span></button></div>
+          <p class="caption">Examples only fill the prompt. The judge makes a fresh assessment on every run.</p>
+        </form>
+        <section id="response" class="panel response" aria-labelledby="response-title" aria-live="polite" aria-busy="false">
+          <div class="panel-title"><h2 id="response-title">Response to your prompt</h2></div>
+          <p id="answer-limit" class="notice" hidden></p>
+          <div id="answer" class="answer empty">Submit a prompt to see the response here.</div>
+          <p id="error" class="error" role="alert" hidden></p>
+        </section>
+      </div>
+      <section class="panel results" aria-live="polite" aria-busy="false" id="results">
+        <div class="panel-title"><h2>Routing details</h2><span id="tier" class="tag neutral">WAITING</span></div>
+        <p id="progress" class="caption">Model selection and call details will appear here.</p>
+        <div id="decision" hidden><p id="selected" class="selected"></p><p id="reason"></p><div class="stats"><div><span>Judge estimate</span><strong id="score">—</strong></div><div><span>Threshold</span><strong id="threshold">—</strong></div><div><span>Total time</span><strong id="elapsed">—</strong></div></div></div>
+        <div id="calls" class="calls"></div>
+      </section>
+    </section>
+    <footer><span>Switchyard chooses · LiteLLM connects · NVIDIA serves</span><span>Judge estimates are not measured accuracy or guaranteed savings.</span></footer>
+  </main>
+</body>
+</html>

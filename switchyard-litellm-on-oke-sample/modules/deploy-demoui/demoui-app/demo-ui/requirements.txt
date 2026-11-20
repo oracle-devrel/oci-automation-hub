@@ -1,0 +1,10 @@
+# Copyright (c) 2024, 2026, Oracle and/or its affiliates. All rights reserved.
+# The Universal Permissive License (UPL), Version 1.0 as shown at https://oss.oracle.com/licenses/upl/
+
+nemo-switchyard==0.3.0 \
+    --hash=sha256:6b265e2cc399d487706140a8d949f5c6bab2ec2d4da9216fc06046df2a5e26d6 \
+    --hash=sha256:cdc64503e427095c73e7840f0de093f0ee35fc3e306825e522050cd6e6825039 \
+    --hash=sha256:bb40a39da460cc28d0c2143044233fef69b2c113813c511255f813ef0ac5bf1b \
+    --hash=sha256:f0c3728517a7015d87bbdf6a21303a344c9d886ae98d910dee6a01c67f8657d3 \
+    --hash=sha256:45b76e1e5caa0e08fdb15a2ae97646ab901672a78e743c2a055629d393762070 \
+    --hash=sha256:d363408274523c804033ae470420379370db5e8b73e953dc880143591ad24283
