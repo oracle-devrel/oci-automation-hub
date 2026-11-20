@@ -32,7 +32,7 @@
     "react-server-dom-webpack": "19.3.1",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
-    "vinext": "0.0.50",
+    "vinext": "1.4.6",
     "vite": "8.3.8",
     "wrangler": "4.92.0"
   },
