@@ -106,15 +106,3 @@ overwrite or remove your user data as part of an application upgrade.
   `.venv\Scripts\python.exe scripts\run_app.py --self-test` on Windows.
   This uses synthetic data and blocks network connections.
 
-This source archive is platform-neutral; dependency wheels are installed for the
-destination OS/CPU. On 2026-10-08 the operator reported successful installation
-and startup using Python 3.14 on macOS 26.7 (Apple Silicon), Windows Server 2019
-Standard, and Windows 11 Pro. Linux remains unverified. These are installation
-reports, not exhaustive platform/browser/OCI acceptance. OS and company security
-controls still apply; these scripts do not bypass them.
-
-Python application files are readable. Keeping the development repository private
-does not conceal the shipped application code. The Git history is not included.
-Frontend dependency notices are in `THIRD_PARTY_LICENSES`. Python dependencies
-are installed with their own license information. Publishing the application
-still requires the appropriate authorization; this archive grants no new license.
