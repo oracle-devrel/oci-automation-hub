@@ -1,0 +1,9 @@
+{
+  "application": "OCI Limit Workbench",
+  "version": "0.7.1",
+  "distribution": "python-source",
+  "built_at_utc": "2026-11-16T07:18:41.463544+00:00",
+  "requires_python": ">=3.10",
+  "bundled_python": false,
+  "catalogs_included": false
+}
